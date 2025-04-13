@@ -1,0 +1,35 @@
+<div class="progress-container h-full">
+  <div class="glass-card h-full flex flex-col">
+    <div class="headstyle" >
+      <h3 class="text-xl font-semibold">Progress</h3>
+    </div>
+  
+    
+    <div class="steps-container flex-1">
+      <div *ngFor="let step of steps" 
+           class="step-item"
+           [ngClass]="{
+             'text-blue-600': isStepActive(step.id),
+             'text-gray-400': !isStepActive(step.id) && !isStepCompleted(step.id),
+             'text-green-600': isStepCompleted(step.id)
+           }">
+        <div class="step-indicator"
+             [ngClass]="{
+               'border-blue-500': isStepActive(step.id),
+               'border-gray-300': !isStepActive(step.id) && !isStepCompleted(step.id),
+               'border-green-500': isStepCompleted(step.id)
+             }">
+          <div class="step-dot"
+               [ngClass]="{
+                 'bg-blue-500': isStepActive(step.id),
+                 'bg-transparent': !isStepActive(step.id) && !isStepCompleted(step.id),
+                 'bg-green-500': isStepCompleted(step.id)
+               }"></div>
+        </div>
+        <span class="step-label">{{ step.name }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="background-class"></div>

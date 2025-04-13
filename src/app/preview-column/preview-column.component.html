@@ -1,0 +1,26 @@
+<div class="w-full bg-white rounded-lg shadow-sm glass-card" >
+  <div class="headstyle" >
+    <h3 class="text-xl font-semibold">Resume Preview</h3>
+  </div>
+
+  
+  <div class="space-y-4">
+    <!-- Education Level Preview -->
+    <div *ngIf="previewData.educationLevel" class="border-b border-gray-200 pb-4">
+      <h4 class="text-lg font-medium text-gray-700">Education</h4>
+      <p class="text-gray-600">{{ previewData.educationLevel }}</p>
+    </div>
+
+    <!-- Work History Preview -->
+    <div *ngIf="previewData.workHistory" class="border-b border-gray-200 pb-4">
+      <h4 class="text-lg font-medium text-gray-700">Work History</h4>
+      <p class="text-gray-600">{{ previewData.workHistory }}</p>
+    </div>
+
+    <!-- Personal Information Preview -->
+    <div *ngIf="previewData.personalInfo" class="border-b border-gray-200 pb-4">
+      <h4 class="text-lg font-medium text-gray-700">Personal Information</h4>
+      <p class="text-gray-600">{{ previewData.personalInfo }}</p>
+    </div>
+  </div>
+</div> 

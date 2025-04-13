@@ -1,0 +1,256 @@
+.education-option {
+  transition: all 0.2s ease-in-out;
+}
+
+.education-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.radio-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.radio-dot {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  .main-content {
+    width: 100%;
+  }
+}
+
+
+/* Option 1: Minimalist & Professional */
+.theme-minimalist {
+  --bg-color: #F8F9FA;
+  --font-color: #212529;
+  --accent-color: #0D6EFD;
+}
+
+/* Option 2: Dark Mode Elegance */
+.theme-dark {
+  --bg-color: #121212;
+  --font-color: #E0E0E0;
+  --accent-color: #BB86FC;
+}
+
+/* Option 3: Fresh & Modern */
+.theme-fresh {
+  --bg-color: #FFFFFF;
+  --font-color: #333333;
+  --accent-color: #00A896;
+}
+
+/* Option 4: Soft & Friendly */
+.theme-soft {
+  --bg-color: #FFF5F5;
+  --font-color: #4A4A4A;
+  --accent-color: #FF6B6B;
+}
+
+/* Option 5: Corporate Blue */
+.theme-corporate {
+  --bg-color: #EFF8FF;
+  --font-color: #1E3A8A;
+  --accent-color: #3B82F6;
+}
+
+/* Option 6: Earthy & Calm */
+.theme-earthy {
+  --bg-color: #F5F5F0;
+  --font-color: #3E3E3E;
+  --accent-color: #6B8E23;
+}
+
+/* Option 7: High Contrast Dark */
+.theme-contrast-dark {
+  --bg-color: #1A1A1A;
+  --font-color: #F5F5F5;
+  --accent-color: #FFD700;
+}
+
+/* Option 8: Cool & Airy */
+.theme-cool {
+  --bg-color: #F0F8FF;
+  --font-color: #2E3A59;
+  --accent-color: #5F9EA0;
+}
+
+/* Option 9: Vibrant & Energetic */
+.theme-vibrant {
+  --bg-color: #FFFFFF;
+  --font-color: #2D3748;
+  --accent-color: #ED8936;
+}
+
+/* Option 10: Monochrome Sophistication */
+.theme-monochrome {
+  --bg-color: #FAFAFA;
+  --font-color: #424242;
+  --accent-color: #757575;
+}
+
+/* Apply colors to elements */
+body {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  font-family: 'Roboto', sans-serif; /* Example font */
+}
+
+/* Column styling */
+.column-progress {
+  width: 25%;
+  /* background: rgba(255, 255, 255, 0.2); Semi-transparent white */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+ /* / border-radius: 12px; Soft rounded corners */
+  /* border: 1px solid rgba(255, 255, 255, 0.3); Light border */
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); Subtle shadow */
+  /* padding: 10px; */
+  /* padding: 5pxpx; */
+  /* Gradient overlay for depth */
+  /* background-image: 
+    linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.05)
+    ); */
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) */
+  
+  /* padding: 20px; Inner spacing */
+
+}
+.glass-card {
+  background: white;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  padding: 1.25rem;
+
+  /* padding: 1.25rem; */
+  /* display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.25rem; */
+}
+
+.column-forms {
+  width: 45%;
+  background-color: var(--bg-color);
+}
+
+.column-preview {
+  width: 30%;
+  background-color: white; /* Keep preview clean */
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 0px
+}
+
+/* Buttons & accents */
+button, .accent {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+/* Input fields */
+input, textarea {
+  background-color: var(--bg-color);
+  border: 1px solid var(--accent-color);
+  color: var(--font-color);
+  padding: 8px;
+}
+
+
+.column-progress {
+  width: 15%;            /* Fixed width (25%) */
+  flex-shrink: 0;        /* Prevent shrinking */
+}
+
+.column-forms {
+         /* Take remaining space (45% + extra) */
+  max-width: 50%; 
+  flex-shrink: 0;         /* But cap at 45% if needed */
+}
+
+.column-preview {
+  flex-grow: 1;        /* Takes all remaining space */
+  min-width: 0
+}
+
+.neumorphism-card {
+  border-radius: 16px;
+  background: #e0e5ec; /* Base color (light gray) */
+  box-shadow: 
+    8px 8px 16px rgba(163, 177, 198, 0.6), /* Shadow */
+    -8px -8px 16px rgba(255, 255, 255, 0.5); /* Highlight */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Soft edge */
+  transition: all 0.3s ease;
+}
+
+/* Interactive state */
+.neumorphism-card:hover {
+  box-shadow: 
+    4px 4px 8px rgba(163, 177, 198, 0.6),
+    -4px -4px 8px rgba(255, 255, 255, 0.5);
+}
+
+.neumorphism-card-dark {
+  border-radius: 16px;
+  background: #2a2d36; /* Dark base */
+  box-shadow: 
+    8px 8px 16px rgba(0, 0, 0, 0.3),
+    -8px -8px 16px rgba(75, 80, 90, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.neumorphism-card-dark:hover {
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.3),
+    -4px -4px 8px rgba(75, 80, 90, 0.2);
+}
+
+.neumorphism-fb-blue {
+  border-radius: 8px;
+  background: #1877f2; /* Facebook blue */
+  box-shadow: 
+    4px 4px 8px rgba(0, 59, 135, 0.3), /* Dark blue shadow */
+    -4px -4px 8px rgba(64, 154, 255, 0.2); /* Light blue highlight */
+  color: white;
+  border: none;
+}
+
+.neumorphism-fb-blue:hover {
+  box-shadow: 
+    2px 2px 4px rgba(0, 59, 135, 0.3),
+    -2px -2px 4px rgba(64, 154, 255, 0.2);
+}
+
+.neumorphism-facebook {
+  border-radius: 12px; /* Facebook's subtle rounding */
+  background: #f0f2f5; /* FB's light gray background */
+  box-shadow: 
+    5px 5px 10px rgba(188, 192, 199, 0.6), /* FB's shadow tone */
+    -5px -5px 10px rgba(255, 255, 255, 0.8); /* White highlight */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.2s ease;
+}
+
+/* Active/Clicked state */
+.neumorphism-facebook:active {
+  box-shadow: 
+    2px 2px 5px rgba(188, 192, 199, 0.6),
+    -2px -2px 5px rgba(255, 255, 255, 0.8);
+}

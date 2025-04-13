@@ -1,0 +1,35 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="container mx-auto flex gap-6">
+    <!-- Column 1 (25%) -->
+    <app-progress-column></app-progress-column>
+
+    <!-- Column 2 (50%) -->
+    <div class="w-1/2 bg-white rounded-lg shadow-sm p-8">
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Work History</h2>
+      <p class="text-gray-600 mb-8">Tell us about your work experience</p>
+
+      <div class="space-y-6">
+        <div class="p-6 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors cursor-pointer"
+             (click)="onJobSeeking()">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">I'm looking for a job</h3>
+          <p class="text-gray-600">I want to create a resume to apply for jobs</p>
+        </div>
+
+        <div class="p-6 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors cursor-pointer"
+             (click)="onDifferentReason()">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">I have a different reason</h3>
+          <p class="text-gray-600">I want to create a resume for other purposes</p>
+        </div>
+
+        <div class="p-6 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors cursor-pointer"
+             (click)="onSkip()">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Skip for now</h3>
+          <p class="text-gray-600">I'll add my work history later</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Column 3 (25%) -->
+    <!-- <app-preview-column [previewData]="previewData"></app-preview-column> -->
+  </div>
+</div> 

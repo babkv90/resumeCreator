@@ -1,0 +1,16 @@
+<div class="progress-column theme-minimalist" >
+  <div class="vertical-progress">
+    <div class="step" *ngFor="let step of steps; let i = index" 
+         [class.completed]="step.completed"
+         [class.active]="i === currentStep">
+      <div class="step-number">{{i + 1}}</div>
+      <div class="step-name">{{step.name}}</div>
+    </div>
+  </div>
+  <div class="horizontal-progress">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="progress"></div>
+    </div>
+    <div class="progress-text">{{progress | number:'1.0-0'}}% Complete</div>
+  </div>
+</div> 
