@@ -1,28 +1,55 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { PreviewColumnComponent } from '../preview-column/preview-column.component';
 // import { ProgressColumnComponent } from "../shared/progress-column/progress-column.component";
 import { ProgressColumnComponent } from "../progress-column/progress-column.component";
-import { NavigationComponent } from '../navigation/navigation.component';
+import { ProgressService } from '../services/progress.service';
+import { WorkHistoryComponent } from '../work-history/work-history.component';
+import { PersonalInfoComponent } from '../personal-info/personal-info.component';
+import { EducationDetailsComponent } from '../education-details/education-details.component';
+import { SkillsComponent } from '../skills/skills.component';
+import { SummaryComponent } from "../summary/summary.component";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-education-level',
   templateUrl: './education-level.component.html',
   styleUrls: ['./education-level.component.css'],
   standalone: true,
-  imports: [CommonModule, PreviewColumnComponent, ProgressColumnComponent, NavigationComponent]
+  imports: [CommonModule, PreviewColumnComponent,
+    ProgressColumnComponent, WorkHistoryComponent,
+    PersonalInfoComponent, EducationDetailsComponent,
+    SkillsComponent, SummaryComponent, ReactiveFormsModule]
 })
 export class EducationLevelComponent implements OnInit {
-  selectedEducation: string = '';
-  currentSection: string = 'education-level';
-  previewData: any = {
-    educationLevel: '',
-    workHistory: '',
-    personalInfo: ''
-  };
+  @Output() next = new EventEmitter<any>();
+  @Output() previous = new EventEmitter<void>();
 
-  constructor(private router: Router) {}
+  selectedEducation: string = '';
+  activeComponent: string | null = null;
+
+  educationForm: FormGroup;
+  educationLevels = [
+    { value: 'high_school', label: 'High School' },
+    { value: 'associate', label: 'Associate Degree' },
+    { value: 'bachelor', label: 'Bachelor\'s Degree' },
+    { value: 'master', label: 'Master\'s Degree' },
+    { value: 'doctorate', label: 'Doctorate' },
+    { value: 'other', label: 'Other' }
+  ];
+
+  constructor(private router: Router, private progressService:ProgressService, private fb: FormBuilder) {
+    this.educationForm = this.fb.group({
+      educationLevel: ['', Validators.required],
+      institution: ['', Validators.required],
+      fieldOfStudy: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: [''],
+      gpa: ['', [Validators.min(0), Validators.max(4)]],
+      description: ['']
+    });
+  }
 
   ngOnInit(): void {
     // Initialize with any existing data
@@ -31,8 +58,11 @@ export class EducationLevelComponent implements OnInit {
       workHistory: '',
       personalInfo: ''
     };
+    this.progressService.componentSelected$.subscribe(component => {
+      this.activeComponent = component;
+    });
   }
-
+ 
   selectEducation(level: string): void {
     this.selectedEducation = level;
     this.previewData.educationLevel = this.getEducationDisplayName(level);
@@ -93,4 +123,33 @@ export class EducationLevelComponent implements OnInit {
         break;
     }
   }
+
+  onNext(): void {
+    if (this.educationForm.valid) {
+      this.next.emit(this.educationForm.value);
+    } else {
+      // Mark all fields as touched to show validation messages
+      Object.keys(this.educationForm.controls).forEach(key => {
+        this.educationForm.get(key)?.markAsTouched();
+      });
+    }
+  }
+
+  onPrevious(): void {
+    this.previous.emit();
+  }
+
+  get educationLevel() { return this.educationForm.get('educationLevel'); }
+  get institution() { return this.educationForm.get('institution'); }
+  get fieldOfStudy() { return this.educationForm.get('fieldOfStudy'); }
+  get startDate() { return this.educationForm.get('startDate'); }
+  get endDate() { return this.educationForm.get('endDate'); }
+  get gpa() { return this.educationForm.get('gpa'); }
+
+  currentSection: string = 'education-level';
+  previewData: any = {
+    educationLevel: '',
+    workHistory: '',
+    personalInfo: ''
+  };
 } 

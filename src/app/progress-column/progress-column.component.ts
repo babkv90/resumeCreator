@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { ProgressService } from '../services/progress.service';
 
 @Component({
   selector: 'app-progress-column',
@@ -8,13 +10,19 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
 })
-export class ProgressColumnComponent {
+export class ProgressColumnComponent implements AfterViewInit {
   @Input() currentStep: string = 'education';
-  
+  constructor(private router: Router,private progressService:ProgressService) {}
+  ngOnInit(): void {
+    // this.navigateTo('skills');
+  }
+  ngAfterViewInit(): void {
+    this.navigateTo('work-history')
+  }
   steps = [
-    { id: 'personal', name: 'Personal Info', completed: true },
-    { id: 'education', name: 'Education', completed: false },
-    { id: 'work', name: 'Work History', completed: false },
+    { id: 'personal-info', name: 'Personal Info', completed: true },
+    { id: 'education-details', name: 'Education', completed: false },
+    { id: 'work-history', name: 'Work History', completed: false },
     { id: 'skills', name: 'Skills', completed: false },
     { id: 'summary', name: 'Summary', completed: false }
   ];
@@ -27,5 +35,35 @@ export class ProgressColumnComponent {
     const stepIndex = this.steps.findIndex(s => s.id === stepId);
     const currentStepIndex = this.steps.findIndex(s => s.id === this.currentStep);
     return stepIndex < currentStepIndex;
+  }
+
+  navigateTo(section: string): void {
+    switch(section) {
+      case 'heading':
+        this.router.navigate(['/resume-dashboard']);
+        break;
+      case 'work-history':
+        this.router.navigate(['/work-history']);
+        break;
+      case 'education':
+        // Already on education page
+        break;
+      case 'skills':
+        this.router.navigate(['/skills']);
+        break;
+      case 'summary':
+        this.router.navigate(['/summary']);
+        break;
+      case 'finalize':
+        this.router.navigate(['/finalize']);
+        break;
+    }
+  }
+
+  @Output() componentSelected = new EventEmitter<string>();
+
+  selectComponent(component: string) {
+    // this.componentSelected.emit(component);
+    this.progressService.selectComponent(component);
   }
 } 

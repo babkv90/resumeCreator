@@ -1,0 +1,157 @@
+<div class="education-details-container bg-white rounded-xl shadow-sm p-6 max-w-4xl mx-auto">
+  <h2 class="text-2xl font-bold text-gray-900 mb-6">Education Details</h2>
+  
+  <form [formGroup]="educationForm" (ngSubmit)="onSubmit()" class="space-y-8">
+    <!-- Institution Information -->
+    <div class="form-section space-y-4">
+      <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+        </svg>
+        Institution Information
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" style="gap: 10px;">
+        <div class="form-group">
+          <label for="institution" class="block text-sm font-medium text-gray-700 mb-1.5">Institution Name *</label>
+          <div class="relative">
+            <input type="text" id="institution" formControlName="institution"
+                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                   placeholder="e.g. Harvard University">
+          </div>
+          <!-- <div *ngIf="institution?.invalid && (institution?.dirty || institution?.touched)"
+               class="text-red-500 text-xs mt-1.5 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            Institution name is required
+          </div> -->
+        </div>
+
+        <div class="form-group">
+          <label for="degree" class="block text-sm font-medium text-gray-700 mb-1.5">Degree *</label>
+          <div class="relative">
+            <input type="text" id="degree" formControlName="degree"
+                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                   placeholder="e.g. Bachelor of Science">
+          </div>
+          <!-- <div *ngIf="degree?.invalid && (degree?.dirty || degree?.touched)"
+               class="text-red-500 text-xs mt-1.5 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            Degree is required
+          </div> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Study Period -->
+    <div class="form-section space-y-4">
+      <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        Study Period
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" style="gap: 10px;">
+        <div class="form-group">
+          <label for="startDate" class="block text-sm font-medium text-gray-700 mb-1.5">Start Date *</label>
+          <div class="relative">
+            <input type="date" id="startDate" formControlName="startDate"
+                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+          </div>
+          <!-- <div *ngIf="startDate?.invalid && (startDate?.dirty || startDate?.touched)"
+               class="text-red-500 text-xs mt-1.5 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            Start date is required
+          </div> -->
+        </div>
+
+        <div class="form-group">
+          <label for="endDate" class="block text-sm font-medium text-gray-700 mb-1.5">End Date</label>
+          <div class="relative">
+            <input type="date" id="endDate" formControlName="endDate" [disabled]="educationForm.get('currentlyStudying')?.value"
+                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all disabled:bg-gray-50 disabled:text-gray-500">
+          </div>
+          <div class="flex items-center mt-3">
+            <input type="checkbox" id="currentlyStudying" formControlName="currentlyStudying"
+                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" >
+            <label for="currentlyStudying" class="ml-2 block text-sm text-gray-700 pl-5">I am currently studying here</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="form-section space-y-4">
+      <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+        <svg class="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        Additional Information
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" style="gap: 10px;">
+        <div class="form-group">
+          <label for="fieldOfStudy" class="block text-sm font-medium text-gray-700 mb-1.5">Field of Study *</label>
+          <div class="relative">
+            <input type="text" id="fieldOfStudy" formControlName="fieldOfStudy"
+                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                   placeholder="e.g. Computer Science">
+          </div>
+          <!-- <div *ngIf="fieldOfStudy?.invalid && (fieldOfStudy?.dirty || fieldOfStudy?.touched)"
+               class="text-red-500 text-xs mt-1.5 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            Field of study is required
+          </div> -->
+        </div>
+
+        <div class="form-group">
+          <label for="gpa" class="block text-sm font-medium text-gray-700 mb-1.5">GPA</label>
+          <div class="relative">
+            <input type="number" id="gpa" formControlName="gpa" step="0.01" min="0" max="4"
+                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                   placeholder="e.g. 3.5">
+          </div>
+          <!-- <div *ngIf="gpa?.invalid && (gpa?.dirty || gpa?.touched)"
+               class="text-red-500 text-xs mt-1.5 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            GPA must be between 0 and 4
+          </div> -->
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description" class="block text-sm font-medium text-gray-700 mb-1.5">Description</label>
+        <textarea id="description" formControlName="description" rows="4"
+                  class="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  placeholder="Describe your academic achievements and relevant coursework..."></textarea>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="flex justify-between pt-6 border-t border-gray-200">
+      <button type="button" 
+              class="inline-flex items-center px-5 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
+        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Previous
+      </button>
+      <button type="submit" [disabled]="educationForm.invalid"
+              class="inline-flex items-center px-5 py-3 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all" style="background-color: #3b82f6; color: #fff;">
+        Next
+      
+      </button>
+    </div>
+  </form>
+</div>
+style="background: blue;"

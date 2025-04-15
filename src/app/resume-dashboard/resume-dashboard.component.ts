@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ProgressService } from '../services/progress.service';
 import { ProgressColumnComponent } from '../shared/progress-column/progress-column.component';
 // import { PreviewColumnComponent } from '../shared/preview-column/preview-column.component';
-import { NavigationComponent } from "../navigation/navigation.component";
+
 
 interface PreviewData {
   firstName: string;
@@ -20,7 +20,7 @@ interface PreviewData {
 @Component({
   selector: 'app-resume-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, ProgressColumnComponent, NavigationComponent],
+  imports: [CommonModule, FormsModule, ProgressColumnComponent],
   templateUrl: './resume-dashboard.component.html',
   styleUrls: ['./resume-dashboard.component.css']
 })

@@ -4,13 +4,15 @@ import { ResumeDashboardComponent } from './resume-dashboard/resume-dashboard.co
 import { WorkHistoryComponent } from './work-history/work-history.component';
 import { EducationLevelComponent } from './education-level/education-level.component';
 import { NgModule } from '@angular/core';
+import { PersonalInfoComponent } from './personal-info/personal-info.component';
 
 export const routes: Routes = [
     // { path: '', component: LandingPageComponent },
   // { path: '', redirectTo: '/resume-dashboard', pathMatch: 'full' },
   // { path: '', component: ResumeDashboardComponent },
-  { path: 'work-history', component: WorkHistoryComponent },
-  { path: 'education-level', component: EducationLevelComponent },
+  // { path: 'work-history', component: WorkHistoryComponent },
+  // { path: 'personal-info', component: PersonalInfoComponent },
+  
   { path: '', component: EducationLevelComponent },
   // { path: 'heading', component: 'Heading', },
   // { path: 'work-history', component: 'Work History' },

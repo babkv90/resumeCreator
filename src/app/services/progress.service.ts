@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 export interface Step {
   name: string;
@@ -61,5 +61,12 @@ export class ProgressService {
     this.stepsSubject.next([...this.steps]);
     this.currentStepSubject.next(0);
     this.updateProgress();
+  }
+
+  private componentSelectedSource = new Subject<string>();
+  componentSelected$ = this.componentSelectedSource.asObservable();
+
+  selectComponent(component: string) {
+    this.componentSelectedSource.next(component);
   }
 } 

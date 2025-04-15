@@ -4,23 +4,43 @@
   </div>
 
   
-  <div class="space-y-4">
-    <!-- Education Level Preview -->
-    <div *ngIf="previewData.educationLevel" class="border-b border-gray-200 pb-4">
-      <h4 class="text-lg font-medium text-gray-700">Education</h4>
-      <p class="text-gray-600">{{ previewData.educationLevel }}</p>
-    </div>
-
-    <!-- Work History Preview -->
-    <div *ngIf="previewData.workHistory" class="border-b border-gray-200 pb-4">
-      <h4 class="text-lg font-medium text-gray-700">Work History</h4>
-      <p class="text-gray-600">{{ previewData.workHistory }}</p>
-    </div>
-
-    <!-- Personal Information Preview -->
-    <div *ngIf="previewData.personalInfo" class="border-b border-gray-200 pb-4">
-      <h4 class="text-lg font-medium text-gray-700">Personal Information</h4>
-      <p class="text-gray-600">{{ previewData.personalInfo }}</p>
-    </div>
+  <div class="space-y-4" style="padding: 47px;
+    border-radius: 1rem;background: #acacac4d;">
+    <!-- <iframe  #resumeIframe frameborder="0"  width="100%" height="1125"> -->
+     <!-- executive-template.component.html -->  
+      <div style="height: 75vh;overflow: auto;">
+        <div class="executive-template" style="padding: 10px;" #resumeTemplate> 
+          <div class="executive-resume " >
+            <div class="executive-sidebar">
+              <h1>{{ formData.fullName | uppercase }}</h1>
+              <div *ngIf="formData.summary" class="executive-summary">
+                <h2>SUMMARY</h2>
+                <p>{{ formData.summary }}</p>
+              </div>
+              <div *ngIf="formData.skills" class="executive-skills">
+                <h2>CORE SKILLS</h2>
+                <ul>
+                  <li > angular </li>
+                  <li > node</li>
+                  <li >mogodb</li>
+                  <li >node</li>
+                </ul>
+              </div>
+            </div>
+            <div class="executive-main">
+              <div *ngIf="formData.experience" class="executive-section">
+                <h2>PROFESSIONAL EXPERIENCE</h2>
+                <div [innerHTML]="formData.experience  "></div>
+              </div>
+              <div *ngIf="formData.education" class="executive-section">
+                <h2>EDUCATION</h2>
+                <div [innerHTML]="formData.education  "></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    <!-- </iframe> -->
   </div>
 </div> 

@@ -3,6 +3,9 @@
   min-height: 100vh;
   background-color: #f5f5f5;
   padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  flex-direction: column;
 }
 
 .content-wrapper {
@@ -117,4 +120,162 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+.form-section {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.achievement-item,
+.skill-item {
+  background-color: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .work-history-container {
+    padding: 1rem;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+}
+
+/* Focus styles */
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+/* Button hover effects */
+button:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Form validation styles */
+.ng-invalid.ng-touched {
+  border-color: #ef4444;
+}
+
+/* Custom scrollbar for textarea */
+textarea {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #f3f4f6;
+}
+
+textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0;
+  border-radius: 4px;
+}
+
+/* Animation for adding/removing items */
+.achievement-item,
+.skill-item {
+  transition: all 0.3s ease-in-out;
+}
+
+.achievement-item.ng-enter,
+.skill-item.ng-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.achievement-item.ng-enter-active,
+.skill-item.ng-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.achievement-item.ng-leave,
+.skill-item.ng-leave {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.achievement-item.ng-leave-active,
+.skill-item.ng-leave-active {
+  opacity: 0;
+  transform: translateY(-10px);
 } 
+
+
+/* Add these styles to your component's CSS file */
+.skill-pill {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.skill-pill:hover {
+  background-color: #dbeafe;
+}
+
+.ng-select .ng-select-container {
+  min-height: 46px;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.ng-select.ng-select-focused .ng-select-container {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.ng-dropdown-panel {
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.ng-option {
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.ng-option:hover {
+  background-color: #f3f4f6;
+}
+
+.ng-option.ng-option-selected {
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+/* Animation for delete button */
+@keyframes shake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+button:hover sving {
+  animation: shake 0.5s ease-in-out;
+}
+
+

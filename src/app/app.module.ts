@@ -8,7 +8,8 @@ import { EducationLevelComponent } from './education-level/education-level.compo
 import { PreviewColumnComponent } from './preview-column/preview-column.component';
 import { ProgressColumnComponent } from './shared/progress-column/progress-column.component';
 import { AppRoutingModule } from './app.routes';
-import { NavigationComponent } from './navigation/navigation.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { NavigationComponent } from './navigation/navigation.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NavigationComponent
+    NgSelectModule
+    
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],  // <-- Add this line

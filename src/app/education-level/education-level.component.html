@@ -1,6 +1,7 @@
-<div class="min-h-screen bg-gray-50 p-6 pb-24 ">
-  <div class="flex gap-6" style="margin-top: 100px;width: 100% !important;padding: 30px;background-color: #d74c1029;
-    gap: 16px;
+<div class="min-h-screen bg-gray-50 p-6 pb-24 " style="padding: 0px;">
+  <div class="flex gap-6" style="background-color: #d74c1029;
+    gap: 16px;height: 100vh;overflow: hidden;
+    padding: 75px 10px 15px 10px;
 ">
     <!-- Column 1 (25%) -->
      <div class="column-progress" >
@@ -9,95 +10,15 @@
  
 
     <!-- Column 2 (50%) -->
-    <div class="rounded-lg shadow-sm p-8 column-forms glass-card" style="background: white;;">
-      <h2 class="text-3xl font-bold text-gray-800 mb-2">What's your education level?</h2>
-      <p class="text-gray-600 mb-8">Select your highest level of education</p>
-
-      <div class="space-y-4">
-        <div class="education-option p-6 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors cursor-pointer"
-             data-level="high_school"
-             (click)="selectEducation('high_school')">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-xl font-semibold text-gray-800">High School</h3>
-              <p class="text-gray-600 mt-1">High school diploma or equivalent</p>
-            </div>
-            <div class="radio-button w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-              <div class="radio-dot w-3 h-3 rounded-full bg-blue-500 hidden"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="education-option p-6 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors cursor-pointer"
-             data-level="associate"
-             (click)="selectEducation('associate')">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-xl font-semibold text-gray-800">Associate Degree</h3>
-              <p class="text-gray-600 mt-1">2-year college degree</p>
-            </div>
-            <div class="radio-button w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-              <div class="radio-dot w-3 h-3 rounded-full bg-blue-500 hidden"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="education-option p-6 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors cursor-pointer"
-             data-level="bachelor"
-             (click)="selectEducation('bachelor')">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-xl font-semibold text-gray-800">Bachelor's Degree</h3>
-              <p class="text-gray-600 mt-1">4-year college degree</p>
-            </div>
-            <div class="radio-button w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-              <div class="radio-dot w-3 h-3 rounded-full bg-blue-500 hidden"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="education-option p-6 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors cursor-pointer"
-             data-level="master"
-             (click)="selectEducation('master')">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-xl font-semibold text-gray-800">Master's Degree</h3>
-              <p class="text-gray-600 mt-1">Graduate degree</p>
-            </div>
-            <div class="radio-button w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-              <div class="radio-dot w-3 h-3 rounded-full bg-blue-500 hidden"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="education-option p-6 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors cursor-pointer"
-             data-level="doctorate"
-             (click)="selectEducation('doctorate')">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-xl font-semibold text-gray-800">Doctorate</h3>
-              <p class="text-gray-600 mt-1">PhD or other doctoral degree</p>
-            </div>
-            <div class="radio-button w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-              <div class="radio-dot w-3 h-3 rounded-full bg-blue-500 hidden"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="education-option p-6 border border-gray-200 rounded-lg hover:border-blue-500 transition-colors cursor-pointer"
-             data-level="none"
-             (click)="selectEducation('none')">
-          <div class="flex items-center justify-between">
-            <div>
-              <h3 class="text-xl font-semibold text-gray-800">No Formal Education</h3>
-              <p class="text-gray-600 mt-1">I don't have a formal education</p>
-            </div>
-            <div class="radio-button w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-              <div class="radio-dot w-3 h-3 rounded-full bg-blue-500 hidden"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="rounded-lg shadow-sm p-8 column-forms glass-card" style="background: white;overflow: auto;">
+      <ng-container [ngSwitch]="activeComponent">
+        <app-work-history *ngSwitchCase="'work-history'"></app-work-history>
+        <app-personal-info *ngSwitchCase="'personal-info'"></app-personal-info>
+        <app-education-details *ngSwitchCase="'education-details'"></app-education-details>
+        <app-skills *ngSwitchCase="'skills'"></app-skills>
+        <app-summary *ngSwitchCase="'summary'"></app-summary>
+  
+      </ng-container>
     </div>
 
     <!-- Column 3 (25%) -->
@@ -108,5 +29,5 @@
   </div>
 
   <!-- Navigation Component -->
-  <app-navigation [currentSection]="currentSection"></app-navigation>
+  <!-- <app-navigation [currentSection]="currentSection"></app-navigation> -->
 </div> 

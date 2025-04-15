@@ -10,9 +10,9 @@ import { ProgressService } from '../../services/progress.service';
   
   styles: [`
     .progress-column {
-      // width: 25%;
+     
       padding: 20px;
-      // background-color: white;
+  
       background-color: #F8F9FA;
     color: #212529;
     accent-color: #0D6EFD;

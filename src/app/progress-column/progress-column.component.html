@@ -18,7 +18,7 @@
                'border-blue-500': isStepActive(step.id),
                'border-gray-300': !isStepActive(step.id) && !isStepCompleted(step.id),
                'border-green-500': isStepCompleted(step.id)
-             }">
+             }" (click)="selectComponent(step.id)">
           <div class="step-dot"
                [ngClass]="{
                  'bg-blue-500': isStepActive(step.id),
