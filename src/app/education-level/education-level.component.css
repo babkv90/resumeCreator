@@ -106,8 +106,7 @@ body {
 
 /* Column styling */
 .column-progress {
-  width: 25%;
-  /* background: rgba(255, 255, 255, 0.2); Semi-transparent white */
+  height: 93vh;
   backdrop-filter: blur(10px); /* Frosted glass effect */
   -webkit-backdrop-filter: blur(10px); /* Safari support */
  /* / border-radius: 12px; Soft rounded corners */
@@ -131,11 +130,13 @@ body {
   background: white;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-radius: 1rem;
+  /* border-radius: 1rem; */
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-  padding: 1.25rem;
-
+  /* padding: 1.25rem; */
+  /* margin: 12px 0px 12px 12px; */
+  margin: 2rem 0.5rem 0;
+  height: 88vh;
   /* padding: 1.25rem; */
   /* display: flex;
   flex-direction: column;
@@ -254,3 +255,83 @@ input, textarea {
     -2px -2px 5px rgba(255, 255, 255, 0.8);
 }
 
+.education_container{
+  display: flex;
+  flex-direction: column;
+  background: rgb(225, 225, 225);
+  height: 100vh;
+}
+
+.nav {
+  flex: 0 0 auto; /* Do not grow or shrink (fixed height) */
+  height: 60px; /* Adjust as needed */
+  background: #333;
+  color: white;
+}
+
+.education_nav {
+  flex: 0 0 auto; /* Do not grow or shrink (fixed height) */
+  /* height: 60px; Adjust as needed */
+  background: white;
+  color: black;
+  position: sticky;
+  top: 0;
+  /* height: 60px; Fixed height */
+  z-index: 100; /* Ensures nav stays above content */
+}
+
+
+.dashboard {
+  flex: 1; /* Takes remaining space */
+  overflow: auto; /* Adds scroll if content overflows */
+  background: #f5f5f5;
+}
+
+
+.convex-nav {
+   background: linear-gradient(84deg, #232959 0%, #a36dff 71%);
+  padding: 0.9rem 2rem;
+  /* border-radius: 12px; */
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.1),
+    -4px -4px 8px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.2),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.05);
+  
+  /* Flex properties for layout */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  z-index: 1000; /* Ensure it stays above other content */
+  
+  
+  /* Smooth transitions */
+  transition: all 0.3s ease;
+}
+
+/* Optional: Add convex effect to nav items */
+.nav-item {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  color: white;
+  /* background: linear-gradient(84deg, #232959 0%, #a36dff 71%); */
+  /* box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.1),
+    -3px -3px 6px rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease; */
+}
+
+.nav-item:hover {
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.1),
+    -2px -2px 4px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Active state */
+.nav-item.active {
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.8);
+}

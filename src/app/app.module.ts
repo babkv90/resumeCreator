@@ -9,6 +9,7 @@ import { PreviewColumnComponent } from './preview-column/preview-column.componen
 import { ProgressColumnComponent } from './shared/progress-column/progress-column.component';
 import { AppRoutingModule } from './app.routes';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PortalModule } from '@angular/cdk/portal';
 
 
 
@@ -25,7 +26,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgSelectModule
+    NgSelectModule,
+    PortalModule 
     
   ],
   providers: [],

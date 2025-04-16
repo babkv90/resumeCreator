@@ -5,6 +5,7 @@ import { WorkHistoryComponent } from './work-history/work-history.component';
 import { EducationLevelComponent } from './education-level/education-level.component';
 import { NgModule } from '@angular/core';
 import { PersonalInfoComponent } from './personal-info/personal-info.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
     // { path: '', component: LandingPageComponent },
@@ -14,6 +15,7 @@ export const routes: Routes = [
   // { path: 'personal-info', component: PersonalInfoComponent },
   
   { path: '', component: EducationLevelComponent },
+  {path: 'user_registration', component: LoginComponent},
   // { path: 'heading', component: 'Heading', },
   // { path: 'work-history', component: 'Work History' },
   // { path: 'education-level', component: 'Education' },

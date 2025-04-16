@@ -161,3 +161,28 @@
     }
   }
 } 
+
+.nav-item {
+  /* background: linear-gradient(84deg, #232959 0%, #a36dff 71%); */
+  background: #411e7f;
+  /* background: linear-gradient(84deg, #646cab 0%, #d5bcff 71%); */
+  width: 100px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-weight: bolder;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.nav-item:hover {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), -2px -2px 4px rgb(163 109 255), inset 1px 1px 2px rgba(0, 0, 0,0.05)
+}
+
+/* Active state */
+.nav-item.active {
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.8);
+}

@@ -1,0 +1,187 @@
+<div class="min-h-screen flex gap-6" style="height: 100vh">
+    <!-- Left Column (Image/Animation) -->
+    <div style="width: 50% ;background: linear-gradient(154deg, #232959 0%, #a36dff 73%);display: flex;flex-direction: column;justify-content: center;align-items: center;">
+      <!-- Animated background elements -->
+      <img src="assets/images/loginComp.png" width="60%" alt="Profile Picture">
+      <!-- Content -->
+      <div class="relative z-10 text-center text-white max-w-md">
+       
+        <p class="text-xl mb-4 animate-fade-in delay-100">
+          {{ isLoginMode ? 'Sign in to access your account' : 'Join our community today' }}
+        </p>
+        
+        <!-- Animated illustration -->
+        <!-- <div class="relative h-64 w-full"> -->
+          <!-- <img 
+            [src]="isLoginMode ? 'assets/login-illustration.svg' : 'assets/signup-illustration.svg'" 
+            alt="Authentication illustration"
+            class="absolute inset-0 w-full h-full object-contain transition-opacity duration-500"
+          > -->
+        <!-- </div> -->
+        
+        <p class="text-blue-100 animate-fade-in delay-300">
+          {{ isLoginMode ? "Don't have an account?" : "Already have an account?" }}
+          <button 
+            (click)="toggleMode()" 
+            class="text-white font-semibold underline hover:text-blue-200 focus:outline-none"
+          >
+            {{ isLoginMode ? 'Create one' : 'Sign in' }}
+          </button>
+        </p>
+      </div>
+    </div>
+  
+    <!-- Right Column (Form) -->
+    <div class="p-6 sm:p-12" style="width: 50%;display: flex;align-items: center;">
+      <div class="w-full max-w-md" style="width: 75%;
+      display: flex
+  ;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1;">
+        <div class="text-center mb-8 md:hidden">
+          <h1 class="text-3xl font-bold text-gray-800 mb-2">
+            {{ isLoginMode ? 'Welcome Back' : 'Get Started' }}
+          </h1>
+          <p class="text-gray-600">
+            {{ isLoginMode ? 'Sign in to your account' : 'Create your account' }}
+          </p>
+        </div>
+  
+        <!-- Social Login Buttons -->
+        <div class="mb-6" style="width: 100%;">
+          <div class="grid grid-cols-3 gap-3" style="display: flex; gap: 10px; justify-content: center;">
+            <button 
+              (click)="socialLogin('google')"
+              class="flex items-center justify-center py-2 px-4 border nav-item"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12.545 10.239v3.821h5.445c-0.712 2.315-2.647 3.972-5.445 3.972-3.332 0-6.033-2.701-6.033-6.032s2.701-6.032 6.033-6.032c1.498 0 2.866 0.549 3.921 1.453l2.814-2.814c-1.786-1.667-4.166-2.668-6.735-2.668-5.523 0-10 4.477-10 10s4.477 10 10 10c8.396 0 10-7.496 10-10 0-0.67-0.069-1.325-0.189-1.955h-9.811z"/>
+              </svg>
+            </button>
+            <button 
+              (click)="socialLogin('github')"
+              class="flex items-center justify-center py-2 px-4 border nav-item"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+              </svg>
+            </button>
+            <button 
+              (click)="socialLogin('linkedin')"
+              class="flex items-center justify-center py-2 px-4 border nav-item"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+            </button>
+          </div>
+  
+          <div class="mt-6 relative">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-2 bg-gray-50 text-gray-500">
+                Or continue with
+              </span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Form -->
+        <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="space-y-6" style="width: 50%;">
+          <!-- Name Field (Only shown in register mode) -->
+          <div *ngIf="!isLoginMode" class="space-y-1">
+            <label for="name" class="block text-sm font-medium text-gray-700" >Full name</label>
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              [class.border-red-300]="authForm.get('name')?.invalid && authForm.get('name')?.touched"
+              [class.border-gray-300]="authForm.get('name')?.valid || authForm.get('name')?.untouched"
+              class="input-group"
+            >
+            <div *ngIf="authForm.get('name')?.invalid && authForm.get('name')?.touched" class="text-red-500 text-xs" style="margin-bottom: .5rem;color: red;">
+              Name is required
+            </div>
+          </div>
+  
+          <!-- Email Field -->
+          <div class="space-y-1" >
+            <label for="email" class="block text-sm font-medium text-gray-700" style="margin-bottom: .5rem;">Email address</label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              [class.border-red-300]="authForm.get('email')?.invalid && authForm.get('email')?.touched"
+              [class.border-gray-300]="authForm.get('email')?.valid || authForm.get('email')?.untouched"
+              class="input-group"
+            >
+            <div *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched" class="text-red-500 text-xs" style="margin-bottom: .5rem;color: red;">
+              Please enter a valid email address
+            </div>
+          </div>
+  
+          <!-- Password Field -->
+          <div class="space-y-1" >
+            <label for="password" class="block text-sm font-medium text-gray-700 input-label" style="margin-bottom: .5rem;">Password</label>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              autocomplete="current-password"
+              [class.border-red-300]="authForm.get('password')?.invalid && authForm.get('password')?.touched"
+              [class.border-gray-300]="authForm.get('password')?.valid || authForm.get('password')?.untouched"
+              class="input-group"
+            >
+            <div *ngIf="authForm.get('password')?.invalid && authForm.get('password')?.touched" class="input-hint text-xs" style="margin-bottom: .5rem;color: red;">
+              Password must be at least 6 characters
+            </div>
+          </div>
+  
+          <!-- Remember Me & Forgot Password (Login Mode Only) -->
+          <div *ngIf="isLoginMode" class="flex items-center justify-between" style="margin-bottom: 1rem;">
+            <div class="flex items-center" >
+              <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+              <label for="remember-me" class=" block text-sm text-gray-900" style="margin-left: 1rem;">Remember me</label>
+            </div>
+  
+            <div class="text-sm">
+              <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Forgot your password?</a>
+            </div>
+          </div>
+  
+          <!-- Submit Button -->
+          <div>
+            <button
+              type="submit"
+              [disabled]="authForm.invalid || isLoading"
+              class="w-full flex justify-center py-2 px-4 border  text-sm font-medium nav-item-button"
+            >
+              <span *ngIf="!isLoading">
+                {{ isLoginMode ? 'Sign in' : 'Register' }}
+              </span>
+              <span *ngIf="isLoading">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+              </span>
+            </button>
+          </div>
+        </form>
+  
+        <!-- Terms & Conditions (Register Mode Only) -->
+        <div *ngIf="!isLoginMode" class="mt-6 text-center text-sm text-gray-600">
+          <p>
+            By registering, you agree to our
+            <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Terms</a> and
+            <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Privacy Policy</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>

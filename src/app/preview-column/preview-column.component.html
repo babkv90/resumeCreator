@@ -1,46 +1,20 @@
-<div class="w-full bg-white rounded-lg shadow-sm glass-card" >
+<div class="w-full shadow-sm " >
   <div class="headstyle" >
-    <h3 class="text-xl font-semibold">Resume Preview</h3>
+    <div class="flex-container">
+      <h3 class="text-base font-semibold" style="font-size: x-large;">Resume Preview</h3>
+      <button class="bottom-6 right-6 p-2 rounded-full shadow-lg hover:bg-blue-700 transition-transform hover:scale-105" style="display: flex;background: #411e7f;
+      font: white;
+      color: white;padding: 12px;"  (click)="navigateToUserRegistration()" >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-6" style="width: 20px;margin-right: 10px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg> 
+        Download PDF
+      </button>
+    </div>
+   
+  
   </div>
 
-  
-  <div class="space-y-4" style="padding: 47px;
-    border-radius: 1rem;background: #acacac4d;">
-    <!-- <iframe  #resumeIframe frameborder="0"  width="100%" height="1125"> -->
-     <!-- executive-template.component.html -->  
-      <div style="height: 75vh;overflow: auto;">
-        <div class="executive-template" style="padding: 10px;" #resumeTemplate> 
-          <div class="executive-resume " >
-            <div class="executive-sidebar">
-              <h1>{{ formData.fullName | uppercase }}</h1>
-              <div *ngIf="formData.summary" class="executive-summary">
-                <h2>SUMMARY</h2>
-                <p>{{ formData.summary }}</p>
-              </div>
-              <div *ngIf="formData.skills" class="executive-skills">
-                <h2>CORE SKILLS</h2>
-                <ul>
-                  <li > angular </li>
-                  <li > node</li>
-                  <li >mogodb</li>
-                  <li >node</li>
-                </ul>
-              </div>
-            </div>
-            <div class="executive-main">
-              <div *ngIf="formData.experience" class="executive-section">
-                <h2>PROFESSIONAL EXPERIENCE</h2>
-                <div [innerHTML]="formData.experience  "></div>
-              </div>
-              <div *ngIf="formData.education" class="executive-section">
-                <h2>EDUCATION</h2>
-                <div [innerHTML]="formData.education  "></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-    <!-- </iframe> -->
-  </div>
+  <!-- <app-template-generator (templateSelected)="selectedTemplate = $event"></app-template-generator> -->
+  <app-template-viewer></app-template-viewer>
 </div> 

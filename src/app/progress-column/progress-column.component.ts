@@ -20,11 +20,11 @@ export class ProgressColumnComponent implements AfterViewInit {
     this.navigateTo('work-history')
   }
   steps = [
-    { id: 'personal-info', name: 'Personal Info', completed: true },
-    { id: 'education-details', name: 'Education', completed: false },
-    { id: 'work-history', name: 'Work History', completed: false },
-    { id: 'skills', name: 'Skills', completed: false },
-    { id: 'summary', name: 'Summary', completed: false }
+    { id: 'personal-info', name: 'Personal Info', completed: true,number:1 },
+    { id: 'education-details', name: 'Education', completed: false,number:2 },
+    { id: 'work-history', name: 'Work History', completed: false,number:3 },
+    { id: 'skills', name: 'Skills', completed: false ,number:4},
+    { id: 'summary', name: 'Summary', completed: false ,number:5}
   ];
 
   isStepActive(stepId: string): boolean {

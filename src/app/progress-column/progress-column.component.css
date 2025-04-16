@@ -82,16 +82,18 @@
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.7);
+  /* background: rgba(255, 255, 255, 0.7); */
+  background: linear-gradient(84deg, #12294d 0%, #421e7f 71%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-radius: 1rem;
+  /* border-radius: 1rem; */
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   /* padding: 1.25rem; */
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding-top: 2rem;
 }
 
 .headstyle{
@@ -100,11 +102,11 @@
   /* border-radius: 1rem; */
   /* border: 1px solid rgba(255, 255, 255, 0.18); */
   /* box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); */
-  border-top-right-radius: 1rem;
+  /* border-top-right-radius: 1rem;
   border-top-left-radius: 1rem;
-  background:  #fc2fb6;;
+  background:  #fc2fb6;; */
   color: white;
-  padding: 0.75rem 1.25rem;
+  /* padding: 0.75rem 1.25rem; */
  
 
 }
@@ -122,6 +124,7 @@
   align-items: center;
   gap: 0.75rem;
   transition: all 0.3s ease;
+  color: white;
   padding: 0.5rem;
   border-radius: 0.5rem;
   min-height: 2.5rem;
@@ -156,7 +159,7 @@
 /* Hover effects */
 .step-item:hover {
   background: rgba(255, 255, 255, 0.2);
-  transform: translateX(5px);
+  transform: translateX(1px);
 }
 
 .step-item:hover .step-indicator {
@@ -185,3 +188,5 @@
     height: 0.5rem;
   }
 }
+
+

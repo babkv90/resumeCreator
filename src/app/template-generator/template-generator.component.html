@@ -1,0 +1,6 @@
+<div class="template-list">
+    <button *ngFor="let tpl of templates" 
+            (click)="selectTemplate(tpl)">
+      {{ tpl.name }}
+    </button>
+  </div>
