@@ -5,10 +5,12 @@ border: 2px solid #d5d5d5;
 "> 
     <div class="executive-resume"  id="resume-content"  #resumeTemplate>
       <div class="executive-sidebar">
-        <h1>Abinash Kumar</h1>
+        <h1>{{formData.firstName }}  {{formData.lastName}}</h1>
         <div class="executive-summary">
-          <h2>SUMMARY</h2>
-          <p> I am a software engineer </p>
+          <h2>Contacts</h2>
+          <ul style="list-style-type: disc;">
+            <li *ngFor="let contact of ContactDetails">{{contact}}</li>
+          </ul>
         </div>
         <div class="executive-skills">
           <h2>CORE SKILLS</h2>

@@ -53,13 +53,15 @@
         <app-progress-column ></app-progress-column>
        </div>
       <!-- Column 2 (50%) -->
-      <div class="rounded-lg shadow-sm p-8 column-forms glass-card" style="background: white;overflow: auto;">
+      <div class="column-forms glass-card" style="background: white;overflow: auto;">
         <ng-container [ngSwitch]="activeComponent">
           <app-work-history *ngSwitchCase="'work-history'"></app-work-history>
           <app-personal-info *ngSwitchCase="'personal-info'"></app-personal-info>
           <app-education-details *ngSwitchCase="'education-details'"></app-education-details>
           <app-skills *ngSwitchCase="'skills'"></app-skills>
-          <app-summary *ngSwitchCase="'summary'"></app-summary>
+          <app-summary *ngSwitchCase="'summary'" ></app-summary>
+          <app-personal-info *ngSwitchDefault ></app-personal-info>
+          
     
         </ng-container>
       </div>

@@ -3,3 +3,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.input-group {
+    /* display: flex
+; */
+flex-direction: column;
+/* gap: 8px; */
+width: 100%;
+/* max-width: 400px; */
+/* position: relative; */
+margin-bottom: 0.5rem;
+background: white;
+/* padding: 1.25rem; */
+border-radius: 10px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03), 0 1px 0 rgba(0, 0, 0, 0.05);
+transition: all 0.25s ease;
+border: 1px solid rgb(159 107 249);
+}
+
+.input-group:hover {
+ box-shadow: 
+   0 4px 8px rgba(0, 0, 0, 0.05),
+   0 2px 4px rgba(0, 0, 0, 0.05);
+   border-color: rgba(181, 35, 225, 0.589);
+}
+
+.input-group:focus-within {
+ border-color: #3b82f6;
+ box-shadow: 
+   0 0 0 3px rgba(59, 130, 246, 0.15),
+   0 4px 8px rgba(0, 0, 0, 0.08);
+}

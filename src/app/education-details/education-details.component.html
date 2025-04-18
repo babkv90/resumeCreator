@@ -1,4 +1,4 @@
-<div class="education-details-container bg-white rounded-xl shadow-sm p-6 max-w-4xl mx-auto">
+<div class="education-details-container mx-auto">
   <h2 class="text-2xl font-bold text-gray-900 mb-6">Education Details</h2>
   
   <form [formGroup]="educationForm" (ngSubmit)="onSubmit()" class="space-y-8">
@@ -16,7 +16,7 @@
           <label for="institution" class="block text-sm font-medium text-gray-700 mb-1.5">Institution Name *</label>
           <div class="relative">
             <input type="text" id="institution" formControlName="institution"
-                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                   class="input-group"
                    placeholder="e.g. Harvard University">
           </div>
           <!-- <div *ngIf="institution?.invalid && (institution?.dirty || institution?.touched)"
@@ -32,7 +32,7 @@
           <label for="degree" class="block text-sm font-medium text-gray-700 mb-1.5">Degree *</label>
           <div class="relative">
             <input type="text" id="degree" formControlName="degree"
-                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                   class="input-group"
                    placeholder="e.g. Bachelor of Science">
           </div>
           <!-- <div *ngIf="degree?.invalid && (degree?.dirty || degree?.touched)"
@@ -60,7 +60,7 @@
           <label for="startDate" class="block text-sm font-medium text-gray-700 mb-1.5">Start Date *</label>
           <div class="relative">
             <input type="date" id="startDate" formControlName="startDate"
-                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+            class="input-group">
           </div>
           <!-- <div *ngIf="startDate?.invalid && (startDate?.dirty || startDate?.touched)"
                class="text-red-500 text-xs mt-1.5 flex items-center">
@@ -75,7 +75,7 @@
           <label for="endDate" class="block text-sm font-medium text-gray-700 mb-1.5">End Date</label>
           <div class="relative">
             <input type="date" id="endDate" formControlName="endDate" [disabled]="educationForm.get('currentlyStudying')?.value"
-                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all disabled:bg-gray-50 disabled:text-gray-500">
+            class="input-group">
           </div>
           <div class="flex items-center mt-3">
             <input type="checkbox" id="currentlyStudying" formControlName="currentlyStudying"
@@ -100,7 +100,7 @@
           <label for="fieldOfStudy" class="block text-sm font-medium text-gray-700 mb-1.5">Field of Study *</label>
           <div class="relative">
             <input type="text" id="fieldOfStudy" formControlName="fieldOfStudy"
-                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            class="input-group"
                    placeholder="e.g. Computer Science">
           </div>
           <!-- <div *ngIf="fieldOfStudy?.invalid && (fieldOfStudy?.dirty || fieldOfStudy?.touched)"
@@ -116,7 +116,7 @@
           <label for="gpa" class="block text-sm font-medium text-gray-700 mb-1.5">GPA</label>
           <div class="relative">
             <input type="number" id="gpa" formControlName="gpa" step="0.01" min="0" max="4"
-                   class="block w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            class="input-group"
                    placeholder="e.g. 3.5">
           </div>
           <!-- <div *ngIf="gpa?.invalid && (gpa?.dirty || gpa?.touched)"
@@ -132,7 +132,7 @@
       <div class="form-group">
         <label for="description" class="block text-sm font-medium text-gray-700 mb-1.5">Description</label>
         <textarea id="description" formControlName="description" rows="4"
-                  class="block w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+        class="input-group"
                   placeholder="Describe your academic achievements and relevant coursework..."></textarea>
       </div>
     </div>

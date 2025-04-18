@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ProgressService } from '../services/progress.service';
 
 @Component({
   selector: 'app-personal-info',
@@ -36,7 +37,7 @@ export class PersonalInfoComponent implements OnInit {
   showStateDropdown = false;
   showZipCodeDropdown = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private progressService: ProgressService) {
     this.personalInfoForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: [''],
@@ -69,6 +70,10 @@ export class PersonalInfoComponent implements OnInit {
 
     this.personalInfoForm.get('zipCode')?.valueChanges.subscribe(value => {
       this.filteredZipCodes = this.filterItems(value, this.zipCodes);
+    });
+
+    this.personalInfoForm.valueChanges.subscribe(values => {
+      this.progressService.updateFormData(values);
     });
   }
 

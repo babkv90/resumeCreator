@@ -109,4 +109,13 @@ export class ProgressService {
     }
   }
 
+
+  private formData = new BehaviorSubject<any>({});
+  currentFormData = this.formData.asObservable();
+
+  updateFormData(data: any) {
+    this.formData.next(data);
+  }
+
+  
 } 

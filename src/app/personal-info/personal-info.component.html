@@ -1,4 +1,4 @@
-<div style="background-color: #f7f7f7; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 24px;">
+<div style="padding: 24px;">
   <h2 style="font-size: 24px; font-weight: 600; color: #333; margin-bottom: 16px;">Personal Information</h2>
 
   <form [formGroup]="personalInfoForm" (ngSubmit)="onNext()" style="display: flex; flex-direction: column; gap: 16px;">
@@ -7,8 +7,7 @@
         <label for="firstName" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">
           First Name <span style="color: #dc2626;">*</span>
         </label>
-        <input type="text" formControlName="firstName" id="firstName"
-               style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; transition: border-color 0.2s ease-in-out;"
+        <input type="text" formControlName="firstName" id="firstName" class="input-group"
                [ngClass]="{'border-red-500': firstName?.invalid && firstName?.touched}"
                onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor=this.classList.contains('border-red-500') ? '#dc2626' : '#ccc';">
         <div *ngIf="firstName?.invalid && firstName?.touched" style="color: #dc2626; font-size: 12px; margin-top: 4px;">
@@ -20,8 +19,8 @@
       <div>
         <label for="lastName" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">Last Name</label>
         <input type="text" formControlName="lastName" id="lastName"
-               style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; transition: border-color 0.2s ease-in-out;"
-               onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor='#ccc';">
+        class="input-group"
+             >
       </div>
     </div>
 
@@ -31,7 +30,7 @@
           Email <span style="color: #dc2626;">*</span>
         </label>
         <input type="email" formControlName="email" id="email"
-               style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; transition: border-color 0.2s ease-in-out;"
+        class="input-group"
                [ngClass]="{'border-red-500': email?.invalid && email?.touched}"
                onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor=this.classList.contains('border-red-500') ? '#dc2626' : '#ccc';">
         <div *ngIf="email?.invalid && email?.touched" style="color: #dc2626; font-size: 12px; margin-top: 4px;">
@@ -45,7 +44,7 @@
           Phone <span style="color: #dc2626;">*</span>
         </label>
         <input type="tel" formControlName="phone" id="phone"
-               style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; transition: border-color 0.2s ease-in-out;"
+        class="input-group"
                [ngClass]="{'border-red-500': phone?.invalid && phone?.touched}"
                onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor=this.classList.contains('border-red-500') ? '#dc2626' : '#ccc';">
         <div *ngIf="phone?.invalid && phone?.touched" style="color: #dc2626; font-size: 12px; margin-top: 4px;">
@@ -58,8 +57,8 @@
     <div>
       <label for="address" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">Address</label>
       <input type="text" formControlName="address" id="address"
-             style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; transition: border-color 0.2s ease-in-out;"
-             onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor='#ccc';">
+      class="input-group"
+           >
     </div>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
@@ -68,8 +67,8 @@
         <div style="position: relative;">
           <input type="text" formControlName="city" id="city"
                  (click)="toggleCityDropdown()"
-                 style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; cursor: pointer; transition: border-color 0.2s ease-in-out;"
-                 onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor='#ccc';">
+                 class="input-group"
+               >
           <div *ngIf="showCityDropdown && filteredCities.length > 0"
                style="position: absolute; z-index: 10; width: 100%; margin-top: 4px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-height: 120px; overflow-y: auto;">
             <div *ngFor="let city of filteredCities"
@@ -87,8 +86,8 @@
         <div style="position: relative;">
           <input type="text" formControlName="state" id="state"
                  (click)="toggleStateDropdown()"
-                 style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; cursor: pointer; transition: border-color 0.2s ease-in-out;"
-                 onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor='#ccc';">
+                 class="input-group"
+               >
           <div *ngIf="showStateDropdown && filteredStates.length > 0"
                style="position: absolute; z-index: 10; width: 100%; margin-top: 4px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-height: 120px; overflow-y: auto;">
             <div *ngFor="let state of filteredStates"
@@ -106,8 +105,8 @@
         <div style="position: relative;">
           <input type="text" formControlName="zipCode" id="zipCode"
                  (click)="toggleZipCodeDropdown()"
-                 style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; cursor: pointer; transition: border-color 0.2s ease-in-out;"
-                 onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor='#ccc';">
+                 class="input-group"
+               >
           <div *ngIf="showZipCodeDropdown && filteredZipCodes.length > 0"
                style="position: absolute; z-index: 10; width: 100%; margin-top: 4px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-height: 120px; overflow-y: auto;">
             <div *ngFor="let zip of filteredZipCodes"
@@ -125,29 +124,29 @@
       <div>
         <label for="linkedIn" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">LinkedIn Profile</label>
         <input type="url" formControlName="linkedIn" id="linkedIn"
-               style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; transition: border-color 0.2s ease-in-out;"
-               onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor='#ccc';">
+        class="input-group"
+             >
       </div>
 
       <div>
         <label for="portfolio" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">Portfolio Website</label>
         <input type="url" formControlName="portfolio" id="portfolio"
-               style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; transition: border-color 0.2s ease-in-out;"
-               onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor='#ccc';">
+        class="input-group"
+             >
       </div>
     </div>
 
     <div>
       <label for="objective" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">Professional Objective</label>
       <textarea formControlName="objective" id="objective" rows="4"
-                style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; outline: none; resize: vertical; transition: border-color 0.2s ease-in-out;"
-                onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor='#ccc';"></textarea>
+      class="input-group"
+              ></textarea>
     </div>
 
     <div style="display: flex; justify-content: space-between; padding-top: 16px;">
       <button type="button" (click)="onPrevious()"
-              style="padding: 10px 16px; background-color: #e2e8f0; color: #4a5568; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background-color 0.15s ease-in-out;"
-              onmouseover="this.style.backgroundColor='#cbd5e0';" onmouseout="this.style.backgroundColor='#e2e8f0';">
+     
+          >
        < Previous
       </button>
       <div ><button class="nav-item" type="submit">Next ></button></div>

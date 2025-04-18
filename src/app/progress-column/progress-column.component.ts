@@ -17,7 +17,7 @@ export class ProgressColumnComponent implements AfterViewInit {
     // this.navigateTo('skills');
   }
   ngAfterViewInit(): void {
-    this.navigateTo('work-history')
+    this.selectComponent('personal-info');
   }
   steps = [
     { id: 'personal-info', name: 'Personal Info', completed: true,number:1 },
@@ -62,8 +62,9 @@ export class ProgressColumnComponent implements AfterViewInit {
 
   @Output() componentSelected = new EventEmitter<string>();
 
-  selectComponent(component: string) {
+ selectComponent (component: string) {
     // this.componentSelected.emit(component);
+    console.log('Selected component:', component);
     this.progressService.selectComponent(component);
   }
 } 
