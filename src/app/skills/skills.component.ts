@@ -1,16 +1,43 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { 
+  faCogs,
+  faPlus,
+  faTrash,
+  faArrowLeft,
+  faArrowRight,
+  faLanguage,
+  faCode,
+  faTools,
+  faDatabase,
+  faCloud,
+  faPuzzlePiece
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-skills',
   templateUrl: './skills.component.html',
   styleUrls: ['./skills.component.css'],
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule],
 })
 export class SkillsComponent implements OnInit {
   skillsForm: FormGroup;
+
+  // Font Awesome icons
+  faCogs = faCogs;
+  faPlus = faPlus;
+  faTrash = faTrash;
+  faArrowLeft = faArrowLeft;
+  faArrowRight = faArrowRight;
+  faLanguage = faLanguage;
+  faCode = faCode;
+  faTools = faTools;
+  faDatabase = faDatabase;
+  faCloud = faCloud;
+  faPuzzlePiece = faPuzzlePiece;
 
   constructor(private fb: FormBuilder) {
     this.skillsForm = this.fb.group({

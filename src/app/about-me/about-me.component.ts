@@ -1,12 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { 
+  faJs, 
+  faAngular, 
+  faHtml5, 
+  faCss3Alt, 
+  faNodeJs, 
+  faReact, 
+  faGithub, 
+  faLinkedin 
+} from '@fortawesome/free-brands-svg-icons';
+import {
+  faDatabase,
+  faServer,
+  faTools,
+  faCloud,
+  faHome,
+  faTimes,
+  faBars,
+  faEnvelope,
+  faInfoCircle,
+  faSignInAlt,
+  faBlog
+} from '@fortawesome/free-solid-svg-icons';
 
 interface Skill {
   name: string;
   level: number;
-  category: 'frontend' | 'backend' | 'database' | 'tools';
-  icon?: string;
+  category: string;
+  icon: any;
+  animated?: boolean;
 }
 
 interface Project {
@@ -34,23 +59,57 @@ interface Experience {
   templateUrl: './about-me.component.html',
   styleUrls: ['./about-me.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, FontAwesomeModule]
 })
 export class AboutMeComponent implements OnInit {
   isMenuOpen = false;
   prefersReducedMotion = false;
 
+  // Font Awesome icons
+  faJs = faJs;
+  faAngular = faAngular;
+  faHtml5 = faHtml5;
+  faCss3Alt = faCss3Alt;
+  faNodeJs = faNodeJs;
+  faReact = faReact;
+  faDatabase = faDatabase;
+  faServer = faServer;
+  faTools = faTools;
+  faCloud = faCloud;
+  faGithub = faGithub;
+  faLinkedin = faLinkedin;
+  faHome = faHome;
+  faTimes = faTimes;
+  faBars = faBars;
+  faBlog = faBlog;
+  faEnvelope = faEnvelope;
+  faInfoCircle = faInfoCircle;
+  faSignInAlt = faSignInAlt;
+
+  portfolio: any = {
+    projects: [{
+      image: "string",
+      imageMobile: "string",  
+      title: "string",
+      github: "string",
+      name: "string",
+      description: "string",                
+    }]
+  };
+
   skills: Skill[] = [
-    { name: 'Angular', level: 90, category: 'frontend', icon: 'angular' },
-    { name: 'React', level: 85, category: 'frontend', icon: 'react' },
-    { name: 'TypeScript', level: 88, category: 'frontend', icon: 'typescript' },
-    { name: 'Node.js', level: 85, category: 'backend', icon: 'nodejs' },
-    { name: 'Express.js', level: 82, category: 'backend', icon: 'express' },
-    { name: 'MongoDB', level: 80, category: 'database', icon: 'mongodb' },
-    { name: 'MySQL', level: 75, category: 'database', icon: 'mysql' },
-    { name: 'Git', level: 85, category: 'tools', icon: 'git' },
-    { name: 'Docker', level: 70, category: 'tools', icon: 'docker' },
-    { name: 'AWS', level: 65, category: 'tools', icon: 'aws' }
+    { name: 'JavaScript', level: 90, category: 'frontend', icon: this.faJs },
+    { name: 'Angular', level: 85, category: 'frontend', icon: this.faAngular },
+    { name: 'HTML5', level: 95, category: 'frontend', icon: this.faHtml5 },
+    { name: 'CSS3', level: 88, category: 'frontend', icon: this.faCss3Alt },
+    { name: 'React', level: 85, category: 'frontend', icon: this.faReact },
+    { name: 'Node.js', level: 85, category: 'backend', icon: this.faNodeJs },
+    { name: 'Express.js', level: 82, category: 'backend', icon: this.faServer },
+    { name: 'MongoDB', level: 80, category: 'database', icon: this.faDatabase },
+    { name: 'MySQL', level: 75, category: 'database', icon: this.faDatabase },
+    { name: 'Git', level: 85, category: 'tools', icon: this.faTools },
+    { name: 'Docker', level: 70, category: 'tools', icon: this.faTools },
+    { name: 'AWS', level: 65, category: 'tools', icon: this.faCloud }
   ];
 
   projects: Project[] = [
@@ -88,43 +147,60 @@ export class AboutMeComponent implements OnInit {
 
   experiences: Experience[] = [
     {
-      company: 'Tech Solutions Inc.',
-      position: 'Senior MEAN Stack Developer',
-      duration: '2021 - Present',
+      company: 'Tech Solutions',
+      position: 'Senior Software Engineer',
+      duration: '2023 - Present',
       description: [
-        'Led development of enterprise-level applications using MEAN stack',
-        'Implemented CI/CD pipelines and automated testing',
-        'Mentored junior developers and conducted code reviews',
-        'Optimized application performance and reduced load times by 40%'
+        'Led frontend development team',
+        'Implemented microservices architecture'
       ],
-      technologies: ['Angular', 'Node.js', 'MongoDB', 'Express', 'Docker'],
-      logo: 'https://ui-avatars.com/api/?name=Tech+Solutions&background=random'
+      technologies: ['Angular', 'Node.js', 'Docker'],
+      logo: 'https://ui-avatars.com/api/?name=Tech+Solutions&background=random&size=40'
     },
     {
       company: 'Digital Innovations',
       position: 'Full Stack Developer',
-      duration: '2019 - 2021',
+      duration: '2021 - 2023',
       description: [
-        'Developed and maintained multiple web applications',
-        'Collaborated with UX designers to implement responsive designs',
-        'Integrated third-party APIs and services',
-        'Implemented security best practices and data encryption'
+        'Developed scalable web applications',
+        'Improved system performance'
       ],
       technologies: ['React', 'Node.js', 'MySQL', 'AWS'],
-      logo: 'https://ui-avatars.com/api/?name=Digital+Innovations&background=random'
+      logo: 'https://ui-avatars.com/api/?name=Digital+Innovations&background=random&size=40'
     }
   ];
 
   constructor(private router: Router) {
-    // Check for reduced motion preference
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
   ngOnInit(): void {
-    // Add event listener for reduced motion preference changes
+    this.initializeAnimations();
+    this.loadPortfolioData();
+  }
+
+  private initializeAnimations(): void {
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
       this.prefersReducedMotion = e.matches;
     });
+
+    if (!this.prefersReducedMotion) {
+      this.skills.forEach((skill, index) => {
+        setTimeout(() => {
+          skill.animated = true;
+        }, index * 100);
+      });
+    }
+  }
+
+  private loadPortfolioData(): void {
+    if (!this.portfolio.name) {
+      this.portfolio = {
+        name: 'John Doe',
+        title: 'Frontend Developer',
+        projects: []
+      };
+    }
   }
 
   toggleMenu(): void {
@@ -139,12 +215,12 @@ export class AboutMeComponent implements OnInit {
     this.router.navigate(['/contacts']);
   }
 
-  navigateToAbooutMe(): void {
+  navigateToAboutMe(): void {
     this.router.navigate(['/about-me']);
   }
 
   navigateToLogin(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/user_registration']);
   }
 
   getSkillsByCategory(category: string): Skill[] {

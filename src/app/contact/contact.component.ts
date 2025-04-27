@@ -1,29 +1,43 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { 
+  faFacebook, 
+  faTwitter, 
+  faInstagram, 
+  faLinkedin 
+} from '@fortawesome/free-brands-svg-icons';
+import {
+  faMapMarkerAlt,
+  faPhone,
+  faEnvelope,
+  faBars,
+  faTimes
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-contact',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, FontAwesomeModule],
   templateUrl: './contact.component.html',
-  styleUrl: './contact.component.css'
+  styleUrls: ['./contact.component.css']
 })
 export class ContactComponent {
-  constructor(private router:Router) {}
+  // Font Awesome icons
+  faFacebook = faFacebook;
+  faTwitter = faTwitter;
+  faInstagram = faInstagram;
+  faLinkedin = faLinkedin;
+  faMapMarkerAlt = faMapMarkerAlt;
+  faPhone = faPhone;
+  faEnvelope = faEnvelope;
+  faBars = faBars;
+  faTimes = faTimes;
+  isMenuOpen = false;
 
-  
-  navigateToBlogs(){
-    this.router.navigate(['/blogs']);
-  }
+  constructor() {}
 
-  navigateToContacts(){
-    this.router.navigate(['/contact']);
-  }
-
-  navigateToAbooutMe(){ 
-    this.router.navigate(['/about_me']);
-  }
- 
-  navigateToLogin(){  
-    this.router.navigate(['/user_registration']);
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }

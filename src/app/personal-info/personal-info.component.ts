@@ -2,13 +2,28 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProgressService } from '../services/progress.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { 
+  faUser, 
+  faEnvelope, 
+  faPhone, 
+  faMapMarkerAlt, 
+  faGlobe, 
+  faLink,
+  faChevronRight
+} from '@fortawesome/free-solid-svg-icons';
+import { 
+  faLinkedin, 
+  faGithub, 
+  faTwitter 
+} from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-personal-info',
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule],
 })
 export class PersonalInfoComponent implements OnInit {
   @Output() next = new EventEmitter<any>();
@@ -36,6 +51,18 @@ export class PersonalInfoComponent implements OnInit {
   showCityDropdown = false;
   showStateDropdown = false;
   showZipCodeDropdown = false;
+
+  // Font Awesome icons
+  faUser = faUser;
+  faEnvelope = faEnvelope;
+  faPhone = faPhone;
+  faMapMarkerAlt = faMapMarkerAlt;
+  faGlobe = faGlobe;
+  faLink = faLink;
+  faChevronRight = faChevronRight;
+  faLinkedin = faLinkedin;
+  faGithub = faGithub;
+  faTwitter = faTwitter;
 
   constructor(private fb: FormBuilder,private progressService: ProgressService) {
     this.personalInfoForm = this.fb.group({

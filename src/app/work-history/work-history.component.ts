@@ -5,7 +5,19 @@ import { ProgressService } from '../services/progress.service';
 import { ProgressColumnComponent } from '../shared/progress-column/progress-column.component';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-// import { PreviewColumnComponent } from '../shared/preview-column/preview-column.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { 
+  faBriefcase,
+  faBuilding,
+  faCalendarAlt,
+  faMapMarkerAlt,
+  faPlus,
+  faTrash,
+  faArrowLeft,
+  faArrowRight,
+  faListUl,
+  faPen
+} from '@fortawesome/free-solid-svg-icons';
 
 interface PreviewData {
   firstName: string;
@@ -19,7 +31,7 @@ interface PreviewData {
 @Component({
   selector: 'app-work-history',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule,NgSelectModule],
+  imports: [CommonModule,ReactiveFormsModule,NgSelectModule,FontAwesomeModule],
   templateUrl: './work-history.component.html',
   styleUrls: ['./work-history.component.css']
 })
@@ -53,6 +65,18 @@ export class WorkHistoryComponent implements OnInit {
     { id: 9, name: 'Java' },
     { id: 10, name: 'SQL' }
   ];
+
+  // Font Awesome icons
+  faBriefcase = faBriefcase;
+  faBuilding = faBuilding;
+  faCalendarAlt = faCalendarAlt;
+  faMapMarkerAlt = faMapMarkerAlt;
+  faPlus = faPlus;
+  faTrash = faTrash;
+  faArrowLeft = faArrowLeft;
+  faArrowRight = faArrowRight;
+  faListUl = faListUl;
+  faPen = faPen;
 
   constructor(private fb: FormBuilder) {
     this.workHistoryForm = this.fb.group({

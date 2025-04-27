@@ -1,156 +1,164 @@
-<div style="padding: 24px;">
-  <h2 style="font-size: 24px; font-weight: 600; color: #333; margin-bottom: 16px;">Personal Information</h2>
-
-  <form [formGroup]="personalInfoForm" (ngSubmit)="onNext()" style="display: flex; flex-direction: column; gap: 16px;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-      <div>
-        <label for="firstName" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">
-          First Name <span style="color: #dc2626;">*</span>
-        </label>
-        <input type="text" formControlName="firstName" id="firstName" class="input-group"
-               [ngClass]="{'border-red-500': firstName?.invalid && firstName?.touched}"
-               onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor=this.classList.contains('border-red-500') ? '#dc2626' : '#ccc';">
-        <div *ngIf="firstName?.invalid && firstName?.touched" style="color: #dc2626; font-size: 12px; margin-top: 4px;">
-          <div *ngIf="firstName?.errors?.['required']">First name is required</div>
-          <div *ngIf="firstName?.errors?.['minlength']">First name must be at least 2 characters</div>
-        </div>
-      </div>
-
-      <div>
-        <label for="lastName" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">Last Name</label>
-        <input type="text" formControlName="lastName" id="lastName"
-        class="input-group"
-             >
-      </div>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-      <div>
-        <label for="email" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">
-          Email <span style="color: #dc2626;">*</span>
-        </label>
-        <input type="email" formControlName="email" id="email"
-        class="input-group"
-               [ngClass]="{'border-red-500': email?.invalid && email?.touched}"
-               onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor=this.classList.contains('border-red-500') ? '#dc2626' : '#ccc';">
-        <div *ngIf="email?.invalid && email?.touched" style="color: #dc2626; font-size: 12px; margin-top: 4px;">
-          <div *ngIf="email?.errors?.['required']">Email is required</div>
-          <div *ngIf="email?.errors?.['email']">Please enter a valid email</div>
-        </div>
-      </div>
-
-      <div>
-        <label for="phone" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">
-          Phone <span style="color: #dc2626;">*</span>
-        </label>
-        <input type="tel" formControlName="phone" id="phone"
-        class="input-group"
-               [ngClass]="{'border-red-500': phone?.invalid && phone?.touched}"
-               onfocus="this.style.borderColor='#3b82f6';" onblur="this.style.borderColor=this.classList.contains('border-red-500') ? '#dc2626' : '#ccc';">
-        <div *ngIf="phone?.invalid && phone?.touched" style="color: #dc2626; font-size: 12px; margin-top: 4px;">
-          <div *ngIf="phone?.errors?.['required']">Phone number is required</div>
-          <div *ngIf="phone?.errors?.['pattern']">Please enter a valid 10-digit phone number</div>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <label for="address" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">Address</label>
-      <input type="text" formControlName="address" id="address"
-      class="input-group"
-           >
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
-      <div class="dropdown-container" style="position: relative;">
-        <label for="city" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">City</label>
-        <div style="position: relative;">
-          <input type="text" formControlName="city" id="city"
-                 (click)="toggleCityDropdown()"
-                 class="input-group"
-               >
-          <div *ngIf="showCityDropdown && filteredCities.length > 0"
-               style="position: absolute; z-index: 10; width: 100%; margin-top: 4px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-height: 120px; overflow-y: auto;">
-            <div *ngFor="let city of filteredCities"
-                 (click)="selectCity(city)"
-                 style="padding: 8px 12px; cursor: pointer; transition: background-color 0.15s ease-in-out;"
-                 onmouseover="this.style.backgroundColor='#f0f0f0';" onmouseout="this.style.backgroundColor='transparent';">
-              {{ city }}
+<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+    <form [formGroup]="personalInfoForm" class="space-y-6">
+        <!-- Basic Information -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
+                    First Name
+                </label>
+                <input type="text" formControlName="firstName"
+                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    [ngClass]="{'border-red-500': firstName?.invalid && firstName?.touched}">
+                <div *ngIf="firstName?.invalid && firstName?.touched" class="text-red-500 text-sm mt-1">
+                    <span *ngIf="firstName?.errors?.['required']">First name is required</span>
+                    <span *ngIf="firstName?.errors?.['minlength']">First name must be at least 2 characters</span>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="dropdown-container" style="position: relative;">
-        <label for="state" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">State</label>
-        <div style="position: relative;">
-          <input type="text" formControlName="state" id="state"
-                 (click)="toggleStateDropdown()"
-                 class="input-group"
-               >
-          <div *ngIf="showStateDropdown && filteredStates.length > 0"
-               style="position: absolute; z-index: 10; width: 100%; margin-top: 4px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-height: 120px; overflow-y: auto;">
-            <div *ngFor="let state of filteredStates"
-                 (click)="selectState(state)"
-                 style="padding: 8px 12px; cursor: pointer; transition: background-color 0.15s ease-in-out;"
-                 onmouseover="this.style.backgroundColor='#f0f0f0';" onmouseout="this.style.backgroundColor='transparent';">
-              {{ state }}
+            <div class="form-group">
+                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
+                    Last Name
+                </label>
+                <input type="text" formControlName="lastName"
+                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             </div>
-          </div>
         </div>
-      </div>
 
-      <div class="dropdown-container" style="position: relative;">
-        <label for="zipCode" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">ZIP Code</label>
-        <div style="position: relative;">
-          <input type="text" formControlName="zipCode" id="zipCode"
-                 (click)="toggleZipCodeDropdown()"
-                 class="input-group"
-               >
-          <div *ngIf="showZipCodeDropdown && filteredZipCodes.length > 0"
-               style="position: absolute; z-index: 10; width: 100%; margin-top: 4px; background-color: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-height: 120px; overflow-y: auto;">
-            <div *ngFor="let zip of filteredZipCodes"
-                 (click)="selectZipCode(zip)"
-                 style="padding: 8px 12px; cursor: pointer; transition: background-color 0.15s ease-in-out;"
-                 onmouseover="this.style.backgroundColor='#f0f0f0';" onmouseout="this.style.backgroundColor='transparent';">
-              {{ zip }}
+        <!-- Contact Information -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <fa-icon [icon]="faEnvelope" class="mr-2"></fa-icon>
+                    Email
+                </label>
+                <input type="email" formControlName="email"
+                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    [ngClass]="{'border-red-500': email?.invalid && email?.touched}">
+                <div *ngIf="email?.invalid && email?.touched" class="text-red-500 text-sm mt-1">
+                    <span *ngIf="email?.errors?.['required']">Email is required</span>
+                    <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+                </div>
             </div>
-          </div>
+
+            <div class="form-group">
+                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <fa-icon [icon]="faPhone" class="mr-2"></fa-icon>
+                    Phone
+                </label>
+                <input type="tel" formControlName="phone"
+                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    [ngClass]="{'border-red-500': phone?.invalid && phone?.touched}">
+                <div *ngIf="phone?.invalid && phone?.touched" class="text-red-500 text-sm mt-1">
+                    <span *ngIf="phone?.errors?.['required']">Phone number is required</span>
+                    <span *ngIf="phone?.errors?.['pattern']">Please enter a valid 10-digit phone number</span>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-      <div>
-        <label for="linkedIn" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">LinkedIn Profile</label>
-        <input type="url" formControlName="linkedIn" id="linkedIn"
-        class="input-group"
-             >
-      </div>
+        <!-- Address -->
+        <div class="form-group">
+            <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <fa-icon [icon]="faMapMarkerAlt" class="mr-2"></fa-icon>
+                Address
+            </label>
+            <input type="text" formControlName="address"
+                class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        </div>
 
-      <div>
-        <label for="portfolio" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">Portfolio Website</label>
-        <input type="url" formControlName="portfolio" id="portfolio"
-        class="input-group"
-             >
-      </div>
-    </div>
+        <!-- Location Details -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- City Dropdown -->
+            <div class="form-group dropdown-container">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
+                <div class="relative">
+                    <input type="text" formControlName="city" (focus)="toggleCityDropdown()"
+                        class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <div *ngIf="showCityDropdown" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 rounded-md shadow-lg">
+                        <ul class="max-h-60 overflow-auto">
+                            <li *ngFor="let city of filteredCities"
+                                (click)="selectCity(city)"
+                                class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+                                {{city}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-    <div>
-      <label for="objective" style="display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px;">Professional Objective</label>
-      <textarea formControlName="objective" id="objective" rows="4"
-      class="input-group"
-              ></textarea>
-    </div>
+            <!-- State Dropdown -->
+            <div class="form-group dropdown-container">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">State</label>
+                <div class="relative">
+                    <input type="text" formControlName="state" (focus)="toggleStateDropdown()"
+                        class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <div *ngIf="showStateDropdown" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 rounded-md shadow-lg">
+                        <ul class="max-h-60 overflow-auto">
+                            <li *ngFor="let state of filteredStates"
+                                (click)="selectState(state)"
+                                class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+                                {{state}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-    <div style="display: flex; justify-content: space-between; padding-top: 16px;">
-      <button type="button" (click)="onPrevious()"
-     
-          >
-       < Previous
-      </button>
-      <div ><button class="nav-item" type="submit">Next ></button></div>
-     
-    </div>
-  </form>
+            <!-- Zip Code Dropdown -->
+            <div class="form-group dropdown-container">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Zip Code</label>
+                <div class="relative">
+                    <input type="text" formControlName="zipCode" (focus)="toggleZipCodeDropdown()"
+                        class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <div *ngIf="showZipCodeDropdown" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 rounded-md shadow-lg">
+                        <ul class="max-h-60 overflow-auto">
+                            <li *ngFor="let zipCode of filteredZipCodes"
+                                (click)="selectZipCode(zipCode)"
+                                class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+                                {{zipCode}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Links -->
+        <div class="space-y-4">
+            <div class="form-group">
+                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <fa-icon [icon]="faLinkedin" class="mr-2"></fa-icon>
+                    LinkedIn Profile
+                </label>
+                <input type="url" formControlName="linkedIn"
+                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            </div>
+
+            <div class="form-group">
+                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <fa-icon [icon]="faGlobe" class="mr-2"></fa-icon>
+                    Portfolio Website
+                </label>
+                <input type="url" formControlName="portfolio"
+                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+            </div>
+        </div>
+
+        <!-- Professional Summary/Objective -->
+        <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Professional Summary</label>
+            <textarea formControlName="objective" rows="4"
+                class="form-textarea block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"></textarea>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-end space-x-4">
+            <button type="submit" (click)="onNext()"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Next
+                <fa-icon [icon]="faChevronRight" class="ml-2"></fa-icon>
+            </button>
+        </div>
+    </form>
 </div>
