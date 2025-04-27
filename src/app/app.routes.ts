@@ -6,16 +6,23 @@ import { EducationLevelComponent } from './education-level/education-level.compo
 import { NgModule } from '@angular/core';
 import { PersonalInfoComponent } from './personal-info/personal-info.component';
 import { LoginComponent } from './login/login.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { BlogsComponent } from './blogs/blogs.component';
+import { ContactComponent } from './contact/contact.component';
 
 export const routes: Routes = [
-    // { path: '', component: LandingPageComponent },
+    { path: '', component: LandingPageComponent },
   // { path: '', redirectTo: '/resume-dashboard', pathMatch: 'full' },
   // { path: '', component: ResumeDashboardComponent },
   // { path: 'work-history', component: WorkHistoryComponent },
   // { path: 'personal-info', component: PersonalInfoComponent },
   
-  { path: '', component: EducationLevelComponent },
+  { path: 'resume_builder', component: EducationLevelComponent },
   {path: 'user_registration', component: LoginComponent},
+  {path: 'user_dashboard', component: UserDashboardComponent},
+  {path: 'blogs', component: BlogsComponent},
+  {path: 'contact', component: ContactComponent},
+  
   // { path: 'heading', component: 'Heading', },
   // { path: 'work-history', component: 'Work History' },
   // { path: 'education-level', component: 'Education' },

@@ -1,37 +1,179 @@
 <!-- <button (click)="downloadPDF()">Download PDF</button> -->
- <ng-container > 
-<div class="executive-template" style="margin: 10px 5px 35px;
-border: 2px solid #d5d5d5;
-"> 
-    <div class="executive-resume"  id="resume-content"  #resumeTemplate>
-      <div class="executive-sidebar">
-        <h1>{{formData.firstName }}  {{formData.lastName}}</h1>
-        <div class="executive-summary">
-          <h2>Contacts</h2>
-          <ul style="list-style-type: disc;">
-            <li *ngFor="let contact of ContactDetails">{{contact}}</li>
-          </ul>
+
+  <div #resumeContainer id="resumeContainer1" class="resume-container" [class.print-mode]="isPrintMode">
+    <div class="resume-content">
+     
+        <!-- Header Section -->
+        <div class="header">
+            <h1 class="name">John Doe</h1>
+            <p class="title">Senior MEAN Stack Developer</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>(123) 456-7890</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>john.doeexample.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>San Francisco, CA</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    <span>linkedin.com/in/johndoe</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-github"></i>
+                    <span>github.com/johndoe</span>
+                </div>
+            </div>
         </div>
-        <div class="executive-skills">
-          <h2>CORE SKILLS</h2>
-          <ul>
-            <li > angular </li>
-            <li > node</li>
-            <li >mogodb</li>
-            <li >node</li>
-          </ul>
+
+        <!-- Summary Section -->
+        <div class="section">
+            <h2 class="section-title">Professional Summary</h2>
+            <p>Results-driven Senior MEAN Stack Developer with 8+ years of experience designing and implementing full-stack web applications. Specialized in MongoDB, Express.js, Angular, and Node.js with a proven track record of delivering scalable and high-performance solutions. Passionate about clean code, architecture best practices, and mentoring junior developers.</p>
         </div>
-      </div>
-      <div class="executive-main">
-        <div  class="executive-section">
-          <h2>PROFESSIONAL EXPERIENCE</h2>
-          <div ></div>
+
+        <!-- Experience Section -->
+        <div class="section">
+            <h2 class="section-title">Professional Experience</h2>
+            
+            <div class="experience-item">
+                <h3 class="job-title">Senior MEAN Stack Developer</h3>
+                <p class="company">Tech Solutions Inc., San Francisco, CA</p>
+                <div class="date-location">
+                    <span>June 2019 - Present</span>
+                </div>
+                <ul class="responsibilities">
+                    <li>Led a team of 5 developers to build a SaaS product serving 50,000+ monthly active users</li>
+                    <li>Architected and implemented a microservices backend using Node.js and MongoDB</li>
+                    <li>Developed a responsive frontend using Angular 12+ with NgRx for state management</li>
+                    <li>Improved application performance by 40% through query optimization and caching</li>
+                    <li>Mentored junior developers and conducted code reviews to maintain code quality</li>
+                    <li>Implemented CI/CD pipelines using Jenkins and Docker for automated deployments</li>
+                </ul>
+            </div>
+            
+            <div class="experience-item">
+                <h3 class="job-title">MEAN Stack Developer</h3>
+                <p class="company">Digital Innovations LLC, San Jose, CA</p>
+                <div class="date-location">
+                    <span>January 2016 - May 2019</span>
+                </div>
+                <ul class="responsibilities">
+                    <li>Developed and maintained 10+ client applications using MEAN stack technologies</li>
+                    <li>Created RESTful APIs with Express.js and Node.js handling 1000+ requests per minute</li>
+                    <li>Implemented real-time features using WebSockets and Socket.io</li>
+                    <li>Integrated third-party services including payment gateways and social media APIs</li>
+                    <li>Reduced server costs by 25% through database optimization and query refactoring</li>
+                </ul>
+            </div>
+            
+            <div class="experience-item">
+                <h3 class="job-title">Junior Full Stack Developer</h3>
+                <p class="company">WebCraft Studios, Oakland, CA</p>
+                <div class="date-location">
+                    <span>July 2014 - December 2015</span>
+                </div>
+                <ul class="responsibilities">
+                    <li>Assisted in developing and maintaining web applications using JavaScript technologies</li>
+                    <li>Built UI components with AngularJS (1.x) and implemented client-side logic</li>
+                    <li>Worked on backend services with Node.js and MongoDB</li>
+                    <li>Participated in Agile development processes including daily standups and sprint planning</li>
+                    <li>Wrote unit and integration tests using Jasmine and Mocha</li>
+                </ul>
+            </div>
         </div>
-        <div  class="executive-section">
-          <h2>EDUCATION</h2>
-          <div ></div>
+
+        <!-- Skills Section -->
+        <div class="section">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h4>Frontend</h4>
+                    <ul class="skill-list">
+                        <li>Angular 2+ (Expert)</li>
+                        <li>TypeScript</li>
+                        <li>RxJS</li>
+                        <li>NgRx/Redux</li>
+                        <li>HTML5/CSS3</li>
+                        <li>Bootstrap/Tailwind</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Backend</h4>
+                    <ul class="skill-list">
+                        <li>Node.js</li>
+                        <li>Express.js</li>
+                        <li>NestJS</li>
+                        <li>RESTful APIs</li>
+                        <li>GraphQL</li>
+                        <li>Microservices</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>Database</h4>
+                    <ul class="skill-list">
+                        <li>MongoDB</li>
+                        <li>Mongoose</li>
+                        <li>Redis</li>
+                        <li>PostgreSQL</li>
+                        <li>Database Design</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h4>DevOps & Tools</h4>
+                    <ul class="skill-list">
+                        <li>Docker</li>
+                        <li>Kubernetes</li>
+                        <li>AWS/GCP</li>
+                        <li>CI/CD</li>
+                        <li>Git</li>
+                        <li>JIRA</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- Education Section -->
+        <div class="section">
+            <h2 class="section-title">Education</h2>
+            <div class="education-item">
+                <h3 class="job-title">Master of Science in Computer Science</h3>
+                <p class="company">Stanford University</p>
+                <div class="date-location">
+                    <span>2012 - 2014</span>
+                    <span>Stanford, CA</span>
+                </div>
+            </div>
+            <div class="education-item">
+                <h3 class="job-title">Bachelor of Science in Software Engineering</h3>
+                <p class="company">University of California, Berkeley</p>
+                <div class="date-location">
+                    <span>2008 - 2012</span>
+                    <span>Berkeley, CA</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications Section -->
+        <div class="section">
+            <h2 class="section-title">Certifications</h2>
+            <ul class="responsibilities">
+                <li>MongoDB Certified Developer</li>
+                <li>AWS Certified Developer - Associate</li>
+                <li>Angular Certification (Angular University)</li>
+                <li>Node.js Services Developer (Linux Foundation)</li>
+            </ul>
+        </div>
+   
     </div>
   </div>
- </ng-container>
+ 
+

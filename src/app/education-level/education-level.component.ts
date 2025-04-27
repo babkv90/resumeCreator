@@ -103,6 +103,7 @@ export class EducationLevelComponent implements OnInit {
 
   navigateTo(section: string): void {
     switch(section) {
+    
       case 'heading':
         this.router.navigate(['/resume-dashboard']);
         break;

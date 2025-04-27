@@ -64,7 +64,7 @@ export class ProgressColumnComponent implements AfterViewInit {
 
  selectComponent (component: string) {
     // this.componentSelected.emit(component);
-    console.log('Selected component:', component);
+   
     this.progressService.selectComponent(component);
   }
 } 

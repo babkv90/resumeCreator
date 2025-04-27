@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
@@ -8,5 +9,18 @@ import { Component } from '@angular/core';
 })
 export class LandingPageComponent {
   imagePath: string = 'assets/images/hero.png';
+  constructor(private router : Router) {}
+
+  navigateToResumeBuilder(){
+    this.router.navigate(['/resume_builder']);
+  }
+
+  navigateToBlogs(){
+    this.router.navigate(['/blogs']);
+  }
+
+  navigateToContacts(){
+    this.router.navigate(['/contact']);
+  }
  
 }
