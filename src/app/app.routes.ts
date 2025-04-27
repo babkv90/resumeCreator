@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { BlogsComponent } from './blogs/blogs.component';
 import { ContactComponent } from './contact/contact.component';
+import { AboutMeComponent } from './about-me/about-me.component';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
@@ -22,6 +23,7 @@ export const routes: Routes = [
   {path: 'user_dashboard', component: UserDashboardComponent},
   {path: 'blogs', component: BlogsComponent},
   {path: 'contact', component: ContactComponent},
+  {path: 'about_me', component: AboutMeComponent}
   
   // { path: 'heading', component: 'Heading', },
   // { path: 'work-history', component: 'Work History' },

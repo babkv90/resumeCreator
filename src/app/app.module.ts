@@ -1,5 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ResumeDashboardComponent } from './resume-dashboard/resume-dashboard.component';
@@ -10,8 +12,7 @@ import { ProgressColumnComponent } from './shared/progress-column/progress-colum
 import { AppRoutingModule } from './app.routes';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PortalModule } from '@angular/cdk/portal';
-
-
+import { BlogsComponent } from './blogs/blogs.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +28,10 @@ import { PortalModule } from '@angular/cdk/portal';
     BrowserModule,
     AppRoutingModule,
     NgSelectModule,
-    PortalModule 
-    
+    PortalModule,
+    RouterModule,
+    FormsModule,
+    BlogsComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],  // <-- Add this line

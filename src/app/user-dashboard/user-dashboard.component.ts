@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -11,6 +12,7 @@ export class UserDashboardComponent {
   lastUpdated = new Date('2023-10-01T12:00:00Z');
   resumeCount = 10;
   userName = 'John Doe';
+  constructor(private router : Router){}
   createNewResume(){
 
   }
@@ -28,4 +30,20 @@ export class UserDashboardComponent {
   deleteResume(id:any){}
   recentResumes = [
     { title: 'Resume 1', updatedAt: new Date('2023-10-01') , id: 0},]
+
+    navigateToBlogs(){
+      this.router.navigate(['/blogs']);
+    }
+  
+    navigateToContacts(){
+      this.router.navigate(['/contact']);
+    }
+  
+    navigateToAbooutMe(){ 
+      this.router.navigate(['/about_me']);
+    }
+   
+    navigateToLogin(){  
+      this.router.navigate(['/user_registration']);
+    }
 }

@@ -153,4 +153,20 @@ export class EducationLevelComponent implements OnInit {
     workHistory: '',
     personalInfo: ''
   };
+
+  navigateToBlogs(){
+    this.router.navigate(['/blogs']);
+  }
+
+  navigateToContacts(){
+    this.router.navigate(['/contact']);
+  }
+
+  navigateToAbooutMe(){ 
+    this.router.navigate(['/about_me']);
+  }
+ 
+  navigateToLogin(){  
+    this.router.navigate(['/user_registration']);
+  }
 } 

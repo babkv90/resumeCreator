@@ -22,5 +22,12 @@ export class LandingPageComponent {
   navigateToContacts(){
     this.router.navigate(['/contact']);
   }
+
+  navigateToAbooutMe(){ 
+    this.router.navigate(['/about_me']);
+  }
  
+  navigateToLogin(){  
+    this.router.navigate(['/user_registration']);
+  }
 }
