@@ -1,145 +1,177 @@
 <div class="h-screen flex overflow-hidden bg-gray-100 dark:bg-gray-900" style="height: -webkit-fill-available;">
-  <!-- Left Sidebar - Conversation History -->
-  <div class="lg:w-1/4 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 
-              transition-all duration-300 ease-in-out
-              fixed lg:static inset-y-0 left-0 transform 
-              lg:translate-x-0 lg:flex lg:flex-col
-              -translate-x-full"
-       [class.translate-x-0]="showSidebar">
-    <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Conversations</h2>
-      <button (click)="toggleSidebar()" class="lg:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
-        <fa-icon [icon]="faTimes" class="text-gray-500 dark:text-gray-400"></fa-icon>
-      </button>
-    </div>
-    <div class="flex-1 overflow-y-auto">
-      <div class="px-4 py-2 space-y-2">
-        <!-- Conversation List -->
-        <button *ngFor="let conv of conversations" 
-                (click)="selectConversation(conv)"
-                class="w-full p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors
-                       flex items-center space-x-3"
-                [class.bg-indigo-50]="selectedConversation?.id === conv.id">
-          <fa-icon [icon]="faComment" class="text-gray-400"></fa-icon>
-          <div class="flex-1 text-left">
-            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{conv.title}}</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">{{conv.lastMessage}}</p>
-          </div>
+  <!-- Authentication Section -->
+  <div class="w-full flex items-center justify-center" *ngIf="(authService.currentUser$ | async)">
+    <div class="auth-section">
+      <h2>Sign in to create your resume</h2>
+      <div class="social-login">
+        <button (click)="loginWithGoogle()" class="google-btn">
+          <fa-icon [icon]="['fab', 'google']"></fa-icon>
+          Continue with Google
+        </button>
+        <button (click)="loginWithLinkedIn()" class="linkedin-btn">
+          <fa-icon [icon]="['fab', 'linkedin']"></fa-icon>
+          Continue with LinkedIn
+        </button>
+        <button (click)="loginWithGithub()" class="github-btn">
+          <fa-icon [icon]="['fab', 'github']"></fa-icon>
+          Continue with GitHub
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Main Chat Area -->
-  <div class="flex-1 flex flex-col h-screen overflow-hidden">
-    <!-- Chat Header -->
-    <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-      <div class="flex items-center">
-        <button (click)="toggleSidebar()" class="lg:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 mr-2">
-          <fa-icon [icon]="faBars" class="text-gray-500 dark:text-gray-400"></fa-icon>
+  <!-- Main Chat Interface -->
+  <ng-container *ngIf="!(authService.currentUser$ | async)">
+    <!-- Left Sidebar - Conversation History -->
+    <div class="lg:w-1/4 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 
+                transition-all duration-300 ease-in-out
+                fixed lg:static inset-y-0 left-0 transform 
+                lg:translate-x-0 lg:flex lg:flex-col
+                -translate-x-full"
+         [class.translate-x-0]="showSidebar">
+      <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Conversations</h2>
+        <button (click)="toggleSidebar()" class="lg:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+          <fa-icon [icon]="faTimes" class="text-gray-500 dark:text-gray-400"></fa-icon>
         </button>
-        <h1 class="text-lg font-semibold text-gray-900 dark:text-white">AI Assistant</h1>
       </div>
-      <div class="flex items-center space-x-2">
-        <button (click)="toggleTheme()" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
-          <fa-icon [icon]="isDarkMode ? faSun : faMoon" class="text-gray-500 dark:text-gray-400"></fa-icon>
-        </button>
+      <div class="flex-1 overflow-y-auto">
+        <div class="px-4 py-2 space-y-2">
+          <!-- Conversation List -->
+          <button *ngFor="let conv of conversations" 
+                  (click)="selectConversation(conv)"
+                  class="w-full p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors
+                         flex items-center space-x-3"
+                  [class.bg-indigo-50]="selectedConversation?.id === conv.id">
+            <fa-icon [icon]="faComment" class="text-gray-400"></fa-icon>
+            <div class="flex-1 text-left">
+              <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{conv.title}}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">{{conv.lastMessage}}</p>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Messages Area -->
-    <div class="flex-1 overflow-y-auto px-4 py-6" #messageContainer>
-      <div class="space-y-6">
-        <div *ngFor="let message of messages" 
-             class="flex flex-col space-y-2"
-             [class.items-end]="message.sender === 'user'">
-          
-          <!-- Message Bubble -->
-          <div [class]="message.sender === 'user' ? 
-                        'bg-indigo-600 text-white rounded-l-lg rounded-tr-lg' : 
-                        'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-r-lg rounded-tl-lg'"
-               class="max-w-[80%] px-4 py-2 shadow-sm">
-            <!-- Typing Indicator -->
-            <div *ngIf="message.isTyping" class="flex space-x-2 h-6 items-center">
-              <div class="w-2 h-2 rounded-full bg-current animate-bounce"></div>
-              <div class="w-2 h-2 rounded-full bg-current animate-bounce" style="animation-delay: 0.2s"></div>
-              <div class="w-2 h-2 rounded-full bg-current animate-bounce" style="animation-delay: 0.4s"></div>
-            </div>
+    <!-- Main Chat Area -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+      <!-- Chat Header -->
+      <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <div class="flex items-center">
+          <button (click)="toggleSidebar()" class="lg:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 mr-2">
+            <fa-icon [icon]="faBars" class="text-gray-500 dark:text-gray-400"></fa-icon>
+          </button>
+          <h1 class="text-lg font-semibold text-gray-900 dark:text-white">AI Assistant</h1>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button (click)="toggleTheme()" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+            <fa-icon [icon]="isDarkMode ? faSun : faMoon" class="text-gray-500 dark:text-gray-400"></fa-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Area -->
+      <div class="flex-1 overflow-y-auto px-4 py-6" #messageContainer>
+        <div class="space-y-6">
+          <div *ngFor="let message of messages" 
+               class="flex flex-col space-y-2"
+               [class.items-end]="message.sender === 'user'">
             
-            <!-- Message Content -->
-            <div *ngIf="!message.isTyping" class="prose dark:prose-invert max-w-none">
-              <markdown [data]="message.content"></markdown>
+            <!-- Message Bubble -->
+            <div [class]="message.sender === 'user' ? 
+                          'bg-indigo-600 text-white rounded-l-lg rounded-tr-lg' : 
+                          'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-r-lg rounded-tl-lg'"
+                 class="max-w-[80%] px-4 py-2 shadow-sm">
+              <!-- Typing Indicator -->
+              <div *ngIf="message.isTyping" class="flex space-x-2 h-6 items-center">
+                <div class="w-2 h-2 rounded-full bg-current animate-bounce"></div>
+                <div class="w-2 h-2 rounded-full bg-current animate-bounce" style="animation-delay: 0.2s"></div>
+                <div class="w-2 h-2 rounded-full bg-current animate-bounce" style="animation-delay: 0.4s"></div>
+              </div>
+              
+              <!-- Message Content -->
+              <div *ngIf="!message.isTyping" class="prose dark:prose-invert max-w-none">
+                <markdown [data]="message.content"></markdown>
+              </div>
+            </div>
+
+            <!-- Agent State & Actions -->
+            <div *ngIf="message.sender === 'ai' && message.state" 
+                 class="text-xs text-gray-500 dark:text-gray-400 flex items-center space-x-2">
+              <fa-icon [icon]="getStateIcon(message.state)" class="text-xs"></fa-icon>
+              <span>{{message.state}}</span>
             </div>
           </div>
 
-          <!-- Agent State & Actions -->
-          <div *ngIf="message.sender === 'ai' && message.state" 
-               class="text-xs text-gray-500 dark:text-gray-400 flex items-center space-x-2">
-            <fa-icon [icon]="getStateIcon(message.state)" class="text-xs"></fa-icon>
-            <span >{{message.state}}</span>
+          <!-- Suggestions -->
+          <div class="suggestions" *ngIf="suggestions.length > 0">
+            <button *ngFor="let suggestion of suggestions"
+                    (click)="applySuggestion(suggestion)"
+                    class="suggestion-btn">
+              {{ suggestion }}
+            </button>
+          </div>
+          
+          <!-- Loading indicator -->
+          <div class="loading-indicator" *ngIf="isLoading">
+            <fa-icon [icon]="faSpinner" [spin]="true" transform="size-lg"></fa-icon>
+            Processing...
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Quick Action Buttons -->
-    <div class="px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800" style="background: linear-gradient(84deg, #232959 0%, #a36dff 71%);">
-      <div class="flex space-x-2 overflow-x-auto pb-2" style="gap: 15px;">
-        <button *ngFor="let action of quickActions"
-                (click)="executeQuickAction(action)"
-                class="px-3 py-1 rounded-full text-sm whitespace-nowrap prompt-button">
-          {{action.label}}
-        </button>
+      <!-- Quick Action Buttons -->
+      <div class="px-4 py-2 border-t border-gray-200 dark:border-gray-700" 
+           style="background: linear-gradient(84deg, #232959 0%, #a36dff 71%);">
+        <div class="flex space-x-2 overflow-x-auto pb-2" style="gap: 15px;">
+          <button *ngFor="let action of quickActions"
+                  (click)="executeQuickAction(action)"
+                  class="px-3 py-1 rounded-full text-sm whitespace-nowrap prompt-button">
+            {{action.label}}
+          </button>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3">
+        <form [formGroup]="messageForm" (ngSubmit)="sendMessage()" class="flex space-x-3">
+          <div class="flex-1 min-w-0">
+            <textarea
+              formControlName="message"
+              rows="1"
+              #messageInput
+              (input)="autoResizeTextarea(messageInput)"
+              class="block w-full rounded-lg border-gray-300 dark:border-gray-600 
+                     bg-white dark:bg-gray-700 text-gray-900 dark:text-white 
+                     focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400
+                     resize-none"
+              placeholder="Type your message...">
+            </textarea>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="flex items-end space-x-2">
+            <button type="button" 
+                    (click)="toggleFileUpload()"
+                    class="p-2 rounded-lg text-gray-500 hover:text-gray-600 
+                           dark:text-gray-400 dark:hover:text-gray-300">
+              <fa-icon [icon]="faPaperclip"></fa-icon>
+            </button>
+            <button type="button"
+                    (click)="toggleVoiceInput()"
+                    class="p-2 rounded-lg text-gray-500 hover:text-gray-600
+                           dark:text-gray-400 dark:hover:text-gray-300">
+              <fa-icon [icon]="faMicrophone"></fa-icon>
+            </button>
+            <button type="submit"
+                    [disabled]="!messageForm.valid || isProcessing"
+                    class="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 
+                           text-white disabled:opacity-50">
+              <fa-icon [icon]="faPaperPlane"></fa-icon>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-
-    <!-- Input Area -->
-    <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3">
-      <form (ngSubmit)="sendMessage()" [formGroup]="messageForm" class="flex space-x-3">
-        <div class="flex-1 min-w-0">
-          <textarea
-            formControlName="message"
-            rows="1"
-            #messageInput
-            (input)="autoResizeTextarea(messageInput)"
-            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 
-                   bg-white dark:bg-gray-700 text-gray-900 dark:text-white 
-                   focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400
-                   resize-none"
-            placeholder="Type your message...">
-          </textarea>
-        </div>
-        
-        <!-- Action Buttons -->
-        <div class="flex items-end space-x-2">
-          <button type="button" 
-                  (click)="toggleFileUpload()"
-                  class="p-2 rounded-lg text-gray-500 hover:text-gray-600 
-                         dark:text-gray-400 dark:hover:text-gray-300">
-            <fa-icon [icon]="faPaperclip"></fa-icon>
-          </button>
-          <button type="button"
-                  (click)="toggleVoiceInput()"
-                  class="p-2 rounded-lg text-gray-500 hover:text-gray-600
-                         dark:text-gray-400 dark:hover:text-gray-300">
-            <fa-icon [icon]="faMicrophone"></fa-icon>
-          </button>
-          <button type="submit"
-                  [disabled]="!messageForm.valid || isProcessing"
-                  class="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 
-                         text-white disabled:opacity-50">
-            <fa-icon [icon]="faPaperPlane"></fa-icon>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<div class="chat-container">
-  <div class="messages" *ngFor="let msg of messagess">
-    <div [class]="msg.isUser ? 'user-message' : 'ai-message'">
-      {{ msg.text }}
-    </div>
-  </div>
-
+  </ng-container>
 </div>

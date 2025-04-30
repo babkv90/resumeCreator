@@ -31,6 +31,12 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { MarkdownModule } from 'ngx-markdown';
 import { ResumeBuilderService } from '../services/resume-builder.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { AuthService } from '../services/auth.service';
+import { catchError, take, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 interface Conversation {
   id: string;
@@ -42,7 +48,7 @@ interface Conversation {
 interface Message {
   id: string;
   content: string;
-  sender: 'user' | 'ai';
+  sender: 'user' | 'ai' | 'system';  // Added system as a sender type
   timestamp: Date;
   isTyping?: boolean;
   state?: 'thinking' | 'researching' | 'calling_api' | 'generating' | null;
@@ -54,12 +60,21 @@ interface QuickAction {
   action: () => void;
 }
 
+interface AgentResponse {
+  message: string;
+  suggestions?: string[];
+  nextQuestion?: string;
+  section?: string;
+  completed?: boolean;
+}
+
 @Component({
   selector: 'app-personal-info',
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule, MarkdownModule,FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule, MarkdownModule, FormsModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]  // Add this line to support FontAwesome properties
 })
 export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   messagess: Array<{text: string, isUser: boolean}> = [];
@@ -140,7 +155,13 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     }
   ];
 
-  constructor(private fb: FormBuilder, private progressService: ProgressService,private resumeBuilder: ResumeBuilderService) {
+  currentMessage: string = '';
+  isLoading = false;
+  currentSection = '';
+  interviewCompleted = false;
+  suggestions: string[] = [];
+
+  constructor(private fb: FormBuilder, private progressService: ProgressService,private resumeBuilder: ResumeBuilderService, private http: HttpClient, public authService: AuthService) {
     this.personalInfoForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: [''],
@@ -152,7 +173,8 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
       zipCode: [''],
       linkedIn: [''],
       portfolio: [''],
-      objective: ['']
+      objective: [''],
+      userInput: ['', Validators.required]
     });
 
     this.messageForm = this.fb.group({
@@ -184,6 +206,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     // Subscribe to form value changes for filtering
+    console.log('Form initialized:', 'functionni');
     this.personalInfoForm.get('city')?.valueChanges.subscribe(value => {
       this.filteredCities = this.filterItems(value, this.cities);
     });
@@ -201,6 +224,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     });
 
     this.initializeChat();
+    this.startInterview();
   }
 
   ngAfterViewChecked(): void {
@@ -307,41 +331,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     document.documentElement.classList.toggle('dark');
   }
 
-  // async sendMessage(): Promise<void> {
-  //   if (this.messageForm.invalid || this.isProcessing) return;
-
-  //   const userMessage = this.messageForm.value.message;
-  //   this.messageForm.reset();
-
-  //   // Add user message
-  //   this.messages.push({
-  //     id: Date.now().toString(),
-  //     content: userMessage,
-  //     sender: 'user',
-  //     timestamp: new Date()
-  //   });
-
-  //   // Show AI typing indicator
-  //   const typingMessage: Message = {
-  //     id: 'typing',
-  //     content: '',
-  //     sender: 'ai',
-  //     timestamp: new Date(),
-  //     isTyping: true
-  //   };
-  //   this.messages.push(typingMessage);
-
-  //   // Simulate AI processing
-  //   this.isProcessing = true;
-  //   try {
-  //     await this.processAIResponse(userMessage);
-  //   } finally {
-  //     this.isProcessing = false;
-  //     // Remove typing indicator
-  //     this.messages = this.messages.filter(m => m.id !== 'typing');
-  //   }
-  // }
-
   private async processAIResponse(userMessage: string): Promise<void> {
     // Simulate AI thinking state
     await this.simulateAIState('thinking');
@@ -417,7 +406,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     }
   }
 
-
   sendMessage() {
     if (!this.userInput.trim()) return;
 
@@ -469,6 +457,152 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
         isUser: false 
       });
     });
+  }
+
+  private async startInterview() {
+    // Check if user is authenticated
+    this.authService.currentUser$.pipe(take(1)).subscribe(user => {
+      if (user) {
+        this.initiateAgentConversation();
+      } else {
+        this.messages.push({
+          id: Date.now().toString(),
+          content: 'Please log in to start creating your resume.',
+          sender: 'system',
+          timestamp: new Date()
+        });
+      }
+    });
+  }
+
+  private async initiateAgentConversation() {
+    this.isLoading = true;
+    try {
+      const response = await this.http.post<AgentResponse>(
+        `${environment.apiUrl}/resume/interview/start`,
+        {}
+      ).pipe(
+        tap(res => {
+          this.currentSection = res.section || '';
+          this.addMessage('ai', res.message);  // Changed from 'agent' to 'ai'
+          if (res.suggestions) {
+            this.suggestions = res.suggestions;
+          }
+        }),
+        catchError(error => {
+          this.handleError(error);
+          return throwError(() => error);
+        })
+      ).toPromise();
+
+    } catch (error) {
+      this.handleError(error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async sendMessageToAgent() {
+    if (this.personalInfoForm.valid && this.currentMessage.trim()) {
+      const userMessage = this.currentMessage.trim();
+      this.addMessage('user', userMessage);
+      this.currentMessage = '';
+      this.isLoading = true;
+
+      try {
+        const response = await this.http.post<AgentResponse>(
+          `${environment.apiUrl}/resume/interview/respond`,
+          {
+            message: userMessage,
+            section: this.currentSection
+          }
+        ).pipe(
+          tap(res => {
+            this.addMessage('ai', res.message);  // Changed from 'agent' to 'ai'
+            if (res.suggestions) {
+              this.suggestions = res.suggestions;
+            }
+            if (res.completed) {
+              this.interviewCompleted = true;
+              this.handleInterviewCompletion();
+            } else {
+              this.currentSection = res.section || this.currentSection;
+            }
+          }),
+          catchError(error => {
+            this.handleError(error);
+            return throwError(() => error);
+          })
+        ).toPromise();
+
+      } catch (error) {
+        this.handleError(error);
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  }
+
+  private addMessage(sender: 'user' | 'ai' | 'system', content: string) {
+    this.messages.push({
+      id: Date.now().toString(),
+      content,
+      sender,
+      timestamp: new Date()
+    });
+    this.scrollToBottom();
+  }
+
+  private async handleInterviewCompletion() {
+    try {
+      // Trigger content generation
+      const response = await this.http.post(
+        `${environment.apiUrl}/resume/generate`,
+        { messages: this.messages }
+      ).pipe(
+        tap(res => {
+          // Navigate to next step or show preview
+          this.handleGenerationComplete(res);
+        }),
+        catchError(error => {
+          this.handleError(error);
+          return throwError(() => error);
+        })
+      ).toPromise();
+
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
+  private handleGenerationComplete(response: any) {
+    // Add completion message
+    this.addMessage('system', 'Resume content has been generated! Moving to preview...');
+    // Navigate or emit event for parent component
+  }
+
+  private handleError(error: any) {
+    console.error('Error:', error);
+    this.addMessage('system', 'An error occurred. Please try again.');
+  }
+
+  // Helper method to apply suggestion
+  applySuggestion(suggestion: string) {
+    this.currentMessage = suggestion;
+    this.sendMessageToAgent();
+  }
+
+  // Social login methods
+  loginWithGoogle() {
+    window.location.href = `${environment.apiUrl}/auth/google`;
+  }
+
+  loginWithLinkedIn() {
+    window.location.href = `${environment.apiUrl}/auth/linkedin`;
+  }
+
+  loginWithGithub() {
+    window.location.href = `${environment.apiUrl}/auth/github`;
   }
 }
 

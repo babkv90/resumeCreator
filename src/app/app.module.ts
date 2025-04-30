@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { ResumeDashboardComponent } from './resume-dashboard/resume-dashboard.component';
@@ -13,6 +14,7 @@ import { AppRoutingModule } from './app.routes';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PortalModule } from '@angular/cdk/portal';
 import { BlogsComponent } from './blogs/blogs.component';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,6 @@ import { BlogsComponent } from './blogs/blogs.component';
     // EducationLevelComponent,
     // PreviewColumnComponent,
     // ProgressColumnComponent
-   
   ],
   imports: [
     BrowserModule,
@@ -31,10 +32,17 @@ import { BlogsComponent } from './blogs/blogs.component';
     PortalModule,
     RouterModule,
     FormsModule,
+    HttpClientModule,
     BlogsComponent
   ],
-  providers: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],  // <-- Add this line
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   // bootstrap: [AppComponent]
 })
-export class AppModule { } 
+export class AppModule { }

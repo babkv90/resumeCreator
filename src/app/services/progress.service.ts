@@ -30,6 +30,19 @@ export interface Blog {
   comments: Comment[];
 }
 
+export interface InterviewProgress {
+  section: string;
+  completed: boolean;
+  responses: Record<string, any>;
+}
+
+export interface ContentGenerationProgress {
+  status: 'not_started' | 'generating' | 'completed' | 'failed';
+  currentSection?: string;
+  completedSections: string[];
+  errors?: string[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -60,8 +73,6 @@ export class ProgressService {
     // Add more blog posts...
   ];
 
-
-
   private steps: Step[] = [
     { name: 'Heading', completed: false },
     { name: 'Work History', completed: false },
@@ -78,6 +89,20 @@ export class ProgressService {
   currentStep$ = this.currentStepSubject.asObservable();
   steps$ = this.stepsSubject.asObservable();
   progress$ = this.progressSubject.asObservable();
+  currentFormData = new BehaviorSubject<any>({});
+  private interviewProgress = new BehaviorSubject<InterviewProgress>({
+    section: '',
+    completed: false,
+    responses: {}
+  });
+  private contentProgress = new BehaviorSubject<ContentGenerationProgress>({
+    status: 'not_started',
+    completedSections: []
+  });
+
+  formData$ = this.currentFormData.asObservable();
+  interview$ = this.interviewProgress.asObservable();
+  contentGeneration$ = this.contentProgress.asObservable();
 
   constructor() {
     this.updateProgress();
@@ -113,6 +138,16 @@ export class ProgressService {
     this.stepsSubject.next([...this.steps]);
     this.currentStepSubject.next(0);
     this.updateProgress();
+    this.currentFormData.next({});
+    this.interviewProgress.next({
+      section: '',
+      completed: false,
+      responses: {}
+    });
+    this.contentProgress.next({
+      status: 'not_started',
+      completedSections: []
+    });
   }
 
   private componentSelectedSource = new Subject<string>();
@@ -121,44 +156,6 @@ export class ProgressService {
   selectComponent(component: string) {
     this.componentSelectedSource.next(component);
   }
-
-  // async downloadPDF(elementId: string, fileName: string = 'resume.pdf'): Promise<void> {
-  //   try {
-  //     // Get the HTML element to convert
-  //     const element = document.getElementById(elementId);
-  //     if (!element) {
-  //       console.error('Element not found');
-  //       return;
-  //     }
-
-  //     // Use html2canvas to capture the element
-  //     const canvas = await html2canvas(element, {
-  //       scale: 2, // Higher quality
-  //       logging: false,
-  //       useCORS: true,
-  //       allowTaint: true,
-  //       scrollX: 0,
-  //       scrollY: 0,
-  //       windowWidth: element.scrollWidth,
-  //       windowHeight: element.scrollHeight
-  //     });
-
-  //     // Create PDF
-  //     const pdf = new jsPDF('p', 'mm', 'a4');
-  //     const imgData = canvas.toDataURL('image/png');
-  //     const imgWidth = 210; // A4 width in mm
-  //     const pageHeight = 295; // A4 height in mm
-  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-  //     pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-  //     pdf.save(fileName);
-
-  //   } catch (error) {
-  //     console.error('Error generating PDF:', error);
-  //     throw error; // Re-throw if you want to handle in component
-  //   }
-  // }
-
 
   async downloadPDF(element: HTMLElement) {
     const pdf = new jsPDF('p', 'mm', 'a4');
@@ -181,13 +178,63 @@ export class ProgressService {
     pdf.save('resume.pdf');
   }
 
-  private formData = new BehaviorSubject<any>({});
-  currentFormData = this.formData.asObservable();
-
   updateFormData(data: any) {
-    this.formData.next(data);
+    const currentData = this.currentFormData.value;
+    this.currentFormData.next({ ...currentData, ...data });
   }
 
+  updateInterviewProgress(progress: Partial<InterviewProgress>) {
+    const current = this.interviewProgress.value;
+    this.interviewProgress.next({
+      ...current,
+      ...progress,
+      responses: { ...current.responses, ...(progress.responses || {}) }
+    });
+  }
+
+  updateContentProgress(progress: Partial<ContentGenerationProgress>) {
+    const current = this.contentProgress.value;
+    this.contentProgress.next({
+      ...current,
+      ...progress,
+      completedSections: progress.completedSections || current.completedSections
+    });
+  }
+
+  getOverallProgress(): number {
+    const sections = ['personal_info', 'experience', 'education', 'skills', 'summary'];
+    const completedSections = this.contentProgress.value.completedSections;
+    return Math.round((completedSections.length / sections.length) * 100);
+  }
+
+  getCurrentSection(): string {
+    return this.interviewProgress.value.section;
+  }
+
+  isInterviewComplete(): boolean {
+    return this.interviewProgress.value.completed;
+  }
+
+  getContentGenerationStatus(): string {
+    return this.contentProgress.value.status;
+  }
+
+  addError(error: string) {
+    const current = this.contentProgress.value;
+    const errors = [...(current.errors || []), error];
+    this.contentProgress.next({
+      ...current,
+      errors
+    });
+  }
+
+  clearErrors() {
+    const current = this.contentProgress.value;
+    this.contentProgress.next({
+      ...current,
+      errors: []
+    });
+  }
 
   getBlogs() {
     return of([...this.blogs]).pipe(delay(500)); // Simulate API call
@@ -225,4 +272,4 @@ export class ProgressService {
     return Array.from(new Set(allTags));
   }
   
-} 
+}

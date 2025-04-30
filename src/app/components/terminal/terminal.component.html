@@ -1,0 +1,120 @@
+<div class="terminal-container">
+  <form [formGroup]="resumeForm" (ngSubmit)="generateResume()">
+    <!-- Progress indicator -->
+    <div class="progress-bar">
+      <div class="step" [class.active]="currentStep >= 1">1. Job Target</div>
+      <div class="step" [class.active]="currentStep >= 2">2. Skills</div>
+      <div class="step" [class.active]="currentStep >= 3">3. Experience</div>
+      <div class="step" [class.active]="currentStep >= 4">4. Review</div>
+    </div>
+
+    <!-- Error display -->
+    <div class="error-message" *ngIf="error">{{ error }}</div>
+
+    <!-- Step 1: Job Target -->
+    <div class="step-content" *ngIf="currentStep === 1">
+      <h2>What position are you targeting?</h2>
+      <div class="form-group">
+        <input type="text" 
+               formControlName="job_target" 
+               placeholder="e.g., Senior Software Engineer"
+               class="input-field">
+      </div>
+    </div>
+
+    <!-- Step 2: Skills -->
+    <div class="step-content" *ngIf="currentStep === 2">
+      <h2>List your key skills</h2>
+      <div formArrayName="skills">
+        <div *ngFor="let skill of skills.controls; let i=index" class="skill-item">
+          <input type="text" [formControlName]="i" class="input-field">
+          <button type="button" (click)="removeSkill(i)" class="remove-btn">×</button>
+        </div>
+      </div>
+      <button type="button" (click)="addSkill()" class="add-btn">+ Add Skill</button>
+    </div>
+
+    <!-- Step 3: Experience -->
+    <div class="step-content" *ngIf="currentStep === 3">
+      <h2>Work Experience</h2>
+      <div formArrayName="experience">
+        <div *ngFor="let exp of experience.controls; let i=index" [formGroupName]="i" class="experience-item">
+          <input type="text" formControlName="title" placeholder="Job Title" class="input-field">
+          <input type="text" formControlName="company" placeholder="Company" class="input-field">
+          <input type="text" formControlName="duration" placeholder="Duration" class="input-field">
+          
+          <div formArrayName="achievements">
+            <div *ngFor="let achievement of getAchievements(i).controls; let j=index" class="achievement-item">
+              <input type="text" [formControlName]="j" placeholder="Achievement" class="input-field">
+              <button type="button" (click)="removeAchievement(i, j)" class="remove-btn">×</button>
+            </div>
+          </div>
+          <button type="button" (click)="addAchievement(i)" class="add-btn">+ Add Achievement</button>
+          <button type="button" (click)="removeExperience(i)" class="remove-btn">Remove Experience</button>
+        </div>
+      </div>
+      <button type="button" (click)="addExperience()" class="add-btn">+ Add Experience</button>
+    </div>
+
+    <!-- Step 4: Review -->
+    <div class="step-content" *ngIf="currentStep === 4">
+      <h2>Review Your Information</h2>
+      <div class="review-section">
+        <h3>Job Target:</h3>
+        <p>{{ resumeForm.get('job_target')?.value }}</p>
+
+        <h3>Skills:</h3>
+        <ul>
+          <li *ngFor="let skill of skills.value">{{ skill }}</li>
+        </ul>
+
+        <h3>Experience:</h3>
+        <div *ngFor="let exp of experience.value" class="experience-review">
+          <h4>{{ exp.title }} at {{ exp.company }}</h4>
+          <p>{{ exp.duration }}</p>
+          <ul>
+            <li *ngFor="let achievement of exp.achievements">{{ achievement }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <div class="navigation-buttons">
+      <button type="button" 
+              (click)="previousStep()" 
+              *ngIf="currentStep > 1" 
+              class="nav-btn">Previous</button>
+      
+      <button type="button" 
+              (click)="nextStep()" 
+              *ngIf="currentStep < totalSteps" 
+              [disabled]="!resumeForm.valid" 
+              class="nav-btn primary">Next</button>
+      
+      <button type="submit" 
+              *ngIf="currentStep === totalSteps" 
+              [disabled]="!resumeForm.valid || isLoading" 
+              class="nav-btn primary">
+        {{ isLoading ? 'Generating...' : 'Generate Resume' }}
+      </button>
+    </div>
+  </form>
+
+  <!-- Loading indicator -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Generating your ATS-optimized resume...</p>
+  </div>
+
+  <!-- Template suggestions -->
+  <div class="template-suggestions" *ngIf="suggestedTemplates.length > 0">
+    <h3>Recommended Templates</h3>
+    <div class="template-grid">
+      <div *ngFor="let template of suggestedTemplates" class="template-card">
+        <img [src]="'/assets/templates/' + template + '.png'" [alt]="template">
+        <!-- <button (click)="selectTemplate(template)" class="select-btn">Select Template</button> -->
+      </div>
+    </div>
+  </div>
+</div>
