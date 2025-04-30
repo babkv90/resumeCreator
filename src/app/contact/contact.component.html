@@ -1,111 +1,142 @@
-<div class="education_container" style="padding: 0px;">
-    <nav class="bg-white border-gray-200 py-2.5 dark:bg-gray-900 w-full convex-nav">
-        <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
-            <div class="flex items-center lg:order-2">
-                <button (click)="toggleMenu()" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-                    <span class="sr-only">Toggle menu</span>
-                    <fa-icon [icon]="isMenuOpen ? faTimes : faBars" class="w-6 h-6"></fa-icon>
-                </button>
-            </div>
+<nav class="bg-white border-gray-200 py-2.5 dark:bg-gray-900 w-full convex-nav">
+    <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
+        <div class="flex items-center lg:order-2">
+            <button (click)="toggleMenu()" 
+                    class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" 
+                    aria-controls="mobile-menu-2" 
+                    aria-expanded="false">
+                <span class="sr-only">Toggle menu</span>
+                <fa-icon [icon]="isMenuOpen ? faTimes : faBars" class="w-6 h-6"></fa-icon>
+            </button>
         </div>
-    </nav>
-    <!-- nav bar ends here -->
-    <div class="min-h-screen contact-content">
-        <section class="bg-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8 dark:bg-gray-800">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-12">
-                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get in Touch</h1>
-                    <p class="text-lg text-gray-600 dark:text-gray-300">Have questions? We'd love to hear from you.</p>
-                </div>
+        <div [class.hidden]="!isMenuOpen" class="items-center justify-between w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+            <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                <li>
+                    <a href="#" class="flex items-center py-2 pl-3 pr-4 text-white bg-purple-700 rounded lg:bg-transparent lg:text-purple-700 lg:p-0 dark:text-white nav-item" aria-current="page">
+                        <fa-icon [icon]="faHome" class="mr-2"></fa-icon>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a (click)="navigateToBlogs()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
+                        <fa-icon [icon]="faBlog" class="mr-2"></fa-icon>
+                        Blogs
+                    </a>
+                </li>
+                <li>
+                    <a (click)="navigateToContacts()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
+                        <fa-icon [icon]="faEnvelope" class="mr-2"></fa-icon>
+                        Contact
+                    </a>
+                </li>
+                <li>
+                    <a (click)="navigateToAbooutMe()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
+                        <fa-icon [icon]="faInfoCircle" class="mr-2"></fa-icon>
+                        About Me
+                    </a>
+                </li>
+                <li>
+                    <a (click)="navigateToLogin()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
+                        <fa-icon [icon]="faSignInAlt" class="mr-2"></fa-icon>
+                        Login
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-white rounded-lg shadow-lg p-8 dark:bg-gray-700">
-                        <form class="space-y-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200" for="name">
-                                    Name
-                                </label>
-                                <input type="text" id="name" name="name" 
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200" for="email">
-                                    Email
-                                </label>
-                                <input type="email" id="email" name="email" 
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200" for="message">
-                                    Message
-                                </label>
-                                <textarea id="message" name="message" rows="4" 
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"></textarea>
-                            </div>
-
-                            <div>
-                                <button type="submit" 
-                                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                                    Send Message
-                                </button>
-                            </div>
-                        </form>
+<main class="contact-container">
+    <div class="contact-content">
+        <div class="contact-card">
+            <div class="contact-grid">
+                <!-- Form Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Get in Touch</h2>
+                    <div *ngIf="submitSuccess" class="success-message">
+                        Thank you! Your message has been sent successfully.
                     </div>
 
-                    <div class="rounded-lg shadow-lg p-8 bg-gray-100/50 backdrop-blur-md border border-gray-200 div-wrapper">
-                        <h3 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">Contact Information</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center gap-3">
-                                <fa-icon [icon]="faMapMarkerAlt" class="h-6 w-6 text-blue-400"></fa-icon>
-                                <p class="text-gray-700 dark:text-gray-300">
-                                    123 Main Street, Anytown, CA 12345
-                                </p>
+                    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
+                        <div class="form-group">
+                            <label class="form-label" for="name">Name</label>
+                            <input type="text" 
+                                   id="name" 
+                                   formControlName="name"
+                                   class="form-input"
+                                   [class.border-red-500]="submitted && f['name'].errors">
+                            <div *ngIf="submitted && f['name'].errors" class="error-message">
+                                <span *ngIf="f['name'].errors['required']">Name is required</span>
+                                <span *ngIf="f['name'].errors['minlength']">Name must be at least 2 characters</span>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <fa-icon [icon]="faPhone" class="h-6 w-6 text-blue-400"></fa-icon>
-                                <p class="text-gray-700 dark:text-gray-300">
-                                    +1 (555) 123-4567
-                                </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" 
+                                   id="email" 
+                                   formControlName="email"
+                                   class="form-input"
+                                   [class.border-red-500]="submitted && f['email'].errors">
+                            <div *ngIf="submitted && f['email'].errors" class="error-message">
+                                <span *ngIf="f['email'].errors['required']">Email is required</span>
+                                <span *ngIf="f['email'].errors['email']">Please enter a valid email address</span>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <fa-icon [icon]="faEnvelope" class="h-6 w-6 text-blue-400"></fa-icon>
-                                <p class="text-gray-700 dark:text-gray-300">
-                                    info&#64;example.com
-                                </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="message">Message</label>
+                            <textarea id="message" 
+                                    formControlName="message"
+                                    class="form-input"
+                                    rows="4"
+                                    [class.border-red-500]="submitted && f['message'].errors"></textarea>
+                            <div *ngIf="submitted && f['message'].errors" class="error-message">
+                                <span *ngIf="f['message'].errors['required']">Message is required</span>
+                                <span *ngIf="f['message'].errors['minlength']">Message must be at least 10 characters</span>
                             </div>
-                            <div class="mt-8">
-                                <h4 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">
-                                    Connect with us
-                                </h4>
-                                <div class="flex gap-4">
-                                    <a href="#"
-                                       class="text-gray-600 hover:text-blue-400 transition-colors"
-                                       aria-label="Facebook">
-                                        <fa-icon [icon]="faFacebook" class="h-6 w-6"></fa-icon>
-                                    </a>
-                                    <a href="#"
-                                       class="text-gray-600 hover:text-sky-400 transition-colors"
-                                       aria-label="Twitter">
-                                        <fa-icon [icon]="faTwitter" class="h-6 w-6"></fa-icon>
-                                    </a>
-                                    <a href="#"
-                                       class="text-gray-600 hover:text-pink-500 transition-colors"
-                                       aria-label="Instagram">
-                                        <fa-icon [icon]="faInstagram" class="h-6 w-6"></fa-icon>
-                                    </a>
-                                    <a href="#"
-                                       class="text-gray-600 hover:text-blue-700 transition-colors"
-                                       aria-label="LinkedIn">
-                                        <fa-icon [icon]="faLinkedin" class="h-6 w-6"></fa-icon>
-                                    </a>
-                                </div>
-                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-button">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Info Section -->
+                <div class="info-section">
+                    <div class="info-content">
+                        <h2 class="section-title">Contact Information</h2>
+                        <div class="contact-info-item">
+                            <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+                            <span>123 Main Street, Anytown, CA 12345</span>
+                        </div>
+                        <div class="contact-info-item">
+                            <fa-icon [icon]="faPhone"></fa-icon>
+                            <span>+1 (555) 123-4567</span>
+                        </div>
+                        <div class="contact-info-item">
+                            <fa-icon [icon]="faEnvelope"></fa-icon>
+                            <span>info&#64;example.com</span>
+                        </div>
+
+                        <div class="social-links">
+                            <a href="#" class="social-link" aria-label="Facebook">
+                                <fa-icon [icon]="faFacebook"></fa-icon>
+                            </a>
+                            <a href="#" class="social-link" aria-label="Twitter">
+                                <fa-icon [icon]="faTwitter"></fa-icon>
+                            </a>
+                            <a href="#" class="social-link" aria-label="Instagram">
+                                <fa-icon [icon]="faInstagram"></fa-icon>
+                            </a>
+                            <a href="#" class="social-link" aria-label="LinkedIn">
+                                <fa-icon [icon]="faLinkedin"></fa-icon>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div> 
-</div>
+        </div>
+    </div>
+</main>

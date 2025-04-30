@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, HostListener, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProgressService } from '../services/progress.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { 
@@ -10,24 +10,64 @@ import {
   faMapMarkerAlt, 
   faGlobe, 
   faLink,
-  faChevronRight
+  faChevronRight,
+  faTimes,
+  faBars,
+  faSun,
+  faMoon,
+  faComment,
+  faPaperclip,
+  faMicrophone,
+  faPaperPlane,
+  faSpinner,
+  faSearch,
+  faCode,
+  faBook
 } from '@fortawesome/free-solid-svg-icons';
 import { 
   faLinkedin, 
   faGithub, 
   faTwitter 
 } from '@fortawesome/free-brands-svg-icons';
+import { MarkdownModule } from 'ngx-markdown';
+import { ResumeBuilderService } from '../services/resume-builder.service';
+
+interface Conversation {
+  id: string;
+  title: string;
+  lastMessage: string;
+  timestamp: Date;
+}
+
+interface Message {
+  id: string;
+  content: string;
+  sender: 'user' | 'ai';
+  timestamp: Date;
+  isTyping?: boolean;
+  state?: 'thinking' | 'researching' | 'calling_api' | 'generating' | null;
+}
+
+interface QuickAction {
+  id: string;
+  label: string;
+  action: () => void;
+}
 
 @Component({
   selector: 'app-personal-info',
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule],
+  imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule, MarkdownModule,FormsModule],
 })
-export class PersonalInfoComponent implements OnInit {
+export class PersonalInfoComponent implements OnInit, AfterViewChecked {
+  messagess: Array<{text: string, isUser: boolean}> = [];
+  userInput = '';
+  context: any = {};
   @Output() next = new EventEmitter<any>();
   @Output() previous = new EventEmitter<void>();
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   personalInfoForm: FormGroup;
   cities: string[] = [
@@ -63,8 +103,44 @@ export class PersonalInfoComponent implements OnInit {
   faLinkedin = faLinkedin;
   faGithub = faGithub;
   faTwitter = faTwitter;
+  faTimes = faTimes;
+  faBars = faBars;
+  faSun = faSun;
+  faMoon = faMoon;
+  faComment = faComment;
+  faPaperclip = faPaperclip;
+  faMicrophone = faMicrophone;
+  faPaperPlane = faPaperPlane;
+  faSpinner = faSpinner;
 
-  constructor(private fb: FormBuilder,private progressService: ProgressService) {
+  // Chat state
+  showSidebar = false;
+  isDarkMode = false;
+  isProcessing = false;
+  conversations: Conversation[] = [];
+  selectedConversation: Conversation | null = null;
+  messages: Message[] = [];
+  messageForm: FormGroup;
+
+  quickActions: QuickAction[] = [
+    { 
+      id: 'summarize',
+      label: 'Summarize',
+      action: () => this.summarizeConversation()
+    },
+    {
+      id: 'sources',
+      label: 'Ask for Sources',
+      action: () => this.requestSources()
+    },
+    {
+      id: 'explain',
+      label: 'Explain More',
+      action: () => this.requestExplanation()
+    }
+  ];
+
+  constructor(private fb: FormBuilder, private progressService: ProgressService,private resumeBuilder: ResumeBuilderService) {
     this.personalInfoForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: [''],
@@ -79,10 +155,31 @@ export class PersonalInfoComponent implements OnInit {
       objective: ['']
     });
 
+    this.messageForm = this.fb.group({
+      message: ['', Validators.required]
+    });
+
     // Initialize filtered lists
     this.filteredCities = this.cities;
     this.filteredStates = this.states;
     this.filteredZipCodes = this.zipCodes;
+
+    // Initialize with some sample conversations
+    this.conversations = [
+      {
+        id: '1',
+        title: 'Personal Information',
+        lastMessage: 'Let me help you with your resume',
+        timestamp: new Date()
+      }
+    ];
+
+    // Set initial theme based on user preference
+    this.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    this.resumeBuilder.chat('', {}).subscribe(response => {
+      this.messagess.push({ text: response.response, isUser: false });
+    });
   }
 
   ngOnInit(): void {
@@ -102,6 +199,12 @@ export class PersonalInfoComponent implements OnInit {
     this.personalInfoForm.valueChanges.subscribe(values => {
       this.progressService.updateFormData(values);
     });
+
+    this.initializeChat();
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
   }
 
   @HostListener('document:click', ['$event'])
@@ -184,5 +287,188 @@ export class PersonalInfoComponent implements OnInit {
   get firstName() { return this.personalInfoForm.get('firstName'); }
   get email() { return this.personalInfoForm.get('email'); }
   get phone() { return this.personalInfoForm.get('phone'); }
+
+  private initializeChat(): void {
+    // Add initial AI message
+    this.messages = [{
+      id: '1',
+      content: 'Hi! I\'m your AI assistant. I\'ll help you create an amazing resume. What would you like to know?',
+      sender: 'ai',
+      timestamp: new Date()
+    }];
+  }
+
+  toggleSidebar(): void {
+    this.showSidebar = !this.showSidebar;
+  }
+
+  toggleTheme(): void {
+    this.isDarkMode = !this.isDarkMode;
+    document.documentElement.classList.toggle('dark');
+  }
+
+  // async sendMessage(): Promise<void> {
+  //   if (this.messageForm.invalid || this.isProcessing) return;
+
+  //   const userMessage = this.messageForm.value.message;
+  //   this.messageForm.reset();
+
+  //   // Add user message
+  //   this.messages.push({
+  //     id: Date.now().toString(),
+  //     content: userMessage,
+  //     sender: 'user',
+  //     timestamp: new Date()
+  //   });
+
+  //   // Show AI typing indicator
+  //   const typingMessage: Message = {
+  //     id: 'typing',
+  //     content: '',
+  //     sender: 'ai',
+  //     timestamp: new Date(),
+  //     isTyping: true
+  //   };
+  //   this.messages.push(typingMessage);
+
+  //   // Simulate AI processing
+  //   this.isProcessing = true;
+  //   try {
+  //     await this.processAIResponse(userMessage);
+  //   } finally {
+  //     this.isProcessing = false;
+  //     // Remove typing indicator
+  //     this.messages = this.messages.filter(m => m.id !== 'typing');
+  //   }
+  // }
+
+  private async processAIResponse(userMessage: string): Promise<void> {
+    // Simulate AI thinking state
+    await this.simulateAIState('thinking');
+    
+    // Add AI response
+    this.messages.push({
+      id: Date.now().toString(),
+      content: 'I understand you want to discuss ' + userMessage + '. Let me help you with that.',
+      sender: 'ai',
+      timestamp: new Date()
+    });
+  }
+
+  private async simulateAIState(state: Message['state'], duration: number = 1000): Promise<void> {
+    // Update last AI message state
+    const lastAiMessage = [...this.messages].reverse().find(m => m.sender === 'ai');
+    if (lastAiMessage) {
+      lastAiMessage.state = state;
+    }
+    await new Promise(resolve => setTimeout(resolve, duration));
+  }
+
+  selectConversation(conversation: Conversation): void {
+    this.selectedConversation = conversation;
+    this.showSidebar = false; // Close sidebar on mobile after selection
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    } catch (err) {}
+  }
+
+  autoResizeTextarea(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
+
+  toggleFileUpload(): void {
+    // Implement file upload logic
+  }
+
+  toggleVoiceInput(): void {
+    // Implement voice input logic
+  }
+
+  getStateIcon(state: Message['state']): any {
+    switch (state) {
+      case 'thinking': return faSpinner;
+      case 'researching': return faSearch;
+      case 'calling_api': return faCode;
+      case 'generating': return faBook;
+      default: return null;
+    }
+  }
+
+  // Quick Actions
+  summarizeConversation(): void {
+    // Implement summarization logic
+  }
+
+  requestSources(): void {
+    // Implement source request logic
+  }
+
+  requestExplanation(): void {
+    // Implement explanation request logic
+  }
+
+  executeQuickAction(action: QuickAction): void {
+    if (action && typeof action.action === 'function') {
+      action.action();
+    }
+  }
+
+
+  sendMessage() {
+    if (!this.userInput.trim()) return;
+
+    // Add user message to chat
+    this.messagess.push({ text: this.userInput, isUser: true });
+
+    // Get AI response
+    this.resumeBuilder.chat(this.userInput, this.context).subscribe(response => {
+      // Add AI response to chat
+      this.messagess.push({ text: response.response, isUser: false });
+
+      // Update context with new information
+      this.context = {
+        ...this.context,
+        conversation_history: [
+          ...(this.context.conversation_history || []),
+          { question: response.response, answer: this.userInput }
+        ]
+      };
+
+      // Handle different intents
+      if (response.intent === 'add_experience') {
+        this.handleExperience(response.entities);
+      } else if (response.intent === 'choose_template') {
+        this.getTemplateRecommendations();
+      }
+    });
+
+    this.userInput = '';
+  }
+
+  private handleExperience(entities: any) {
+    this.resumeBuilder.generateSection('experience', {
+      user_profile: this.context.user_profile,
+      experience_data: entities
+    }).subscribe(content => {
+      // Handle the generated content
+      console.log('Generated experience section:', content);
+    });
+  }
+
+  private getTemplateRecommendations() {
+    this.resumeBuilder.getTemplates(this.userInput).subscribe(templates => {
+      const templateList = templates
+        .map((t: any, i: number) => `${i + 1}. ${t.name}: ${t.description}`)
+        .join('\n');
+      this.messagess.push({ 
+        text: `Here are some recommended templates:\n${templateList}`, 
+        isUser: false 
+      });
+    });
+  }
 }
 

@@ -10,7 +10,7 @@ import {
   faNodeJs, 
   faReact, 
   faGithub, 
-  faLinkedin 
+  faLinkedin
 } from '@fortawesome/free-brands-svg-icons';
 import {
   faDatabase,
@@ -23,7 +23,12 @@ import {
   faEnvelope,
   faInfoCircle,
   faSignInAlt,
-  faBlog
+  faBlog,
+  faGraduationCap,
+  faProjectDiagram,
+  faBuilding,
+  faUser,
+  faLink
 } from '@fortawesome/free-solid-svg-icons';
 
 interface Skill {
@@ -34,7 +39,7 @@ interface Skill {
   animated?: boolean;
 }
 
-interface Project {
+interface BasicProject {
   id: number;
   title: string;
   description: string;
@@ -43,6 +48,16 @@ interface Project {
   imageMobile: string;
   link: string;
   github: string;
+}
+
+interface DetailedProject {
+  projectName: string;
+  companyName: string;
+  clientName: string;
+  duration: string;
+  description: string[];
+  url?: string;
+  technologies: string[];
 }
 
 interface Experience {
@@ -85,6 +100,11 @@ export class AboutMeComponent implements OnInit {
   faEnvelope = faEnvelope;
   faInfoCircle = faInfoCircle;
   faSignInAlt = faSignInAlt;
+  faGraduationCap = faGraduationCap;
+  faProjectDiagram = faProjectDiagram;
+  faBuilding = faBuilding;
+  faUser = faUser;
+  faLink = faLink;
 
   portfolio: any = {
     projects: [{
@@ -112,7 +132,7 @@ export class AboutMeComponent implements OnInit {
     { name: 'AWS', level: 65, category: 'tools', icon: this.faCloud }
   ];
 
-  projects: Project[] = [
+  projects: BasicProject[] = [
     {
       id: 1,
       title: 'E-Commerce Platform',
@@ -145,30 +165,82 @@ export class AboutMeComponent implements OnInit {
     }
   ];
 
+  detailedProjects: DetailedProject[] = [
+    {
+      projectName: 'E-Commerce Platform Redesign',
+      companyName: 'Tech Solutions Inc.',
+      clientName: 'Fashion Retail Co.',
+      duration: 'Jan 2024 - Present',
+      description: [
+        'Led the complete redesign of client\'s e-commerce platform serving 100k+ monthly users',
+        'Implemented responsive design principles resulting in 40% increase in mobile conversions',
+        'Integrated payment gateway systems and inventory management solutions',
+        'Developed custom analytics dashboard for real-time sales tracking'
+      ],
+      url: 'https://fashion-retail-example.com',
+      technologies: ['Angular', 'TypeScript', 'Tailwind CSS', 'Node.js', 'MongoDB']
+    },
+    {
+      projectName: 'Healthcare Management System',
+      companyName: 'MedTech Solutions',
+      clientName: 'City General Hospital',
+      duration: 'Jun 2023 - Dec 2023',
+      description: [
+        'Developed a comprehensive patient management system',
+        'Implemented secure authentication and role-based access control',
+        'Created automated appointment scheduling system',
+        'Integrated with existing hospital database systems'
+      ],
+      url: 'https://hospital-demo.example.com',
+      technologies: ['Angular', 'RxJS', 'NgRx', 'Express.js', 'PostgreSQL']
+    }
+  ];
+
   experiences: Experience[] = [
     {
-      company: 'Tech Solutions',
-      position: 'Senior Software Engineer',
-      duration: '2023 - Present',
+      company: 'Genpact India Pvt. Ltd.',
+      position: 'Lead Consultant',
+
+      duration: 'September 2022 - Present',
       description: [
         'Led frontend development team',
         'Implemented microservices architecture'
       ],
-      technologies: ['Angular', 'Node.js', 'Docker'],
-      logo: 'https://ui-avatars.com/api/?name=Tech+Solutions&background=random&size=40'
+      technologies: ['Angular', 'Node.js', 'MySql' , 'AWS'],
+      logo: '/assets/company_logo/genpact-logo.png'
     },
     {
-      company: 'Digital Innovations',
-      position: 'Full Stack Developer',
-      duration: '2021 - 2023',
+      company: 'Religare Broking Ltd.',
+      position: 'Senior Software Engineer',
+      duration: 'August 2021 - September 2022',
       description: [
         'Developed scalable web applications',
         'Improved system performance'
       ],
       technologies: ['React', 'Node.js', 'MySQL', 'AWS'],
-      logo: 'https://ui-avatars.com/api/?name=Digital+Innovations&background=random&size=40'
+      logo: '/assets/company_logo/religare-broking.png'
+    },
+    {
+      company: 'Adnate IT Solutions Pvt. Ltd.',
+      position: 'Consultant',
+      duration: 'August 2017 - August 2021',
+      description: [
+        'Developed scalable web applications',
+        'Improved system performance'
+      ],
+      technologies: ['React', 'Node.js', 'MySQL', 'AWS'],
+      logo: '/assets/company_logo/adnate-it.jpg'
     }
   ];
+
+  
+  Education=[{
+    name: 'Shankara Institute of Technology',
+    university : 'Rajasthan Technical University',
+    Year : '2010-2014',
+    specialization : 'B.Tech in Electronics and Communication Engineering',
+   
+}]
 
   constructor(private router: Router) {
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -196,8 +268,9 @@ export class AboutMeComponent implements OnInit {
   private loadPortfolioData(): void {
     if (!this.portfolio.name) {
       this.portfolio = {
-        name: 'John Doe',
-        title: 'Frontend Developer',
+        name: 'Abinash Kumar',
+        title: 'FullStack Developer',
+        description: 'A seasoned MEAN stack developer with 8+ years of experience building scalable applications across finance, insurance, and real-time vehicle tracking domains. Proficient in end-to-end development—from architecting robust backends with Node.js & MongoDB to crafting dynamic UIs with Angular. Passionate about cloud-native deployment (AWS Lambda, EC2, and more) and now diving into Agentic AI & LLMs to build next-gen intelligent systems. Always learning, always building.',
         projects: []
       };
     }

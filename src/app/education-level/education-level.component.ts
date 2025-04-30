@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { PreviewColumnComponent } from '../preview-column/preview-column.component';
-// import { ProgressColumnComponent } from "../shared/progress-column/progress-column.component";
 import { ProgressColumnComponent } from "../progress-column/progress-column.component";
 import { ProgressService } from '../services/progress.service';
 import { WorkHistoryComponent } from '../work-history/work-history.component';
@@ -11,18 +10,49 @@ import { EducationDetailsComponent } from '../education-details/education-detail
 import { SkillsComponent } from '../skills/skills.component';
 import { SummaryComponent } from "../summary/summary.component";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { 
+  faHome,
+  faInfoCircle,
+  faEnvelope,
+  faSignInAlt,
+  faTimes,
+  faBars,
+  faBlog
+} from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-education-level',
   templateUrl: './education-level.component.html',
   styleUrls: ['./education-level.component.css'],
   standalone: true,
-  imports: [CommonModule, PreviewColumnComponent,
-    ProgressColumnComponent, WorkHistoryComponent,
-    PersonalInfoComponent, EducationDetailsComponent,
-    SkillsComponent, SummaryComponent, ReactiveFormsModule]
+  imports: [
+    CommonModule,
+    PreviewColumnComponent,
+    ProgressColumnComponent,
+    WorkHistoryComponent,
+    PersonalInfoComponent,
+    EducationDetailsComponent,
+    SkillsComponent,
+    SummaryComponent,
+    ReactiveFormsModule,
+    FontAwesomeModule
+  ]
 })
 export class EducationLevelComponent implements OnInit {
+  // Font Awesome Icons
+  faHome = faHome;
+  faInfoCircle = faInfoCircle;
+  faEnvelope = faEnvelope;
+  faSignInAlt = faSignInAlt;
+  faBlog = faBlog;
+  faTimes = faTimes;
+  faBars = faBars;
+
+  // Menu state
+  isMenuOpen = false;
+
   @Output() next = new EventEmitter<any>();
   @Output() previous = new EventEmitter<void>();
 
@@ -39,7 +69,7 @@ export class EducationLevelComponent implements OnInit {
     { value: 'other', label: 'Other' }
   ];
 
-  constructor(private router: Router, private progressService:ProgressService, private fb: FormBuilder) {
+  constructor(private router: Router, private progressService: ProgressService, private fb: FormBuilder) {
     this.educationForm = this.fb.group({
       educationLevel: ['', Validators.required],
       institution: ['', Validators.required],
@@ -49,6 +79,10 @@ export class EducationLevelComponent implements OnInit {
       gpa: ['', [Validators.min(0), Validators.max(4)]],
       description: ['']
     });
+  }
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   ngOnInit(): void {
@@ -154,19 +188,19 @@ export class EducationLevelComponent implements OnInit {
     personalInfo: ''
   };
 
-  navigateToBlogs(){
+  navigateToBlogs(): void {
     this.router.navigate(['/blogs']);
   }
 
-  navigateToContacts(){
+  navigateToContacts(): void {
     this.router.navigate(['/contact']);
   }
 
-  navigateToAbooutMe(){ 
+  navigateToAboutMe(): void { 
     this.router.navigate(['/about_me']);
   }
  
-  navigateToLogin(){  
+  navigateToLogin(): void {  
     this.router.navigate(['/user_registration']);
   }
-} 
+}

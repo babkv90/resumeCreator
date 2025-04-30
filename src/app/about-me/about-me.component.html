@@ -1,6 +1,5 @@
-
 <!-- Main Content -->
-<nav class="w-full convex-nav" style=" background: linear-gradient(84deg, #232959 0%, #a36dff 71%);">
+<nav class="bg-white border-gray-200 py-2.5 dark:bg-gray-900 w-full convex-nav">
   <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
       <div class="flex items-center lg:order-2">
           <button (click)="toggleMenu()" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
@@ -11,32 +10,32 @@
       <div [class.hidden]="!isMenuOpen" class="items-center justify-between w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
           <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
               <li>
-                  <a href="#" class="flex items-center py-2 pl-3 pr-4 text-white bg-purple-700 rounded lg:bg-transparent lg:text-purple-700 lg:p-0 dark:text-white nav-item" aria-current="page">
-                      <fa-icon [icon]="faHome" class="mr-2"></fa-icon>
+                  <a  class="flex items-center py-2 pl-3 pr-4 text-white bg-purple-700 rounded lg:bg-transparent lg:text-purple-700 lg:p-0 dark:text-white nav-item" aria-current="page" style="cursor: pointer;">
+                      <fa-icon [icon]="faHome" class="mr-2" style="margin-right: 0.5rem;"></fa-icon>
                       Home
                   </a>
               </li>
               <li>
-                  <a (click)="navigateToBlogs()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
-                      <fa-icon [icon]="faBlog" class="mr-2"></fa-icon>
+                  <a (click)="navigateToBlogs()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item" style="cursor: pointer;">
+                      <fa-icon [icon]="faBlog" class="mr-2" style="margin-right: 0.5rem;"></fa-icon>
                       Blogs
                   </a>
               </li>
               <li>
-                  <a (click)="navigateToContacts()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
-                      <fa-icon [icon]="faEnvelope" class="mr-2"></fa-icon>
+                  <a (click)="navigateToContacts()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item" style="cursor: pointer;">
+                      <fa-icon [icon]="faEnvelope" class="mr-2" style="margin-right: 0.5rem;"></fa-icon>
                       Contact
                   </a>
               </li>
               <li>
-                  <a class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
-                      <fa-icon [icon]="faInfoCircle" class="mr-2"></fa-icon>
+                  <a (click)="navigateToAboutMe()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item" style="cursor: pointer;">
+                      <fa-icon [icon]="faInfoCircle" class="mr-2" style="margin-right: 0.5rem;"></fa-icon>
                       About Me
                   </a>
               </li>
               <li>
-                  <a (click)="navigateToLogin()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
-                      <fa-icon [icon]="faSignInAlt" class="mr-2"></fa-icon>
+                  <a (click)="navigateToLogin()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item" style="cursor: pointer;">
+                      <fa-icon [icon]="faSignInAlt" class="mr-2" style="margin-right: 0.5rem;"></fa-icon>
                       Login
                   </a>
               </li>
@@ -55,7 +54,9 @@
       <div class="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 animate-pulse"></div>
     </div>
     <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">{{portfolio.name || 'John Doe'}}</h1>
+
     <p class="text-xl text-white/90 mb-6">{{portfolio.title || 'Frontend Developer | Angular Specialist'}}</p>
+    <h4 style="padding: 20px 200px;">{{portfolio.description}}</h4>
     <div class="flex justify-center space-x-4" style="gap: 16px;">
       <a [href]="portfolio.github || '#'" target="_blank" class="social-link">
         <fa-icon [icon]="faGithub"></fa-icon>
@@ -67,95 +68,88 @@
   </header>
 
   <!-- Skills Section -->
-  <section class="max-w-6xl mx-auto mb-16">
+  <section class="max-w-6xl mx-auto mb-16 bottom-padding" >
     <h2 class="text-3xl font-bold text-white text-center mb-12">Technical Skills</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div *ngFor="let skill of skills; let i = index" 
            class="glass-card p-6 transform hover:scale-105 transition-all duration-500"
            [ngStyle]="{'animation-delay': i * 0.2 + 's', 'animation': !prefersReducedMotion ? 'fadeInUp 0.8s ease-out forwards' : 'none'}">
-        <div class="flex items-center mb-4">
+        <!-- <div class="flex items-center mb-4"> -->
         
-          <div class="flex-1"> 
+          <!-- <div class="flex-1">  -->
             <div style="display: flex;">
               <fa-icon [icon]="skill.icon" class="text-3xl text-purple-300 mr-4"></fa-icon>
               <h3 class="text-lg font-semibold text-white mb-2 " style="margin-left: 5px;">{{skill.name}}</h3>
             </div>        
-            <div class="h-2 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
+            <!-- <div class="h-2 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
               <div class="h-full rounded-full transition-all duration-1000 ease-out"
                    [style.width.%]="skill.level"
                    [style.background]="'linear-gradient(90deg, rgba(147, 51, 234, 0.7), rgba(59, 130, 246, 0.7))'"
                    [ngClass]="{'animate-width': !prefersReducedMotion}"></div>
-            </div>
-          </div>
-        </div>
+            </div> -->
+          <!-- </div> -->
+        <!-- </div> -->
       </div>
     </div>
   </section>
 
-  <!-- Projects Section -->
-  <section class="max-w-6xl mx-auto mb-16">
-    <h2 class="text-3xl font-bold text-white text-center mb-12">Featured Projects</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div *ngFor="let project of projects; let i = index" 
-           class="glass-card overflow-hidden group"
-           [ngStyle]="{'animation-delay': i * 0.2 + 's'}">
-        <div class="relative overflow-hidden aspect-video" style="height: 175px;">
-          <img [src]="project.image" 
-               [alt]="project.title"
-               class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110">
-        </div>
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-white mb-2">{{project.title}}</h3>
-          <p class="text-white/80 mb-4">{{project.description}}</p>
-          <div class="flex flex-wrap gap-2 mb-6">
-            <span *ngFor="let tech of project.technologies" 
-                  class="px-3 py-1 bg-white/10 rounded-full text-sm text-white/90">
-              {{tech}}
-            </span>
+  <!-- Education Section -->
+  <section class="max-w-4xl mx-auto mb-16 bottom-padding">
+    <h2 class="text-3xl font-bold text-white text-center mb-12">Education</h2>
+    <div class="space-y-8">
+      <div *ngFor="let education of Education; let i = index" 
+           class="glass-card" style="padding: 25px;"
+           [ngStyle]="{'animation-delay': i * 0.3 + 's'}">
+        <div class="p-8" style="display: flex;justify-content: space-between;align-items: center;">
+          <div>
+            <div class="flex items-center gap-3 mb-2" style="align-items: center;gap: 10px;">
+              <fa-icon [icon]="faGraduationCap" class="text-2xl text-purple-300"></fa-icon>
+              <h3 class="text-xl font-semibold text-white">{{education.name}}</h3>
+            </div>
+            <h4 class="text-lg text-purple-200">{{education.university}}</h4>
+            <h4 class="text-white/70">{{education.Year}}</h4>
+           
           </div>
-          <div class="flex space-x-4">
-            <a [href]="project.link" 
-               target="_blank"
-               class="flex-1 text-center px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
-              View Demo
-            </a>
-            <a [href]="project.github" 
-               target="_blank"
-               class="flex items-center justify-center px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all duration-300">
-              <fa-icon [icon]="faGithub" class="mr-2"></fa-icon>
-              Code
-            </a>
-          </div>
+          <h4 class="text-white/80 mt-2">{{education.specialization}}</h4>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Experience Section -->
-  <section class="max-w-4xl mx-auto mb-16">
+
+  <section class="max-w-4xl mx-auto mb-16 bottom-padding">
     <h2 class="text-3xl font-bold text-white text-center mb-12">Work Experience</h2>
     <div class="space-y-8">
       <div *ngFor="let exp of experiences; let i = index" 
-           class="glass-card p-6"
+           class="glass-card" style="padding: 25px;"
            [ngStyle]="{'animation-delay': i * 0.3 + 's'}">
-        <div class="flex flex-col sm:flex-row sm:items-start" style="padding: 25px;">
-          <img [src]="exp.logo" 
-               [alt]="exp.company"
-               class="company-logo w-10 h-10 rounded-full mb-4 sm:mb-0 sm:mr-6 object-cover">
-          <div class="flex-1">
-            <h3 class="text-xl font-semibold text-white">{{exp.position}}</h3>
-            <h4 class="text-lg text-purple-200 mb-1">{{exp.company}}</h4>
-            <p class="text-white/70 mb-4">{{exp.duration}}</p>
-            <ul class="space-y-2 mb-4">
+        <div class="p-8">
+          <!-- Header with logo, company info, and duration -->
+          <div class="flex items-start justify-between mb-6" style="align-items: center;">
+            <div class="flex items-start gap-4" style="align-items: center;gap: 25px;">
+              <img [src]="exp.logo" 
+                   [alt]="exp.company"
+                   class="company-logo w-12 h-12 rounded-full object-cover flex-shrink-0">
+              <div>
+                <h3 class="text-xl font-semibold text-white mb-1">{{exp.company}}</h3>
+                <p class="text-lg text-purple-200">{{exp.position}}</p>
+              </div>
+            </div>
+            <div class="text-white/70 shrink-0">{{exp.duration}}</div>
+          </div>
+
+          <!-- Description with bullet points -->
+          <div style="padding-left: 3rem;padding-top: 2rem;">
+            <ul class="space-y-2 mb-4 list-disc pl-5">
               <li *ngFor="let desc of exp.description" 
-                  class="text-white/80 flex items-start">
-                <span class="mr-2">•</span>
+                  class="text-white/80">
                 {{desc}}
               </li>
             </ul>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2 mt-4" style="gap:10px">
               <span *ngFor="let tech of exp.technologies" 
-                    class="px-3 py-1 bg-white/10 rounded-full text-sm text-white/90">
+                    class="px-3 py-1 bg-white/10 rounded-full text-sm text-white/90" style="padding: 10px;">
                 {{tech}}
               </span>
             </div>
@@ -164,4 +158,69 @@
       </div>
     </div>
   </section>
+
+    <!-- Projects Section -->
+    <section class="max-w-6xl mx-auto mb-16 bottom-padding">
+      <h2 class="text-3xl font-bold text-white text-center mb-12">Featured Projects</h2>
+      <div class="grid grid-cols-1 md:grid-cols-1 gap-8">
+        <div *ngFor="let project of detailedProjects; let i = index" 
+             class="glass-card p-8"
+             [ngStyle]="{'animation-delay': i * 0.2 + 's'}">
+          <!-- Project Header -->
+          <!-- <div class="flex items-start justify-between mb-6"> -->
+            <!-- <div class="flex-1"> -->
+              <div class="flex items-center gap-4 mb-2" style="justify-content: space-between;padding: 0px;">
+                <div style="display: flex;gap: 15px;padding: 0;">
+                  <fa-icon [icon]="faProjectDiagram" class="text-2xl text-purple-300"></fa-icon>
+                  <h3 class="text-xl font-semibold text-white">{{project.projectName}}</h3>
+                </div>
+                <div class="text-white/70 shrink-0">{{project.duration}}</div>
+              </div>
+              <div class="flex flex-wrap gap-4 text-white/70" style="padding: 0%;">
+                <div class="flex items-center" style="gap: 15px;">
+                  <fa-icon [icon]="faBuilding" class="mr-2"></fa-icon>
+                  <span>{{project.companyName}}</span>
+                </div>
+                <div class="flex items-center" style="gap: 15px;">
+                  <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
+                  <span>Client: {{project.clientName}}</span>
+                </div>
+              </div>
+            <!-- </div> -->
+         
+          <!-- </div> -->
+
+          <!-- Project Description -->
+          <div class="pl-12">
+            <div class="mb-6" style="padding: 0px;">
+              <h4 class="text-lg font-medium text-white mb-3" style="padding-bottom: 10px;">Project Description:</h4>
+              <ul class="space-y-2 list-disc" style="padding-left: 25px;">
+                <li *ngFor="let desc of project.description" 
+                    class="text-white/80">
+                  {{desc}}
+                </li>
+              </ul>
+            </div>
+
+            <!-- Project URL -->
+            <div *ngIf="project.url" class="flex items-center mt-4" style="gap: 15px;">
+              <fa-icon [icon]="faLink" class="text-purple-300 mr-2"></fa-icon>
+              <a [href]="project.url" 
+                 target="_blank" 
+                 class="text-purple-300 hover:text-purple-400 transition-colors">
+                View Project
+              </a>
+            </div>
+
+            <!-- Technologies Used -->
+            <div class="flex flex-wrap gap-2 mt-6" style="gap: 15px;">
+              <span *ngFor="let tech of project.technologies" 
+                    class="px-3 py-1 bg-white/10 rounded-full text-sm text-white/90" style="padding: 10px;">
+                {{tech}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 </div>

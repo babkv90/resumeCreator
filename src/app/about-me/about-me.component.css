@@ -31,81 +31,84 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+  
+  
 .nav {
-    /* flex: 0 0 auto; Do not grow or shrink (fixed height) */
-    /* height: 60px; Adjust as needed */
-    /* background: #333; */
-    /* color: white; */
-    background: linear-gradient(84deg, #232959 0%, #a36dff 71%);
-  }
+  flex: 0 0 auto; /* Do not grow or shrink (fixed height) */
+  height: 60px; /* Adjust as needed */
+  background: #333;
+  color: white;
+}
+
+.education_nav {
+  flex: 0 0 auto; /* Do not grow or shrink (fixed height) */
+  /* height: 60px; Adjust as needed */
+  background: white;
+  color: black;
+  position: sticky;
+  top: 0;
+  /* height: 60px; Fixed height */
+  z-index: 100; /* Ensures nav stays above content */
+}
+
+
+.dashboard {
+  flex: 1; /* Takes remaining space */
+  overflow: auto; /* Adds scroll if content overflows */
+  background: #f5f5f5;
+}
+
+.bottom-padding{
+  padding-bottom: 0px; /* Adjust as needed */
+}
+.convex-nav {
+   background: linear-gradient(84deg, #232959 0%, #a36dff 71%);
+  padding: 0.9rem 2rem;
+  /* border-radius: 12px; */
+  box-shadow: 
+    4px 4px 8px rgba(0, 0, 0, 0.1),
+    -4px -4px 8px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.2),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.05);
   
-  .education_nav {
-    flex: 0 0 auto; /* Do not grow or shrink (fixed height) */
-    /* height: 60px; Adjust as needed */
-    background: white;
-    color: black;
-    position: sticky;
-    top: 0;
-    /* height: 60px; Fixed height */
-    z-index: 100; /* Ensures nav stays above content */
-  }
+  /* Flex properties for layout */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1000; /* Ensure it stays above other content */
   
   
-  .dashboard {
-    flex: 1; /* Takes remaining space */
-    overflow: auto; /* Adds scroll if content overflows */
-    background: #f5f5f5;
-  }
-  
-  
-  .convex-nav {
-    background: linear-gradient(84deg, #232959 0%, #a36dff 71%);
-    padding: 0.9rem 2rem;
-    /* border-radius: 12px; */
-    box-shadow: 
-      4px 4px 8px rgba(0, 0, 0, 0.1),
-      -4px -4px 8px rgba(255, 255, 255, 0.8),
-      inset 1px 1px 2px rgba(255, 255, 255, 0.2),
-      inset -1px -1px 2px rgba(0, 0, 0, 0.05),
-      0 4px 6px rgba(0, 0, 0, 0.1);
-    
-    /* Flex properties for layout */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    z-index: 1000; /* Ensure it stays above other content */
-    
-    
-    /* Smooth transitions */
-    transition: all 0.3s ease;
-  }
-  
-  /* Optional: Add convex effect to nav items */
-  .nav-item {
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    color: white;
-    /* background: linear-gradient(84deg, #232959 0%, #a36dff 71%); */
-    /* box-shadow: 
-      3px 3px 6px rgba(0, 0, 0, 0.1),
-      -3px -3px 6px rgba(255, 255, 255, 0.8);
-    transition: all 0.2s ease; */
-  }
-  
-  .nav-item:hover {
-    box-shadow: 
-      2px 2px 4px rgba(0, 0, 0, 0.1),
-      -2px -2px 4px rgba(255, 255, 255, 0.8),
-      inset 1px 1px 2px rgba(0, 0, 0, 0.05);
-  }
-  
-  /* Active state */
-  .nav-item.active {
-    box-shadow: 
-      inset 2px 2px 4px rgba(0, 0, 0, 0.1),
-      inset -2px -2px 4px rgba(255, 255, 255, 0.8);
-  }
+  /* Smooth transitions */
+  transition: all 0.3s ease;
+}
+
+/* Optional: Add convex effect to nav items */
+.nav-item {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  color: white;
+  /* background: linear-gradient(84deg, #232959 0%, #a36dff 71%); */
+  /* box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.1),
+    -3px -3px 6px rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease; */
+}
+
+.nav-item:hover {
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.1),
+    -2px -2px 4px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Active state */
+.nav-item.active {
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.8);
+}
+
 
   /* Adding missing styles for about-me.component.html */
 
@@ -795,13 +798,93 @@ fa-icon:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   color: rgba(255, 255, 255, 0.9);
+  overflow: hidden;
 }
 
 .glass-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   background: rgba(41, 45, 75, 0.4);
   color: rgba(255, 255, 255, 1);
+}
+
+/* Experience section responsive styles */
+@media (max-width: 640px) {
+  .glass-card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .glass-card .p-8 {
+    padding: 1.25rem;
+  }
+
+  .flex.items-start.justify-between {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .flex.items-start.gap-4 {
+    gap: 0.875rem;
+  }
+
+  .text-white\/70.shrink-0 {
+    margin-left: auto;
+    font-size: 0.875rem;
+    order: -1;
+  }
+
+  .company-logo {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+
+  .text-xl {
+    font-size: 1.125rem;
+  }
+
+  .text-lg {
+    font-size: 1rem;
+  }
+
+  .flex-col.sm\:flex-row {
+    gap: 1rem;
+  }
+
+  .text-right.sm\:min-w-\[140px\] {
+    text-align: left;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Experience card hover effects */
+.glass-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* List styling */
+.list-disc {
+  list-style-position: outside;
+  margin-left: 1rem;
+}
+
+.list-disc li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+/* Technologies tags */
+.flex-wrap.gap-2 span {
+  transition: background-color 0.3s ease;
+}
+
+.flex-wrap.gap-2 span:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Dark mode enhancements */

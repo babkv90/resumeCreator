@@ -71,3 +71,137 @@
       inset 2px 2px 4px rgba(0, 0, 0, 0.1),
       inset -2px -2px 4px rgba(255, 255, 255, 0.8);
   }
+
+/* Blog card hover effects */
+article {
+  backface-visibility: hidden;
+}
+
+article:hover {
+  transform: translateY(-4px);
+}
+
+/* Tag animations */
+.tag {
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  transform: scale(1.05);
+}
+
+/* Search input focus animation */
+input[type="search"] {
+  transition: box-shadow 0.2s ease;
+}
+
+input[type="search"]:focus {
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.3);
+}
+
+/* Filter button hover animation */
+button {
+  transition: all 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Image hover zoom effect */
+.image-container {
+  overflow: hidden;
+}
+
+.image-container img {
+  transition: transform 0.3s ease;
+}
+
+.image-container:hover img {
+  transform: scale(1.05);
+}
+
+/* Like button animation */
+@keyframes likeEffect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.like-animation {
+  animation: likeEffect 0.4s ease;
+}
+
+/* Tag filter pill animation */
+@keyframes tagPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(107, 114, 128, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(107, 114, 128, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(107, 114, 128, 0);
+  }
+}
+
+.selected-tag {
+  animation: tagPulse 1.5s infinite;
+}
+
+/* Smooth transitions for dark mode */
+@media (prefers-color-scheme: dark) {
+  * {
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+}
+
+/* Grid item appear animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.grid > article {
+  animation: fadeInUp 0.6s ease backwards;
+}
+
+.grid > article:nth-child(1) { animation-delay: 0.1s; }
+.grid > article:nth-child(2) { animation-delay: 0.2s; }
+.grid > article:nth-child(3) { animation-delay: 0.3s; }
+.grid > article:nth-child(4) { animation-delay: 0.4s; }
+.grid > article:nth-child(5) { animation-delay: 0.5s; }
+.grid > article:nth-child(6) { animation-delay: 0.6s; }
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(156, 163, 175, 0.1) 25%,
+    rgba(156, 163, 175, 0.2) 37%,
+    rgba(156, 163, 175, 0.1) 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}

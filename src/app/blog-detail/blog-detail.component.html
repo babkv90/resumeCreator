@@ -1,0 +1,345 @@
+<nav class="bg-white border-gray-200 py-2.5 dark:bg-gray-900 w-full convex-nav">
+    <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
+        <div class="flex items-center lg:order-2">
+            <button (click)="toggleMenu()" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+                <span class="sr-only">Toggle menu</span>
+                <fa-icon [icon]="isMenuOpen ? faTimes : faBars" class="w-6 h-6"></fa-icon>
+            </button>
+        </div>
+        <div [class.hidden]="!isMenuOpen" class="items-center justify-between w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+            <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                <li>
+                    <a href="#" class="flex items-center py-2 pl-3 pr-4 text-white bg-purple-700 rounded lg:bg-transparent lg:text-purple-700 lg:p-0 dark:text-white nav-item" aria-current="page">
+                        <fa-icon [icon]="faHome" class="mr-2"></fa-icon>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a (click)="navigateToBlogs()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
+                        <fa-icon [icon]="faBlog" class="mr-2"></fa-icon>
+                        Blogs
+                    </a>
+                </li>
+                <li>
+                    <a (click)="navigateToContacts()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
+                        <fa-icon [icon]="faEnvelope" class="mr-2"></fa-icon>
+                        Contact
+                    </a>
+                </li>
+                <li>
+                    <a (click)="navigateToAbooutMe()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
+                        <fa-icon [icon]="faInfoCircle" class="mr-2"></fa-icon>
+                        About Me
+                    </a>
+                </li>
+                <li>
+                    <a (click)="navigateToLogin()" class="flex items-center py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700 nav-item">
+                        <fa-icon [icon]="faSignInAlt" class="mr-2"></fa-icon>
+                        Login
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900" @fadeIn style="padding-top: 100px;">
+
+    <!-- Main Content -->
+    <div class="max-w-screen-xl mx-auto px-4 pt-24 pb-12" style="max-width: 800px;">
+        <!-- Blog Header -->
+        <!-- <div class="max-w-screen-xl mx-auto px-4 py-3">
+            <button (click)="goBack()" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                <fa-icon [icon]="faArrowLeft" class="mr-2"></fa-icon>
+                Back to Blogs
+            </button>
+        </div> -->
+     
+
+        <!-- Tags -->
+        <!-- <div class="flex flex-wrap gap-2 mb-6" @fadeIn>
+            <span *ngFor="let tag of blog.tags" 
+                  class="px-3 py-1 text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors cursor-pointer">
+                {{tag}}
+            </span>
+        </div> -->
+
+        <!-- Blog Content -->
+        <!-- [innerHTML]="dspfojsspfosjfdspoffdpofjsdfposd" -->
+        <article class="prose prose-lg dark:prose-invert max-w-none mb-12" @fadeIn>
+            <div class="blog-article">
+                <header class="article-header">
+                  <div class="container">
+                    <h1 class="article-title">10 Professional Resume Creation Tips to Land Your Dream Job</h1>
+                    <div class="article-meta">
+                      <span class="author">By Jane Smith</span>
+                      <span class="date">Published on May 15, 2024</span>
+                      <span class="read-time">5 min read</span>
+                    </div>
+                    <div class="tags">
+                      <span class="tag">Career Advice</span>
+                      <span class="tag">Job Search</span>
+                      <span class="tag">Resume Tips</span>
+                    </div>
+                  </div>
+                </header>
+              
+                <div class="article-content container">
+                  <div class="featured-image">
+                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                         alt="Professional workspace with resume" class="responsive-img">
+                    <p class="image-caption">A well-crafted resume is your ticket to interview opportunities</p>
+                  </div>
+              
+                  <div class="intro">
+                    <p>In today's competitive job market, your resume is often your first impression with potential employers. A strong, well-crafted resume can open doors to interviews, while a weak one might get lost in the pile. Follow these professional resume creation tips to ensure your resume stands out for all the right reasons.</p>
+                  </div>
+              
+                  <div class="tip">
+                    <h2>1. Tailor Your Resume for Each Job</h2>
+                    <p>Generic resumes rarely make an impact. Study the job description carefully and customize your resume to highlight the skills and experiences most relevant to that specific position. Use keywords from the job posting (but don't keyword stuff).</p>
+                  </div>
+              
+                  <div class="tip">
+                    <h2>2. Keep It Concise and Scannable</h2>
+                    <p>Hiring managers often spend just 6-10 seconds scanning a resume initially. Use clear section headings, bullet points, and white space to make your resume easy to scan quickly.</p>
+                    <ul>
+                      <li>Stick to 1-2 pages maximum</li>
+                      <li>Use bullet points rather than paragraphs</li>
+                      <li>Highlight key achievements with numbers when possible ("Increased sales by 30%")</li>
+                    </ul>
+                  </div>
+              
+                  <div class="tip with-image">
+                    <h2>3. Focus on Achievements, Not Just Duties</h2>
+                    <div class="image-right">
+                      <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" 
+                           alt="Woman reviewing resume" class="responsive-img">
+                    </div>
+                    <p>Instead of simply listing job responsibilities, emphasize what you accomplished in each role. Use action verbs and quantify results whenever possible.</p>
+                    <div class="example">
+                      <p><strong>Before:</strong> "Responsible for managing social media accounts"</p>
+                      <p><strong>After:</strong> "Grew company Instagram following from 500 to 5,000 in 6 months through targeted content strategy"</p>
+                    </div>
+                  </div>
+              
+                  <div class="tip">
+                    <h2>4. Use a Clean, Professional Design</h2>
+                    <p>While creativity is important in some fields, most resumes should prioritize clarity and professionalism. Stick to:</p>
+                    <ul>
+                      <li>Simple, readable fonts (Arial, Calibri, Times New Roman)</li>
+                      <li>Consistent formatting throughout</li>
+                      <li>Appropriate use of bold and italics for emphasis</li>
+                      <li>Black text on white background for best readability</li>
+                    </ul>
+                  </div>
+              
+                  <div class="tip highlight">
+                    <h2>5. Include Relevant Keywords</h2>
+                    <p>Many companies use Applicant Tracking Systems (ATS) to screen resumes before they reach human eyes. Include keywords from the job description naturally throughout your resume to improve your chances of passing these automated screenings.</p>
+                  </div>
+              
+                  <div class="conclusion">
+                    <h3>Final Thoughts</h3>
+                    <p>Your resume is a living document that should evolve as your career progresses. Regularly update it with new skills, experiences, and accomplishments—even when you're not actively job searching. By following these resume creation tips, you'll be well-prepared when exciting opportunities arise.</p>
+                    <p>Remember, a great resume gets you the interview, but your skills and personality get you the job. Pair your polished resume with strong interview preparation for the best results.</p>
+                  </div>
+              
+                  <div class="call-to-action">
+                    <p>Need help polishing your resume? Download our <a href="#">free resume template</a> or <a href="#">schedule a career coaching session</a> with one of our experts.</p>
+                  </div>
+                </div>
+              </div>
+              
+              
+        </article>
+
+        <!-- Engagement Section -->
+        <div class="flex items-center justify-between gap-6 py-6 border-t border-b border-gray-200 dark:border-gray-700 mb-8">
+            <div class="flex items-center gap-6">
+                <button (click)="likePost()" 
+                        class="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                        [class.text-blue-600]="true">
+                    <fa-icon [icon]="faThumbsUp"></fa-icon>
+                    <span>8 Likes</span>
+                </button>
+                <button class="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    <fa-icon [icon]="faComment"></fa-icon>
+                    <span>10 Comments</span>
+                </button>
+            </div>
+            
+            <!-- Share Menu -->
+            <div class="relative" clickOutside (clickOutside)="showShareMenu = false">
+                <button (click)="toggleShareMenu()" 
+                        class="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    <fa-icon [icon]="faShareAlt"></fa-icon>
+                    <span>Share</span>
+                </button>
+                
+                <div *ngIf="showShareMenu" 
+                     class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl py-2 z-50"
+                     @fadeIn>
+                    <button (click)="sharePost('facebook')" 
+                            class="flex items-center w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <fa-icon [icon]="faFacebook" class="mr-2"></fa-icon>
+                        Share on Facebook
+                    </button>
+                    <button (click)="sharePost('twitter')"
+                            class="flex items-center w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <fa-icon [icon]="faTwitter" class="mr-2"></fa-icon>
+                        Share on Twitter
+                    </button>
+                    <button (click)="sharePost('linkedin')"
+                            class="flex items-center w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <fa-icon [icon]="faLinkedin" class="mr-2"></fa-icon>
+                        Share on LinkedIn
+                    </button>
+                    <button (click)="sharePost('copy')"
+                            class="flex items-center w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <fa-icon [icon]="faLink" class="mr-2"></fa-icon>
+                        Copy Link
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="mb-12" @fadeIn>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Comments</h3>
+            
+            <!-- Comment Form -->
+            <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="mb-8">
+                <div class="mb-4">
+                    <input type="text" 
+                           formControlName="author"
+                           placeholder="Your name"
+                           class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:text-white">
+                </div>
+                <div class="mb-4">
+                    <textarea formControlName="content"
+                            rows="4"
+                            placeholder="Write a comment..."
+                            class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:text-white"></textarea>
+                </div>
+                <button type="submit" 
+                        [disabled]="!commentForm.valid || isSubmitting"
+                        class="flex items-center gap-2 px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50">
+                    <fa-icon [icon]="faPaperPlane"></fa-icon>
+                    <span>{{isSubmitting ? 'Posting...' : 'Post Comment'}}</span>
+                </button>
+            </form>
+
+            <!-- Comments List -->
+            <div class="space-y-6">
+                <div *ngFor="let comment of blog?.comments" 
+                     class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm"
+                     @fadeIn>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <img [src]="'https://ui-avatars.com/api/?name=' + comment.author" 
+                                 [alt]="comment.author" 
+                                 class="w-10 h-10 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">{{comment.author}}</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">{{formatDate(comment.date)}}</p>
+                            </div>
+                        </div>
+                        <button (click)="likeComment(comment)" 
+                                class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                                [class.text-blue-600]="comment.isLiked">
+                            <fa-icon [icon]="faThumbsUp"></fa-icon>
+                            <span class="ml-1">{{comment.likes}}</span>
+                        </button>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">{{comment.content}}</p>
+                    
+                    <!-- Reply Button -->
+                    <button (click)="toggleReplyForm(comment.id)"
+                            class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        Reply
+                    </button>
+
+                    <!-- Reply Form -->
+                    <div *ngIf="activeReplyId === comment.id" @fadeIn>
+                        <form [formGroup]="replyForm" (ngSubmit)="submitReply(comment.id)" class="mt-4">
+                            <div class="mb-4">
+                                <input type="text" 
+                                       formControlName="author"
+                                       placeholder="Your name"
+                                       class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:text-white">
+                            </div>
+                            <div class="mb-4">
+                                <textarea formControlName="content"
+                                        rows="3"
+                                        placeholder="Write a reply..."
+                                        class="w-full px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:text-white"></textarea>
+                            </div>
+                            <div class="flex gap-2">
+                                <button type="submit" 
+                                        [disabled]="!replyForm.valid || isSubmitting"
+                                        class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors disabled:opacity-50">
+                                    {{isSubmitting ? 'Posting...' : 'Post Reply'}}
+                                </button>
+                                <button type="button"
+                                        (click)="toggleReplyForm(comment.id)"
+                                        class="px-4 py-2 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Replies -->
+                    <div *ngIf="comment.replies?.length" class="mt-4 ml-6 space-y-4">
+                        <div *ngFor="let reply of comment.replies" 
+                             class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4"
+                             @fadeIn>
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center">
+                                    <img [src]="'https://ui-avatars.com/api/?name=' + reply.author" 
+                                         [alt]="reply.author" 
+                                         class="w-8 h-8 rounded-full mr-3">
+                                    <div>
+                                        <h5 class="font-semibold text-gray-900 dark:text-white">{{reply.author}}</h5>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">{{formatDate(reply.date)}}</p>
+                                    </div>
+                                </div>
+                                <button (click)="likeComment(reply)"
+                                        class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                                        [class.text-blue-600]="reply.isLiked">
+                                    <fa-icon [icon]="faThumbsUp"></fa-icon>
+                                    <span class="ml-1">{{reply.likes}}</span>
+                                </button>
+                            </div>
+                            <p class="text-gray-700 dark:text-gray-300">{{reply.content}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Posts -->
+        <div @fadeIn>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Posts</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div *ngFor="let post of relatedPosts" 
+                     class="group bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 cursor-pointer"
+                     >
+                    <div class="relative h-48 mb-4 overflow-hidden rounded-lg">
+                        <img [src]="post.image" 
+                             [alt]="post.title"
+                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <h4 class="font-bold text-xl mb-2 text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+                        {{post.title}}
+                    </h4>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">{{post.excerpt}}</p>
+                    <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-500 dark:text-gray-400">{{post.author}}</span>
+                        <span class="text-gray-500 dark:text-gray-400">{{formatDate(post.date)}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,22 +1,23 @@
 <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header with Progress -->
-        <div class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Resume Builder</h1>
+    <div class="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+        <!-- Header with Progress - improved spacing -->
+        <div class="mb-4 sm:mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-4 sm:space-y-0">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Resume Builder</h1>
                 <div class="flex space-x-2">
                     <button (click)="undo()" class="p-2 text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400">
-                        <fa-icon [icon]="faUndo" class="h-5 w-5"></fa-icon>
+                        <fa-icon [icon]="faUndo" class="h-4 w-4 sm:h-5 sm:w-5"></fa-icon>
                     </button>
                     <button (click)="redo()" class="p-2 text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400">
-                        <fa-icon [icon]="faRedo" class="h-5 w-5"></fa-icon>
+                        <fa-icon [icon]="faRedo" class="h-4 w-4 sm:h-5 sm:w-5"></fa-icon>
                     </button>
                     <button (click)="saveProgress()" class="p-2 text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400">
-                        <fa-icon [icon]="faSave" class="h-5 w-5"></fa-icon>
+                        <fa-icon [icon]="faSave" class="h-4 w-4 sm:h-5 sm:w-5"></fa-icon>
                     </button>
                 </div>
             </div>
             
+            <!-- Progress bar - kept same structure with responsive margins -->
             <div class="flex items-center mb-4">
                 <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                     <div class="bg-indigo-600 h-2.5 rounded-full" [style.width.%]="calculateTotalProgress()"></div>
@@ -24,66 +25,66 @@
                 <span class="ml-4 text-sm text-gray-600 dark:text-gray-400">{{calculateTotalProgress()}}%</span>
             </div>
 
-            <div class="flex justify-between items-center">
+            <!-- Navigation buttons - improved mobile layout -->
+            <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center space-y-4 sm:space-y-0">
                 <button (click)="previousStep()" [disabled]="currentStep === 1"
-                        class="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
+                        class="flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
                     <fa-icon [icon]="faChevronLeft" class="h-4 w-4 mr-2"></fa-icon>
                     Previous
                 </button>
-                <div class="flex space-x-4">
-                    <button (click)="previewResume()" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
+                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                    <button (click)="previewResume()" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
                         <fa-icon [icon]="faEye" class="h-4 w-4 mr-2"></fa-icon>
                         Preview
                     </button>
-                    <button (click)="downloadResume()" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-700 dark:hover:bg-indigo-800">
+                    <button (click)="downloadResume()" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-indigo-700 dark:hover:bg-indigo-800">
                         <fa-icon [icon]="faDownload" class="h-4 w-4 mr-2"></fa-icon>
                         Download
                     </button>
                 </div>
                 <button (click)="nextStep()" [disabled]="currentStep === totalSteps"
-                        class="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
+                        class="flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700">
                     Next
                     <fa-icon [icon]="faChevronRight" class="h-4 w-4 ml-2"></fa-icon>
                 </button>
             </div>
         </div>
 
-        <!-- Resume Sections Navigation -->
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
-            <button [class]="'flex flex-col items-center p-4 rounded-lg transition-all ' + (currentStep === 1 ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700')">
-                <fa-icon [icon]="faUser" class="h-6 w-6 mb-2"></fa-icon>
-                <span class="text-sm font-medium">Personal Info</span>
+        <!-- Resume Sections Navigation - improved grid responsiveness -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4 mb-4 sm:mb-8">
+            <button [class]="'flex flex-col items-center p-3 sm:p-4 rounded-lg transition-all ' + (currentStep === 1 ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700')">
+                <fa-icon [icon]="faUser" class="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2"></fa-icon>
+                <span class="text-xs sm:text-sm font-medium">Personal Info</span>
                 <span class="text-xs mt-1">{{progress.personalInfo}}%</span>
             </button>
             
-            <button [class]="'flex flex-col items-center p-4 rounded-lg transition-all ' + (currentStep === 2 ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700')">
-                <fa-icon [icon]="faGraduationCap" class="h-6 w-6 mb-2"></fa-icon>
-                <span class="text-sm font-medium">Education</span>
+            <button [class]="'flex flex-col items-center p-3 sm:p-4 rounded-lg transition-all ' + (currentStep === 2 ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700')">
+                <fa-icon [icon]="faGraduationCap" class="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2"></fa-icon>
+                <span class="text-xs sm:text-sm font-medium">Education</span>
                 <span class="text-xs mt-1">{{progress.education}}%</span>
             </button>
             
-            <button [class]="'flex flex-col items-center p-4 rounded-lg transition-all ' + (currentStep === 3 ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700')">
-                <fa-icon [icon]="faBriefcase" class="h-6 w-6 mb-2"></fa-icon>
-                <span class="text-sm font-medium">Experience</span>
+            <button [class]="'flex flex-col items-center p-3 sm:p-4 rounded-lg transition-all ' + (currentStep === 3 ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700')">
+                <fa-icon [icon]="faBriefcase" class="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2"></fa-icon>
+                <span class="text-xs sm:text-sm font-medium">Experience</span>
                 <span class="text-xs mt-1">{{progress.experience}}%</span>
             </button>
             
-            <button [class]="'flex flex-col items-center p-4 rounded-lg transition-all ' + (currentStep === 4 ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700')">
-                <fa-icon [icon]="faCogs" class="h-6 w-6 mb-2"></fa-icon>
-                <span class="text-sm font-medium">Skills</span>
+            <button [class]="'flex flex-col items-center p-3 sm:p-4 rounded-lg transition-all ' + (currentStep === 4 ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700')">
+                <fa-icon [icon]="faCogs" class="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2"></fa-icon>
+                <span class="text-xs sm:text-sm font-medium">Skills</span>
                 <span class="text-xs mt-1">{{progress.skills}}%</span>
             </button>
             
-            <button [class]="'flex flex-col items-center p-4 rounded-lg transition-all ' + (currentStep === 5 ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700')">
-                <fa-icon [icon]="faFileAlt" class="h-6 w-6 mb-2"></fa-icon>
-                <span class="text-sm font-medium">Summary</span>
+            <button [class]="'flex flex-col items-center p-3 sm:p-4 rounded-lg transition-all ' + (currentStep === 5 ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-indigo-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700')">
+                <fa-icon [icon]="faFileAlt" class="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2"></fa-icon>
+                <span class="text-xs sm:text-sm font-medium">Summary</span>
                 <span class="text-xs mt-1">{{progress.summary}}%</span>
             </button>
         </div>
 
-        <!-- Content Area -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-            <!-- Content will be dynamically loaded based on currentStep -->
+        <!-- Content Area - improved padding -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 sm:p-6">
             <ng-container [ngSwitch]="currentStep">
                 <app-personal-info *ngSwitchCase="1"></app-personal-info>
                 <app-education-details *ngSwitchCase="2"></app-education-details>

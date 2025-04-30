@@ -1,164 +1,145 @@
-<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-    <form [formGroup]="personalInfoForm" class="space-y-6">
-        <!-- Basic Information -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="form-group">
-                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
-                    First Name
-                </label>
-                <input type="text" formControlName="firstName"
-                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    [ngClass]="{'border-red-500': firstName?.invalid && firstName?.touched}">
-                <div *ngIf="firstName?.invalid && firstName?.touched" class="text-red-500 text-sm mt-1">
-                    <span *ngIf="firstName?.errors?.['required']">First name is required</span>
-                    <span *ngIf="firstName?.errors?.['minlength']">First name must be at least 2 characters</span>
-                </div>
-            </div>
+<div class="h-screen flex overflow-hidden bg-gray-100 dark:bg-gray-900" style="height: -webkit-fill-available;">
+  <!-- Left Sidebar - Conversation History -->
+  <div class="lg:w-1/4 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 
+              transition-all duration-300 ease-in-out
+              fixed lg:static inset-y-0 left-0 transform 
+              lg:translate-x-0 lg:flex lg:flex-col
+              -translate-x-full"
+       [class.translate-x-0]="showSidebar">
+    <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Conversations</h2>
+      <button (click)="toggleSidebar()" class="lg:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+        <fa-icon [icon]="faTimes" class="text-gray-500 dark:text-gray-400"></fa-icon>
+      </button>
+    </div>
+    <div class="flex-1 overflow-y-auto">
+      <div class="px-4 py-2 space-y-2">
+        <!-- Conversation List -->
+        <button *ngFor="let conv of conversations" 
+                (click)="selectConversation(conv)"
+                class="w-full p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors
+                       flex items-center space-x-3"
+                [class.bg-indigo-50]="selectedConversation?.id === conv.id">
+          <fa-icon [icon]="faComment" class="text-gray-400"></fa-icon>
+          <div class="flex-1 text-left">
+            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{conv.title}}</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">{{conv.lastMessage}}</p>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
 
-            <div class="form-group">
-                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    <fa-icon [icon]="faUser" class="mr-2"></fa-icon>
-                    Last Name
-                </label>
-                <input type="text" formControlName="lastName"
-                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+  <!-- Main Chat Area -->
+  <div class="flex-1 flex flex-col h-screen overflow-hidden">
+    <!-- Chat Header -->
+    <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+      <div class="flex items-center">
+        <button (click)="toggleSidebar()" class="lg:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 mr-2">
+          <fa-icon [icon]="faBars" class="text-gray-500 dark:text-gray-400"></fa-icon>
+        </button>
+        <h1 class="text-lg font-semibold text-gray-900 dark:text-white">AI Assistant</h1>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button (click)="toggleTheme()" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+          <fa-icon [icon]="isDarkMode ? faSun : faMoon" class="text-gray-500 dark:text-gray-400"></fa-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Messages Area -->
+    <div class="flex-1 overflow-y-auto px-4 py-6" #messageContainer>
+      <div class="space-y-6">
+        <div *ngFor="let message of messages" 
+             class="flex flex-col space-y-2"
+             [class.items-end]="message.sender === 'user'">
+          
+          <!-- Message Bubble -->
+          <div [class]="message.sender === 'user' ? 
+                        'bg-indigo-600 text-white rounded-l-lg rounded-tr-lg' : 
+                        'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-r-lg rounded-tl-lg'"
+               class="max-w-[80%] px-4 py-2 shadow-sm">
+            <!-- Typing Indicator -->
+            <div *ngIf="message.isTyping" class="flex space-x-2 h-6 items-center">
+              <div class="w-2 h-2 rounded-full bg-current animate-bounce"></div>
+              <div class="w-2 h-2 rounded-full bg-current animate-bounce" style="animation-delay: 0.2s"></div>
+              <div class="w-2 h-2 rounded-full bg-current animate-bounce" style="animation-delay: 0.4s"></div>
             </div>
+            
+            <!-- Message Content -->
+            <div *ngIf="!message.isTyping" class="prose dark:prose-invert max-w-none">
+              <markdown [data]="message.content"></markdown>
+            </div>
+          </div>
+
+          <!-- Agent State & Actions -->
+          <div *ngIf="message.sender === 'ai' && message.state" 
+               class="text-xs text-gray-500 dark:text-gray-400 flex items-center space-x-2">
+            <fa-icon [icon]="getStateIcon(message.state)" class="text-xs"></fa-icon>
+            <span >{{message.state}}</span>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <!-- Contact Information -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="form-group">
-                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    <fa-icon [icon]="faEnvelope" class="mr-2"></fa-icon>
-                    Email
-                </label>
-                <input type="email" formControlName="email"
-                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    [ngClass]="{'border-red-500': email?.invalid && email?.touched}">
-                <div *ngIf="email?.invalid && email?.touched" class="text-red-500 text-sm mt-1">
-                    <span *ngIf="email?.errors?.['required']">Email is required</span>
-                    <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
-                </div>
-            </div>
+    <!-- Quick Action Buttons -->
+    <div class="px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800" style="background: linear-gradient(84deg, #232959 0%, #a36dff 71%);">
+      <div class="flex space-x-2 overflow-x-auto pb-2" style="gap: 15px;">
+        <button *ngFor="let action of quickActions"
+                (click)="executeQuickAction(action)"
+                class="px-3 py-1 rounded-full text-sm whitespace-nowrap prompt-button">
+          {{action.label}}
+        </button>
+      </div>
+    </div>
 
-            <div class="form-group">
-                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    <fa-icon [icon]="faPhone" class="mr-2"></fa-icon>
-                    Phone
-                </label>
-                <input type="tel" formControlName="phone"
-                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    [ngClass]="{'border-red-500': phone?.invalid && phone?.touched}">
-                <div *ngIf="phone?.invalid && phone?.touched" class="text-red-500 text-sm mt-1">
-                    <span *ngIf="phone?.errors?.['required']">Phone number is required</span>
-                    <span *ngIf="phone?.errors?.['pattern']">Please enter a valid 10-digit phone number</span>
-                </div>
-            </div>
+    <!-- Input Area -->
+    <div class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3">
+      <form (ngSubmit)="sendMessage()" [formGroup]="messageForm" class="flex space-x-3">
+        <div class="flex-1 min-w-0">
+          <textarea
+            formControlName="message"
+            rows="1"
+            #messageInput
+            (input)="autoResizeTextarea(messageInput)"
+            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 
+                   bg-white dark:bg-gray-700 text-gray-900 dark:text-white 
+                   focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400
+                   resize-none"
+            placeholder="Type your message...">
+          </textarea>
         </div>
-
-        <!-- Address -->
-        <div class="form-group">
-            <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                <fa-icon [icon]="faMapMarkerAlt" class="mr-2"></fa-icon>
-                Address
-            </label>
-            <input type="text" formControlName="address"
-                class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        
+        <!-- Action Buttons -->
+        <div class="flex items-end space-x-2">
+          <button type="button" 
+                  (click)="toggleFileUpload()"
+                  class="p-2 rounded-lg text-gray-500 hover:text-gray-600 
+                         dark:text-gray-400 dark:hover:text-gray-300">
+            <fa-icon [icon]="faPaperclip"></fa-icon>
+          </button>
+          <button type="button"
+                  (click)="toggleVoiceInput()"
+                  class="p-2 rounded-lg text-gray-500 hover:text-gray-600
+                         dark:text-gray-400 dark:hover:text-gray-300">
+            <fa-icon [icon]="faMicrophone"></fa-icon>
+          </button>
+          <button type="submit"
+                  [disabled]="!messageForm.valid || isProcessing"
+                  class="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 
+                         text-white disabled:opacity-50">
+            <fa-icon [icon]="faPaperPlane"></fa-icon>
+          </button>
         </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="chat-container">
+  <div class="messages" *ngFor="let msg of messagess">
+    <div [class]="msg.isUser ? 'user-message' : 'ai-message'">
+      {{ msg.text }}
+    </div>
+  </div>
 
-        <!-- Location Details -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- City Dropdown -->
-            <div class="form-group dropdown-container">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">City</label>
-                <div class="relative">
-                    <input type="text" formControlName="city" (focus)="toggleCityDropdown()"
-                        class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                    <div *ngIf="showCityDropdown" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 rounded-md shadow-lg">
-                        <ul class="max-h-60 overflow-auto">
-                            <li *ngFor="let city of filteredCities"
-                                (click)="selectCity(city)"
-                                class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
-                                {{city}}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- State Dropdown -->
-            <div class="form-group dropdown-container">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">State</label>
-                <div class="relative">
-                    <input type="text" formControlName="state" (focus)="toggleStateDropdown()"
-                        class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                    <div *ngIf="showStateDropdown" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 rounded-md shadow-lg">
-                        <ul class="max-h-60 overflow-auto">
-                            <li *ngFor="let state of filteredStates"
-                                (click)="selectState(state)"
-                                class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
-                                {{state}}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Zip Code Dropdown -->
-            <div class="form-group dropdown-container">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Zip Code</label>
-                <div class="relative">
-                    <input type="text" formControlName="zipCode" (focus)="toggleZipCodeDropdown()"
-                        class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                    <div *ngIf="showZipCodeDropdown" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 rounded-md shadow-lg">
-                        <ul class="max-h-60 overflow-auto">
-                            <li *ngFor="let zipCode of filteredZipCodes"
-                                (click)="selectZipCode(zipCode)"
-                                class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
-                                {{zipCode}}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Professional Links -->
-        <div class="space-y-4">
-            <div class="form-group">
-                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    <fa-icon [icon]="faLinkedin" class="mr-2"></fa-icon>
-                    LinkedIn Profile
-                </label>
-                <input type="url" formControlName="linkedIn"
-                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-            </div>
-
-            <div class="form-group">
-                <label class="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    <fa-icon [icon]="faGlobe" class="mr-2"></fa-icon>
-                    Portfolio Website
-                </label>
-                <input type="url" formControlName="portfolio"
-                    class="form-input block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-            </div>
-        </div>
-
-        <!-- Professional Summary/Objective -->
-        <div class="form-group">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Professional Summary</label>
-            <textarea formControlName="objective" rows="4"
-                class="form-textarea block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"></textarea>
-        </div>
-
-        <!-- Navigation Buttons -->
-        <div class="flex justify-end space-x-4">
-            <button type="submit" (click)="onNext()"
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Next
-                <fa-icon [icon]="faChevronRight" class="ml-2"></fa-icon>
-            </button>
-        </div>
-    </form>
 </div>

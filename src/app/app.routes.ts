@@ -10,33 +10,22 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
 import { BlogsComponent } from './blogs/blogs.component';
 import { ContactComponent } from './contact/contact.component';
 import { AboutMeComponent } from './about-me/about-me.component';
+import { BlogDetailComponent } from './blog-detail/blog-detail.component';
 
 export const routes: Routes = [
     { path: '', component: LandingPageComponent },
-  // { path: '', redirectTo: '/resume-dashboard', pathMatch: 'full' },
-  // { path: '', component: ResumeDashboardComponent },
-  // { path: 'work-history', component: WorkHistoryComponent },
-  // { path: 'personal-info', component: PersonalInfoComponent },
-  
-  { path: 'resume_builder', component: EducationLevelComponent },
-  {path: 'user_registration', component: LoginComponent},
-  {path: 'user_dashboard', component: UserDashboardComponent},
-  {path: 'blogs', component: BlogsComponent},
-  {path: 'contact', component: ContactComponent},
-  {path: 'about_me', component: AboutMeComponent}
-  
-  // { path: 'heading', component: 'Heading', },
-  // { path: 'work-history', component: 'Work History' },
-  // { path: 'education-level', component: 'Education' },
-  // { path: 'skills', component: 'Skills' },
-  // { path: 'summary', component: 'Summary' },
-  // { path: 'finalize', component: 'Finalize' }
-  ];
+    { path: 'resume_builder', component: EducationLevelComponent },
+    { path: 'user_registration', component: LoginComponent },
+    { path: 'user_dashboard', component: UserDashboardComponent },
+    { path: 'blogs', component: BlogsComponent },
+    { path: 'blog/:id', component: BlogDetailComponent },
+    { path: 'contact', component: ContactComponent },
+    { path: 'about_me', component: AboutMeComponent }
+];
 
-  @NgModule({
+@NgModule({
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]
-  })
+})
 
-  
-  export class AppRoutingModule { } 
+export class AppRoutingModule { }
