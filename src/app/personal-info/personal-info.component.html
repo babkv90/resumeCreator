@@ -82,16 +82,16 @@
                           'bg-indigo-600 text-white rounded-l-lg rounded-tr-lg' : 
                           'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-r-lg rounded-tl-lg'"
                  class="max-w-[80%] px-4 py-2 shadow-sm">
-              <!-- Typing Indicator -->
+            <!-- Typing Indicator -->
               <div *ngIf="message.isTyping" class="flex space-x-2 h-6 items-center">
                 <div class="w-2 h-2 rounded-full bg-current animate-bounce"></div>
                 <div class="w-2 h-2 rounded-full bg-current animate-bounce" style="animation-delay: 0.2s"></div>
                 <div class="w-2 h-2 rounded-full bg-current animate-bounce" style="animation-delay: 0.4s"></div>
-              </div>
+              </div> 
               
               <!-- Message Content -->
               <div *ngIf="!message.isTyping" class="prose dark:prose-invert max-w-none">
-                <markdown [data]="message.content"></markdown>
+                <markdown [data]="message.question"></markdown>
               </div>
             </div>
 

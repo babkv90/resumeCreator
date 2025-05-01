@@ -134,7 +134,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   isProcessing = false;
   conversations: Conversation[] = [];
   selectedConversation: Conversation | null = null;
-  messages: Message[] = [];
+  messages: any = [];
   messageForm: FormGroup;
 
   quickActions: QuickAction[] = [
@@ -223,8 +223,12 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
       this.progressService.updateFormData(values);
     });
 
-    this.initializeChat();
+    // this.initializeChat();
     this.startInterview();
+    this.resumeBuilder.startConversation().subscribe(response => { 
+      this.messages.push(response);
+     
+     });
   }
 
   ngAfterViewChecked(): void {
@@ -312,15 +316,15 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   get email() { return this.personalInfoForm.get('email'); }
   get phone() { return this.personalInfoForm.get('phone'); }
 
-  private initializeChat(): void {
-    // Add initial AI message
-    this.messages = [{
-      id: '1',
-      content: 'Hi! I\'m your AI assistant. I\'ll help you create an amazing resume. What would you like to know?',
-      sender: 'ai',
-      timestamp: new Date()
-    }];
-  }
+  // private initializeChat(): void {
+  //   // Add initial AI message
+  //   this.messages = [{
+  //     id: '1',
+  //     content: 'Hi! I\'m your AI assistant. I\'ll help you create an amazing resume. What would you like to know?',
+  //     sender: 'ai',
+  //     timestamp: new Date()
+  //   }];
+  // }
 
   toggleSidebar(): void {
     this.showSidebar = !this.showSidebar;
@@ -407,10 +411,11 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   }
 
   sendMessage() {
-    if (!this.userInput.trim()) return;
+    console.log('Sending message:',this.messageForm);
+    // if (!this.userInput.trim()) return;
 
     // Add user message to chat
-    this.messagess.push({ text: this.userInput, isUser: true });
+    this.messagess.push({ text:this.messageForm.value, isUser: true });
 
     // Get AI response
     this.resumeBuilder.chat(this.userInput, this.context).subscribe(response => {
@@ -465,12 +470,12 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
       if (user) {
         this.initiateAgentConversation();
       } else {
-        this.messages.push({
-          id: Date.now().toString(),
-          content: 'Please log in to start creating your resume.',
-          sender: 'system',
-          timestamp: new Date()
-        });
+        // this.messages.push({
+        //   id: Date.now().toString(),
+        //   content: 'Please log in to start creating your resume.',
+        //   sender: 'system',
+        //   timestamp: new Date()
+        // });
       }
     });
   }

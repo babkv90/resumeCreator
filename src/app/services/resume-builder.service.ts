@@ -14,11 +14,25 @@ export interface ChatResponse {
   entities: any;
 }
 
+export interface ConversationResponse {
+  session_id?: string;
+  status: 'in_progress' | 'complete' | 'error';
+  question?: string;
+  field_id?: string;
+  message?: string;
+  progress?: {
+    current: number;
+    total: number;
+  };
+  resume_data?: any;
+  collected_data?: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ResumeBuilderService {
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = 'http://localhost:5000';  // Removed /api prefix
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -54,7 +68,7 @@ export class ResumeBuilderService {
   }
 
   checkHealth(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/health`)
+    return this.http.get(`${this.apiUrl}/health`)  // Updated endpoint
       .pipe(
         timeout(5000),  // 5 second timeout
         retry(1),       // Retry failed request once
@@ -65,7 +79,7 @@ export class ResumeBuilderService {
   chat(message: string, context: any = {}): Observable<ChatResponse> {
     const payload: ChatRequest = { message, context };
     
-    return this.http.post<ChatResponse>(`${this.apiUrl}/chat`, payload, this.httpOptions)
+    return this.http.post<ChatResponse>(`${this.apiUrl}/conversation/start`, payload, this.httpOptions)  // Updated endpoint
       .pipe(
         timeout(30000),  // 30 second timeout for LLM responses
         retry(1),
@@ -101,5 +115,26 @@ export class ResumeBuilderService {
         retry(1),
         catchError(this.handleError)
       );
+  }
+
+  startConversation(): Observable<ConversationResponse> {
+    return this.http.post<ConversationResponse>(`${this.apiUrl}/conversation/start`, {}, this.httpOptions)
+      .pipe(
+        timeout(10000),
+        retry(1),
+        catchError(this.handleError)
+      );
+  }
+
+  continueConversation(sessionId: string, response: any): Observable<ConversationResponse> {
+    return this.http.post<ConversationResponse>(
+      `${this.apiUrl}/conversation/${sessionId}`,
+      { response },
+      this.httpOptions
+    ).pipe(
+      timeout(30000),
+      retry(1),
+      catchError(this.handleError)
+    );
   }
 }
