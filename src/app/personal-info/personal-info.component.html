@@ -80,42 +80,44 @@
             <!-- Message Bubble -->
             <div [class]="message.sender === 'user' ? 
                           'bg-indigo-600 text-white rounded-l-lg rounded-tr-lg' : 
+                          message.sender === 'system' ?
+                          'bg-yellow-100 text-gray-900 rounded-lg border border-yellow-200' :
                           'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-r-lg rounded-tl-lg'"
                  class="max-w-[80%] px-4 py-2 shadow-sm">
-            <!-- Typing Indicator -->
+              
+              <!-- Typing Indicator -->
               <div *ngIf="message.isTyping" class="flex space-x-2 h-6 items-center">
                 <div class="w-2 h-2 rounded-full bg-current animate-bounce"></div>
                 <div class="w-2 h-2 rounded-full bg-current animate-bounce" style="animation-delay: 0.2s"></div>
                 <div class="w-2 h-2 rounded-full bg-current animate-bounce" style="animation-delay: 0.4s"></div>
-              </div> 
+              </div>
               
               <!-- Message Content -->
               <div *ngIf="!message.isTyping" class="prose dark:prose-invert max-w-none">
-                <markdown [data]="message.question"></markdown>
+                <markdown [data]="message.content"></markdown>
+              </div>
+
+              <!-- Suggestions -->
+              <div *ngIf="message.suggestions && message.suggestions.length > 0" 
+                   class="mt-2 flex flex-wrap gap-2">
+                <button *ngFor="let suggestion of message.suggestions"
+                        (click)="applySuggestion(suggestion)"
+                        class="text-xs px-3 py-1 rounded-full bg-white dark:bg-gray-600 
+                               text-gray-700 dark:text-gray-200 hover:bg-gray-100 
+                               dark:hover:bg-gray-500 transition-colors">
+                  {{suggestion}}
+                </button>
               </div>
             </div>
 
-            <!-- Agent State & Actions -->
+            <!-- Message State -->
             <div *ngIf="message.sender === 'ai' && message.state" 
                  class="text-xs text-gray-500 dark:text-gray-400 flex items-center space-x-2">
-              <fa-icon [icon]="getStateIcon(message.state)" class="text-xs"></fa-icon>
+              <fa-icon [icon]="getStateIcon(message.state)" 
+                      [spin]="message.state === 'thinking'"
+                      class="text-xs"></fa-icon>
               <span>{{message.state}}</span>
             </div>
-          </div>
-
-          <!-- Suggestions -->
-          <div class="suggestions" *ngIf="suggestions.length > 0">
-            <button *ngFor="let suggestion of suggestions"
-                    (click)="applySuggestion(suggestion)"
-                    class="suggestion-btn">
-              {{ suggestion }}
-            </button>
-          </div>
-          
-          <!-- Loading indicator -->
-          <div class="loading-indicator" *ngIf="isLoading">
-            <fa-icon [icon]="faSpinner" [spin]="true" transform="size-lg"></fa-icon>
-            Processing...
           </div>
         </div>
       </div>
@@ -167,7 +169,8 @@
                     [disabled]="!messageForm.valid || isProcessing"
                     class="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 
                            text-white disabled:opacity-50">
-              <fa-icon [icon]="faPaperPlane"></fa-icon>
+              <fa-icon [icon]="isProcessing ? faSpinner : faPaperPlane"
+                      [spin]="isProcessing"></fa-icon>
             </button>
           </div>
         </form>

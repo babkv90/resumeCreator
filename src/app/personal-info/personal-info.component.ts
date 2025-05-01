@@ -30,7 +30,7 @@ import {
   faTwitter 
 } from '@fortawesome/free-brands-svg-icons';
 import { MarkdownModule } from 'ngx-markdown';
-import { ResumeBuilderService } from '../services/resume-builder.service';
+import { ResumeBuilderService, ConversationResponse } from '../services/resume-builder.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../services/auth.service';
@@ -52,6 +52,7 @@ interface Message {
   timestamp: Date;
   isTyping?: boolean;
   state?: 'thinking' | 'researching' | 'calling_api' | 'generating' | null;
+  suggestions?: string[];
 }
 
 interface QuickAction {
@@ -160,6 +161,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   currentSection = '';
   interviewCompleted = false;
   suggestions: string[] = [];
+  session_id: string | undefined;
 
   constructor(private fb: FormBuilder, private progressService: ProgressService,private resumeBuilder: ResumeBuilderService, private http: HttpClient, public authService: AuthService) {
     this.personalInfoForm = this.fb.group({
@@ -199,9 +201,9 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     // Set initial theme based on user preference
     this.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    this.resumeBuilder.chat('', {}).subscribe(response => {
-      this.messagess.push({ text: response.response, isUser: false });
-    });
+    // this.resumeBuilder.chat('', {}).subscribe(response => {
+    //   this.messagess.push({ text: response.response, isUser: false });
+    // });
   }
 
   ngOnInit(): void {
@@ -225,10 +227,34 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
 
     // this.initializeChat();
     this.startInterview();
-    this.resumeBuilder.startConversation().subscribe(response => { 
-      this.messages.push(response);
-     
-     });
+    this.resumeBuilder.startConversation().subscribe({
+      next: (response) => {
+        console.log('Conversation started:', response);
+        if (response.message) {
+          const message: Message = {
+            id: Date.now().toString(),
+            content: response.message,
+            sender: 'ai',
+            timestamp: new Date(),
+            suggestions: response.suggestions
+          };
+          this.messages.push(message);
+        }
+        if (response.session_id) {
+          this.session_id = response.session_id;
+        }
+        if (response.progress) {
+          // this.progressService.setProgress({
+          //   section: 'personalInfo',
+          //   progress: (response.progress.current / response.progress.total) * 100
+          // });
+        }
+      },
+      error: (error) => {
+        console.error('Failed to start conversation:', error);
+        this.addMessage('system', 'Failed to start the conversation. Please refresh the page to try again.');
+      }
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -411,57 +437,92 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   }
 
   sendMessage() {
-    console.log('Sending message:',this.messageForm);
-    // if (!this.userInput.trim()) return;
+    if (!this.messageForm.valid) return;
+
+    const userMessage = this.messageForm.get('message')?.value;
+    if (!userMessage?.trim()) return;
 
     // Add user message to chat
-    this.messagess.push({ text:this.messageForm.value, isUser: true });
+    this.addMessage('user', userMessage);
+    
+    const sessionId = this.session_id;
+    if (!sessionId) {
+      console.error('No active session');
+      this.addMessage('system', 'Error: No active session. Please refresh the page.');
+      return;
+    }
 
-    // Get AI response
-    this.resumeBuilder.chat(this.userInput, this.context).subscribe(response => {
-      // Add AI response to chat
-      this.messagess.push({ text: response.response, isUser: false });
+    // Clear the input after sending
+    this.messageForm.reset();
 
-      // Update context with new information
-      this.context = {
-        ...this.context,
-        conversation_history: [
-          ...(this.context.conversation_history || []),
-          { question: response.response, answer: this.userInput }
-        ]
-      };
+    // Show loading state
+    this.isProcessing = true;
 
-      // Handle different intents
-      if (response.intent === 'add_experience') {
-        this.handleExperience(response.entities);
-      } else if (response.intent === 'choose_template') {
-        this.getTemplateRecommendations();
-      }
-    });
+    // Call the API
+    this.resumeBuilder.continueConversation(sessionId, userMessage)
+      .subscribe({
+        next: (response) => {
+          if (response.status === 'error') {
+            this.handleError(response.error || 'An error occurred');
+            return;
+          }
 
-    this.userInput = '';
-  }
+          if (response.message) {
+            const message: Message = {
+              id: Date.now().toString(),
+              content: response.message,
+              sender: 'ai',
+              timestamp: new Date(),
+              suggestions: response.suggestions
+            };
+            this.messages.push(message);
+          }
 
-  private handleExperience(entities: any) {
-    this.resumeBuilder.generateSection('experience', {
-      user_profile: this.context.user_profile,
-      experience_data: entities
-    }).subscribe(content => {
-      // Handle the generated content
-      console.log('Generated experience section:', content);
-    });
-  }
+          // Update progress if provided
+          if (response.progress) {
+            // this.progressService.setProgress({
+            //   section: 'personalInfo',
+            //   progress: (response.progress.current / response.progress.total) * 100
+            // });
+          }
 
-  private getTemplateRecommendations() {
-    this.resumeBuilder.getTemplates(this.userInput).subscribe(templates => {
-      const templateList = templates
-        .map((t: any, i: number) => `${i + 1}. ${t.name}: ${t.description}`)
-        .join('\n');
-      this.messagess.push({ 
-        text: `Here are some recommended templates:\n${templateList}`, 
-        isUser: false 
+          if (response.status === 'complete') {
+            this.handleConversationComplete(response);
+          }
+
+          // Store field ID for context
+          if (response.field_id) {
+            this.currentSection = response.field_id;
+          }
+        },
+        error: (error) => {
+          console.error('Conversation error:', error);
+          this.addMessage('system', 'Sorry, there was an error processing your message. Please try again.');
+          this.isProcessing = false;
+        },
+        complete: () => {
+          this.isProcessing = false;
+          this.scrollToBottom();
+        }
       });
-    });
+  }
+
+  private handleConversationComplete(response: ConversationResponse) {
+    if (response.resume_data) {
+      // Store collected data
+      this.progressService.updateFormData(response.resume_data);
+      
+      // Add completion message
+      this.addMessage('system', 'Great! I have collected all the necessary information. Generating your resume...');
+
+      // Store conversation history if provided
+      if (response.conversation_history) {
+        localStorage.setItem('conversation_history', JSON.stringify(response.conversation_history));
+      }
+
+      // Navigate to next step or show preview
+      this.next.emit(response.resume_data);
+    }
   }
 
   private async startInterview() {
@@ -548,13 +609,15 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  private addMessage(sender: 'user' | 'ai' | 'system', content: string) {
-    this.messages.push({
+  private addMessage(sender: 'user' | 'ai' | 'system', content: string, suggestions?: string[]) {
+    const message: Message = {
       id: Date.now().toString(),
       content,
       sender,
-      timestamp: new Date()
-    });
+      timestamp: new Date(),
+      suggestions
+    };
+    this.messages.push(message);
     this.scrollToBottom();
   }
 

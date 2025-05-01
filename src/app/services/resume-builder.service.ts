@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry, timeout } from 'rxjs/operators';
+import { catchError, retry, tap, timeout } from 'rxjs/operators';
 
 export interface ChatRequest {
   message: string;
@@ -17,32 +17,40 @@ export interface ChatResponse {
 export interface ConversationResponse {
   session_id?: string;
   status: 'in_progress' | 'complete' | 'error';
+  message?: string;
   question?: string;
   field_id?: string;
-  message?: string;
   progress?: {
     current: number;
     total: number;
   };
   resume_data?: any;
   collected_data?: any;
+  conversation_history?: Array<{
+    role: 'user' | 'assistant';
+    content: string;
+  }>;
+  current_question?: string;
+  suggestions?: string[];
+  error?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResumeBuilderService {
-  private apiUrl = 'http://localhost:5000';  // Removed /api prefix
+  private apiUrl = 'http://localhost:5000';
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     }),
-    withCredentials: false  // Set to true if you need to send cookies
+    withCredentials: false
   };
 
+  private currentSession: string | null = null;
+
   constructor(private http: HttpClient) {
-    // Verify API connection on service initialization
     this.checkHealth().subscribe(
       () => console.log('API connection successful'),
       error => console.error('API connection failed:', error)
@@ -53,13 +61,10 @@ export class ResumeBuilderService {
     let errorMessage = 'An error occurred';
     
     if (error.error instanceof ErrorEvent) {
-      // Client-side error
       errorMessage = `Error: ${error.error.message}`;
     } else if (error.status === 0) {
-      // Connection error
       errorMessage = 'Unable to connect to the server. Please check if the API is running.';
     } else {
-      // Server-side error
       errorMessage = `Server returned code ${error.status}, error: ${error.error?.detail || error.message}`;
     }
     
@@ -68,20 +73,56 @@ export class ResumeBuilderService {
   }
 
   checkHealth(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/health`)  // Updated endpoint
+    return this.http.get(`${this.apiUrl}/health`)
       .pipe(
-        timeout(5000),  // 5 second timeout
-        retry(1),       // Retry failed request once
+        timeout(5000),
+        retry(1),
         catchError(this.handleError)
       );
   }
 
-  chat(message: string, context: any = {}): Observable<ChatResponse> {
-    const payload: ChatRequest = { message, context };
-    
-    return this.http.post<ChatResponse>(`${this.apiUrl}/conversation/start`, payload, this.httpOptions)  // Updated endpoint
+  startConversation(): Observable<ConversationResponse> {
+    return this.http.post<ConversationResponse>(`${this.apiUrl}/conversation/start`, {}, this.httpOptions)
       .pipe(
-        timeout(30000),  // 30 second timeout for LLM responses
+        tap(response => {
+          if (response.session_id) {
+            this.currentSession = response.session_id;
+            console.log('Started new conversation session:', response.session_id);
+          }
+        }),
+        timeout(10000),
+        retry(1),
+        catchError(this.handleError)
+      );
+  }
+
+  continueConversation(sessionId: string, response: string): Observable<ConversationResponse> {
+    if (!sessionId) {
+      console.error('No session ID provided');
+      return throwError(() => new Error('No session ID provided'));
+    }
+
+    return this.http.post<ConversationResponse>(
+      `${this.apiUrl}/conversation/${sessionId}`,
+      { response },
+      this.httpOptions
+    ).pipe(
+      timeout(30000),
+      retry(1),
+      catchError(this.handleError)
+    );
+  }
+
+  chat(message: any): Observable<ChatResponse> {
+    if (!this.currentSession) {
+      console.error('No active session. Call startConversation first.');
+      return throwError(() => new Error('No active session'));
+    }
+
+    const payload = { response: message.response };
+    return this.http.post<ChatResponse>(`${this.apiUrl}/conversation/${message.session_id}`, payload, this.httpOptions)
+      .pipe(
+        timeout(30000),
         retry(1),
         catchError(this.handleError)
       );
@@ -117,24 +158,7 @@ export class ResumeBuilderService {
       );
   }
 
-  startConversation(): Observable<ConversationResponse> {
-    return this.http.post<ConversationResponse>(`${this.apiUrl}/conversation/start`, {}, this.httpOptions)
-      .pipe(
-        timeout(10000),
-        retry(1),
-        catchError(this.handleError)
-      );
-  }
-
-  continueConversation(sessionId: string, response: any): Observable<ConversationResponse> {
-    return this.http.post<ConversationResponse>(
-      `${this.apiUrl}/conversation/${sessionId}`,
-      { response },
-      this.httpOptions
-    ).pipe(
-      timeout(30000),
-      retry(1),
-      catchError(this.handleError)
-    );
+  getCurrentSession(): string | null {
+    return this.currentSession;
   }
 }
