@@ -75,15 +75,15 @@
         <div class="space-y-6">
           <div *ngFor="let message of messages" 
                class="flex flex-col space-y-2"
-               [class.items-end]="message.sender === 'user'">
+               [class.items-end]="message.sender === 'user'" style="padding-bottom: 5px;">
             
             <!-- Message Bubble -->
             <div [class]="message.sender === 'user' ? 
-                          'bg-indigo-600 text-white rounded-l-lg rounded-tr-lg' : 
+                          'bg-green-600 text-white rounded-l-lg rounded-tr-lg' : 
                           message.sender === 'system' ?
                           'bg-yellow-100 text-gray-900 rounded-lg border border-yellow-200' :
                           'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-r-lg rounded-tl-lg'"
-                 class="max-w-[80%] px-4 py-2 shadow-sm">
+                 class="max-w-[80%] px-4 py-2 shadow-sm flex flex-col space-y-2" style="color: black;">
               
               <!-- Typing Indicator -->
               <div *ngIf="message.isTyping" class="flex space-x-2 h-6 items-center">
@@ -93,7 +93,7 @@
               </div>
               
               <!-- Message Content -->
-              <div *ngIf="!message.isTyping" class="prose dark:prose-invert max-w-none">
+              <div *ngIf="!message.isTyping" class="prose dark:prose-invert max-w-none"> 
                 <markdown [data]="message.content"></markdown>
               </div>
 
@@ -155,20 +155,20 @@
           <div class="flex items-end space-x-2">
             <button type="button" 
                     (click)="toggleFileUpload()"
-                    class="p-2 rounded-lg text-gray-500 hover:text-gray-600 
+                    class="inline-flex items-center justify-center p-2 rounded-lg text-gray-500 hover:text-gray-600 
                            dark:text-gray-400 dark:hover:text-gray-300">
               <fa-icon [icon]="faPaperclip"></fa-icon>
             </button>
             <button type="button"
                     (click)="toggleVoiceInput()"
-                    class="p-2 rounded-lg text-gray-500 hover:text-gray-600
+                    class="inline-flex items-center justify-center p-2 rounded-lg text-gray-500 hover:text-gray-600
                            dark:text-gray-400 dark:hover:text-gray-300">
               <fa-icon [icon]="faMicrophone"></fa-icon>
             </button>
             <button type="submit"
                     [disabled]="!messageForm.valid || isProcessing"
-                    class="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 
-                           text-white disabled:opacity-50">
+                    class="inline-flex items-center justify-center p-2 rounded-lg text-gray-500 hover:text-gray-600
+                    dark:text-gray-400 dark:hover:text-gray-300 disabled:cursor-not-allowed">
               <fa-icon [icon]="isProcessing ? faSpinner : faPaperPlane"
                       [spin]="isProcessing"></fa-icon>
             </button>

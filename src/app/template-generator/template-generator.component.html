@@ -1,6 +1,77 @@
-<div class="template-list">
-    <button *ngFor="let tpl of templates" 
-            (click)="selectTemplate(tpl)">
-      {{ tpl.name }}
-    </button>
+<div class="template-selection">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="animate-pulse flex space-x-4 p-4">
+      <div class="flex-1 space-y-4 py-1">
+        <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+        <div class="space-y-2">
+          <div class="h-4 bg-gray-200 rounded"></div>
+          <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Templates Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4" *ngIf="!isLoading">
+    <!-- AI Suggested Templates -->
+  <div *ngFor="let template of suggestedTemplates" 
+         class="template-card relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md"
+         [class.border-green-500]="template.confidence && template.confidence > 0.8"
+         (click)="selectTemplate(template)">
+    
+      <div *ngIf="template.confidence && template.confidence > 0.8"
+           class="absolute top-0 right-0 bg-green-500 text-white px-2 py-1 text-xs rounded-bl">
+        AI Recommended
+      </div>
+      
+      <div class="p-4">
+        <h3 class="text-lg font-semibold text-gray-900">{{ template.name }}</h3>
+        <p class="mt-2 text-sm text-gray-600">{{ template.description }}</p>
+        
+       
+        <div *ngIf="template.confidence" class="mt-3">
+          <div class="flex items-center">
+            <div class="flex-1 h-2 bg-gray-200 rounded-full">
+              <div class="h-2 bg-green-500 rounded-full"
+                   [style.width.%]="template.confidence * 100"></div>
+            </div>
+            <span class="ml-2 text-sm text-gray-600">
+              {{ (template.confidence * 100).toFixed(0) }}% match
+            </span>
+          </div>
+        </div>
+
+        <!-- Industry Tags -->
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span *ngFor="let industry of template.suitableFor"
+                class="inline-flex items-center px-2 py-1 rounded-full text-xs"
+                [class.bg-green-100]="industry.toLowerCase() === userIndustry.toLowerCase()"
+                [class.text-green-800]="industry.toLowerCase() === userIndustry.toLowerCase()"
+                [class.bg-gray-100]="industry.toLowerCase() !== userIndustry.toLowerCase()"
+                [class.text-gray-600]="industry.toLowerCase() !== userIndustry.toLowerCase()">
+            {{ industry }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Available Templates -->
+    <div *ngFor="let template of getOtherTemplates()" 
+         class="template-card overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md"
+         (click)="selectTemplate(template)">
+      <div class="p-4">
+        <h3 class="text-lg font-semibold text-gray-900">{{ template.name }}</h3>
+        <p class="mt-2 text-sm text-gray-600">{{ template.description }}</p>
+        
+        <!-- Industry Tags -->
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span *ngFor="let industry of template.suitableFor"
+                class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-600">
+            {{ industry }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

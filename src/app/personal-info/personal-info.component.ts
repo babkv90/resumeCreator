@@ -37,6 +37,7 @@ import { AuthService } from '../services/auth.service';
 import { catchError, take, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ResumeAgentService } from '../services/resume-agent.service';
 
 interface Conversation {
   id: string;
@@ -48,7 +49,7 @@ interface Conversation {
 interface Message {
   id: string;
   content: string;
-  sender: 'user' | 'ai' | 'system';  // Added system as a sender type
+  sender: 'user' | 'ai' | 'system';
   timestamp: Date;
   isTyping?: boolean;
   state?: 'thinking' | 'researching' | 'calling_api' | 'generating' | null;
@@ -163,7 +164,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   suggestions: string[] = [];
   session_id: string | undefined;
 
-  constructor(private fb: FormBuilder, private progressService: ProgressService,private resumeBuilder: ResumeBuilderService, private http: HttpClient, public authService: AuthService) {
+  constructor(private fb: FormBuilder, private progressService: ProgressService,private resumeAgentServ : ResumeAgentService,private resumeBuilder: ResumeBuilderService, private resumeAgent: ResumeAgentService, private http: HttpClient, public authService: AuthService) {
     this.personalInfoForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: [''],
@@ -227,27 +228,35 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
 
     // this.initializeChat();
     this.startInterview();
+    this.startConversation();
+ 
+  }
+
+  startConversation(){
     this.resumeBuilder.startConversation().subscribe({
       next: (response) => {
         console.log('Conversation started:', response);
-        if (response.message) {
-          const message: Message = {
-            id: Date.now().toString(),
-            content: response.message,
-            sender: 'ai',
-            timestamp: new Date(),
-            suggestions: response.suggestions
-          };
-          this.messages.push(message);
-        }
+        // Add welcome message
+        const welcomeMessage: Message = {
+          id: Date.now().toString(),
+          content: "Hi! I'm your AI assistant. I'll help you create an amazing resume by asking you some questions. Let's get started!",
+          sender: 'ai',
+          timestamp: new Date()
+        };
+        this.messages.push(welcomeMessage);
+
+        // Add first question
+        const firstQuestion: Message = {
+          id: (Date.now() + 1).toString(),
+          content: "Let's start with your basic information. What is your full name?",
+          sender: 'ai',
+          timestamp: new Date(),
+          // suggestions: ['My name is...', 'I prefer to go by...']
+        };
+        this.messages.push(firstQuestion);
+
         if (response.session_id) {
           this.session_id = response.session_id;
-        }
-        if (response.progress) {
-          // this.progressService.setProgress({
-          //   section: 'personalInfo',
-          //   progress: (response.progress.current / response.progress.total) * 100
-          // });
         }
       },
       error: (error) => {
@@ -488,6 +497,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
 
           if (response.status === 'complete') {
             this.handleConversationComplete(response);
+            
           }
 
           // Store field ID for context
@@ -508,12 +518,17 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
   }
 
   private handleConversationComplete(response: ConversationResponse) {
-    if (response.resume_data) {
+    // Check if the conversation is complete
+       console.log('Conversation completed:521', response);
+     if (response.resume_data) {
       // Store collected data
       this.progressService.updateFormData(response.resume_data);
-      
+      this.sendMessageToAgent();
+    this.resumeAgentServ.generateResume(response).subscribe((resume_response)=>{
+        console.log('Resume response:', resume_response);
+      })
       // Add completion message
-      this.addMessage('system', 'Great! I have collected all the necessary information. Generating your resume...');
+      // this.addMessage('system', 'Great! I have collected all the necessary information. Generating your resume...');
 
       // Store conversation history if provided
       if (response.conversation_history) {
@@ -623,35 +638,111 @@ export class PersonalInfoComponent implements OnInit, AfterViewChecked {
 
   private async handleInterviewCompletion() {
     try {
-      // Trigger content generation
-      const response = await this.http.post(
-        `${environment.apiUrl}/resume/generate`,
-        { messages: this.messages }
-      ).pipe(
-        tap(res => {
-          // Navigate to next step or show preview
-          this.handleGenerationComplete(res);
-        }),
-        catchError(error => {
+      this.isLoading = true;
+      
+      // Extract job target from conversation
+      const jobTargetMessage = this.messages.find((m: Message) => 
+        m.sender === 'user' && 
+        this.messages.find((prev: Message) => 
+          prev.sender === 'ai' && 
+          prev.content.toLowerCase().includes('target job position')
+        )
+      );
+
+      // Extract skills from conversation
+      const skillsMessage = this.messages.find((m: Message) => 
+        m.sender === 'user' && 
+        this.messages.find((prev: Message) => 
+          prev.sender === 'ai' && 
+          prev.content.toLowerCase().includes('key technical skills')
+        )
+      );
+
+      // Extract work experience from conversation
+      const experienceMessages = this.messages.reduce((experiences: any[], m: Message, index: number) => {
+        if (m.sender === 'user' && 
+            this.messages[index - 1]?.sender === 'ai' && 
+            (this.messages[index - 1].content.toLowerCase().includes('recent job role') || 
+             this.messages[index - 1].content.toLowerCase().includes('work experience'))) {
+          
+          // Look for follow-up messages that might contain additional details
+          const followUpMessages = this.messages.slice(index + 1);
+          const responsibilityMessages = followUpMessages.filter((fm: Message, i: number) => 
+            fm.sender === 'user' && 
+            followUpMessages[i - 1]?.content.toLowerCase().includes('responsibilities') || 
+            followUpMessages[i - 1]?.content.toLowerCase().includes('achievements')
+          );
+
+          experiences.push({
+            position: m.content,
+            company: this.messages[index + 2]?.sender === 'user' ? this.messages[index + 2].content : 'Previous Company',
+            duration: this.messages[index + 4]?.sender === 'user' ? this.messages[index + 4].content : 'Recent',
+            points: responsibilityMessages.map((rm:any )=> rm.content)
+          });
+        }
+        return experiences;
+      }, []);
+
+      const skills = skillsMessage ? 
+        skillsMessage.content.split(',').map((skill:any) => skill.trim()) : 
+        [];
+
+      const collectedData = {
+        personal: this.personalInfoForm.value,
+        job_target: jobTargetMessage?.content || '',
+        skills: skills,
+        experience: experienceMessages,
+        conversations: this.messages
+          .filter((m: Message) => m.sender !== 'system')
+          .map((m: Message) => ({
+            role: m.sender === 'user' ? 'user' : 'assistant',
+            content: m.content
+          }))
+      };
+
+      // Generate resume using AI agent
+      this.resumeAgent.generateResume(collectedData).subscribe({
+        next: (response) => {
+          // Add completion message
+          this.addMessage('system', 'Your resume has been generated successfully! Moving to preview...');
+          
+          // Store collected data for later use
+          localStorage.setItem('resumeData', JSON.stringify(response));
+          
+          // Update progress service
+          this.progressService.updateFormData(response);
+          
+          // Wait a moment to show the success message
+          setTimeout(() => {
+            this.isLoading = false;
+            this.interviewCompleted = true;
+            this.next.emit();
+          }, 1500);
+        },
+        error: (error) => {
           this.handleError(error);
-          return throwError(() => error);
-        })
-      ).toPromise();
+          this.isLoading = false;
+        }
+      });
 
     } catch (error) {
       this.handleError(error);
+      this.isLoading = false;
     }
-  }
-
-  private handleGenerationComplete(response: any) {
-    // Add completion message
-    this.addMessage('system', 'Resume content has been generated! Moving to preview...');
-    // Navigate or emit event for parent component
   }
 
   private handleError(error: any) {
     console.error('Error:', error);
-    this.addMessage('system', 'An error occurred. Please try again.');
+    this.addMessage('system', 'An error occurred while generating your resume. Please try again.');
+    this.isLoading = false;
+  }
+
+  private handleGenerationComplete(response: any) {
+    // Add completion message
+    this.addMessage('system', 'Resume content has been generated! Check the preview section to see your resume.');
+    
+    // Additional UI updates if needed
+    this.isProcessing = false;
   }
 
   // Helper method to apply suggestion

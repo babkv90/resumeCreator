@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, tap, timeout } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface ChatRequest {
   message: string;
@@ -39,13 +40,13 @@ export interface ConversationResponse {
   providedIn: 'root'
 })
 export class ResumeBuilderService {
-  private apiUrl = 'http://localhost:5000';
+  private apiUrl = environment.apiUrl;
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     }),
-    withCredentials: false
+    withCredentials: true
   };
 
   private currentSession: string | null = null;

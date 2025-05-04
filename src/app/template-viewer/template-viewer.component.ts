@@ -1,34 +1,59 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, OnInit } from '@angular/core';
 import { ProgressService } from '../services/progress.service';
-import { Title } from '@angular/platform-browser';
+import { ResumeData } from '../shared/models/resume.model';
 
 @Component({
   selector: 'app-template-viewer',
   imports: [CommonModule],
   templateUrl: './template-viewer.component.html',
-  styleUrl: './template-viewer.component.scss'
+  styleUrls: ['./template-viewer.component.scss'],
+  standalone: true
 })
-export class TemplateViewerComponent {
-  latestFormData: any;
+export class TemplateViewerComponent implements OnInit {
+  @Input() resumeData: ResumeData | null = null;
   @Input() elementId: string = 'resumeContainer1';
-  skills=['JavaScript', 'Angular', 'React', 'Node.js', 'Express.js', 'MongoDB'];
-  isPrintMode = true;
-  education=[
-    { degree: 'B.Tech in Computer Science', institution: 'XYZ University', year: '2022' }];
-    experience=[
-      { position: 'Software Engineer', company: 'ABC Corp', duration: '2022-2023' ,title: 'Software Engineer','period':'',points:''}];
-      personalInfo={name:"Abinash",email:'abiece@outlook.com',phone:'+91-8210834653',address:'Bhubaneswar, Odisha',linkedIn:'https://www.linkedin.com/in/abinash-kumar-123456789/',portfolio:'https://abinashkumar.com'};
-      summary='Highly motivated and results-driven software engineer with a passion for developing innovative solutions. Proven ability to work collaboratively in a team environment and deliver high-quality software products.';
-  constructor(private progressService: ProgressService) {}
   @ViewChild('resumeContainer') resumeContainer!: ElementRef;
-  formData: any = {
-    firstName: 'Abinash',
-    lastName: 'Kumar', 
-    email: 'abiece@outlook.com',
-    phone: '+91-8210834653',  
-  };
-  ContactDetails:any=[];
+  
+  isPrintMode = true;
+  ContactDetails: any = [];
+  latestFormData: any;
+  isLoading = true;
+
+  constructor(private progressService: ProgressService) {}
+
+  ngOnInit() {
+    this.progressService.currentFormData.subscribe(data => {
+      if (Object.keys(data).length !== 0) {
+        this.updateResumeData(data);
+      }
+    });
+
+    // Try to load saved resume data if none is provided
+    if (!this.resumeData) {
+      const savedData = localStorage.getItem('resumeData');
+      if (savedData) {
+        this.resumeData = JSON.parse(savedData);
+      }
+    }
+    this.isLoading = false;
+  }
+
+  private updateResumeData(data: any) {
+    // Update only changed values
+    Object.keys(data).forEach(key => {
+      if (this.resumeData?.personalInfo.hasOwnProperty(key)) {
+        this.resumeData.personalInfo[key as keyof typeof this.resumeData.personalInfo] = data[key];
+      }
+    });
+    this.ContactDetails = [
+      this.resumeData?.personalInfo.email,
+      this.resumeData?.personalInfo.phone,
+      this.resumeData?.personalInfo.linkedIn,
+      this.resumeData?.personalInfo.portfolio
+    ];
+  }
+
   private getElement(): HTMLElement {
     const element = document.getElementById(this.elementId);
     if (!element) {
@@ -41,25 +66,21 @@ export class TemplateViewerComponent {
     const element = this.getElement();
     await this.progressService.downloadPDF(element);
   }
-  ngOnInit() {
-    this.progressService.currentFormData.subscribe(data => {
-    
-      if(Object.keys(data).length !== 0){
 
-        this.latestFormData = updateChangedValues(this.formData, data);
-        function updateChangedValues(originalObj:any, newObj:any) {
-          const updatedObj:any = {};      
-          for (const key in newObj) {
-            if (originalObj[key] !== newObj[key]) {
-              updatedObj[key] = newObj[key];
-            }
-          }     
-          return updatedObj;
-        }
-        this.ContactDetails = [this.formData.email,this.formData.phone,this.formData.linkedIn,this.formData.portfolio];
-      }
-     
+  getFormattedAddress(): string {
+    if (!this.resumeData?.personalInfo) return '';
+    return this.resumeData.personalInfo.address;
+  }
+
+  getSocialLinks(): { platform: string, url: string }[] {
+    if (!this.resumeData?.personalInfo) return [];
     
-    });
+    const links = [];
+    const { linkedIn, portfolio } = this.resumeData.personalInfo;
+    
+    if (linkedIn) links.push({ platform: 'LinkedIn', url: linkedIn });
+    if (portfolio) links.push({ platform: 'Portfolio', url: portfolio });
+    
+    return links;
   }
 }

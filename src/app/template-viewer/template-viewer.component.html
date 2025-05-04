@@ -1,179 +1,85 @@
 <!-- <button (click)="downloadPDF()">Download PDF</button> -->
 
-  <div #resumeContainer id="resumeContainer1" class="resume-container" [class.print-mode]="isPrintMode">
-    <div class="resume-content">
-     
-        <!-- Header Section -->
-        <div class="header">
-            <h1 class="name">John Doe</h1>
-            <p class="title">Senior MEAN Stack Developer</p>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <span>(123) 456-7890</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <span>john.doeexample.com</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>San Francisco, CA</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fab fa-linkedin"></i>
-                    <span>linkedin.com/in/johndoe</span>
-                </div>
-                <div class="contact-item">
-                    <i class="fab fa-github"></i>
-                    <span>github.com/johndoe</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Summary Section -->
-        <div class="section">
-            <h2 class="section-title">Professional Summary</h2>
-            <p>Results-driven Senior MEAN Stack Developer with 8+ years of experience designing and implementing full-stack web applications. Specialized in MongoDB, Express.js, Angular, and Node.js with a proven track record of delivering scalable and high-performance solutions. Passionate about clean code, architecture best practices, and mentoring junior developers.</p>
-        </div>
-
-        <!-- Experience Section -->
-        <div class="section">
-            <h2 class="section-title">Professional Experience</h2>
-            
-            <div class="experience-item">
-                <h3 class="job-title">Senior MEAN Stack Developer</h3>
-                <p class="company">Tech Solutions Inc., San Francisco, CA</p>
-                <div class="date-location">
-                    <span>June 2019 - Present</span>
-                </div>
-                <ul class="responsibilities">
-                    <li>Led a team of 5 developers to build a SaaS product serving 50,000+ monthly active users</li>
-                    <li>Architected and implemented a microservices backend using Node.js and MongoDB</li>
-                    <li>Developed a responsive frontend using Angular 12+ with NgRx for state management</li>
-                    <li>Improved application performance by 40% through query optimization and caching</li>
-                    <li>Mentored junior developers and conducted code reviews to maintain code quality</li>
-                    <li>Implemented CI/CD pipelines using Jenkins and Docker for automated deployments</li>
-                </ul>
-            </div>
-            
-            <div class="experience-item">
-                <h3 class="job-title">MEAN Stack Developer</h3>
-                <p class="company">Digital Innovations LLC, San Jose, CA</p>
-                <div class="date-location">
-                    <span>January 2016 - May 2019</span>
-                </div>
-                <ul class="responsibilities">
-                    <li>Developed and maintained 10+ client applications using MEAN stack technologies</li>
-                    <li>Created RESTful APIs with Express.js and Node.js handling 1000+ requests per minute</li>
-                    <li>Implemented real-time features using WebSockets and Socket.io</li>
-                    <li>Integrated third-party services including payment gateways and social media APIs</li>
-                    <li>Reduced server costs by 25% through database optimization and query refactoring</li>
-                </ul>
-            </div>
-            
-            <div class="experience-item">
-                <h3 class="job-title">Junior Full Stack Developer</h3>
-                <p class="company">WebCraft Studios, Oakland, CA</p>
-                <div class="date-location">
-                    <span>July 2014 - December 2015</span>
-                </div>
-                <ul class="responsibilities">
-                    <li>Assisted in developing and maintaining web applications using JavaScript technologies</li>
-                    <li>Built UI components with AngularJS (1.x) and implemented client-side logic</li>
-                    <li>Worked on backend services with Node.js and MongoDB</li>
-                    <li>Participated in Agile development processes including daily standups and sprint planning</li>
-                    <li>Wrote unit and integration tests using Jasmine and Mocha</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Skills Section -->
-        <div class="section">
-            <h2 class="section-title">Technical Skills</h2>
-            <div class="skills-container">
-                <div class="skill-category">
-                    <h4>Frontend</h4>
-                    <ul class="skill-list">
-                        <li>Angular 2+ (Expert)</li>
-                        <li>TypeScript</li>
-                        <li>RxJS</li>
-                        <li>NgRx/Redux</li>
-                        <li>HTML5/CSS3</li>
-                        <li>Bootstrap/Tailwind</li>
-                    </ul>
-                </div>
-                
-                <div class="skill-category">
-                    <h4>Backend</h4>
-                    <ul class="skill-list">
-                        <li>Node.js</li>
-                        <li>Express.js</li>
-                        <li>NestJS</li>
-                        <li>RESTful APIs</li>
-                        <li>GraphQL</li>
-                        <li>Microservices</li>
-                    </ul>
-                </div>
-                
-                <div class="skill-category">
-                    <h4>Database</h4>
-                    <ul class="skill-list">
-                        <li>MongoDB</li>
-                        <li>Mongoose</li>
-                        <li>Redis</li>
-                        <li>PostgreSQL</li>
-                        <li>Database Design</li>
-                    </ul>
-                </div>
-                
-                <div class="skill-category">
-                    <h4>DevOps & Tools</h4>
-                    <ul class="skill-list">
-                        <li>Docker</li>
-                        <li>Kubernetes</li>
-                        <li>AWS/GCP</li>
-                        <li>CI/CD</li>
-                        <li>Git</li>
-                        <li>JIRA</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Education Section -->
-        <div class="section">
-            <h2 class="section-title">Education</h2>
-            <div class="education-item">
-                <h3 class="job-title">Master of Science in Computer Science</h3>
-                <p class="company">Stanford University</p>
-                <div class="date-location">
-                    <span>2012 - 2014</span>
-                    <span>Stanford, CA</span>
-                </div>
-            </div>
-            <div class="education-item">
-                <h3 class="job-title">Bachelor of Science in Software Engineering</h3>
-                <p class="company">University of California, Berkeley</p>
-                <div class="date-location">
-                    <span>2008 - 2012</span>
-                    <span>Berkeley, CA</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Certifications Section -->
-        <div class="section">
-            <h2 class="section-title">Certifications</h2>
-            <ul class="responsibilities">
-                <li>MongoDB Certified Developer</li>
-                <li>AWS Certified Developer - Associate</li>
-                <li>Angular Certification (Angular University)</li>
-                <li>Node.js Services Developer (Linux Foundation)</li>
-            </ul>
-        </div>
-   
+<div class="resume-container" [id]="elementId">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state flex items-center justify-center p-8">
+    <div class="animate-pulse space-y-4 w-full">
+      <div class="h-8 bg-gray-200 rounded w-3/4"></div>
+      <div class="space-y-2">
+        <div class="h-4 bg-gray-200 rounded"></div>
+        <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+      </div>
     </div>
   </div>
- 
+
+  <!-- Resume Content -->
+  <div *ngIf="!isLoading && resumeData" class="resume-content p-8 max-w-4xl mx-auto bg-white shadow-lg">
+    <!-- Header Section -->
+    <header class="mb-8 text-center">
+      <h1 class="text-3xl font-bold mb-2">{{ resumeData.personalInfo.name }}</h1>
+      <div class="contact-info text-gray-600 space-y-1">
+        <p>{{ resumeData.personalInfo.email }} | {{ resumeData.personalInfo.phone }}</p>
+        <p>{{ getFormattedAddress() }}</p>
+        <div class="social-links flex justify-center gap-4">
+          <a *ngFor="let link of getSocialLinks()"
+             [href]="link.url"
+             target="_blank"
+             class="text-blue-600 hover:text-blue-800">
+            {{ link.platform }}
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Summary Section -->
+    <section class="mb-6" *ngIf="resumeData.summary">
+      <h2 class="text-xl font-semibold mb-2 text-gray-800 border-b border-gray-300">Professional Summary</h2>
+      <p class="text-gray-700">{{ resumeData.summary }}</p>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="mb-6" *ngIf="resumeData.skills?.length">
+      <h2 class="text-xl font-semibold mb-2 text-gray-800 border-b border-gray-300">Technical Skills</h2>
+      <div class="flex flex-wrap gap-2">
+        <span *ngFor="let skill of resumeData.skills"
+              class="px-3 py-1 bg-gray-100 rounded-full text-gray-700">
+          {{ skill }}
+        </span>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="mb-6" *ngIf="resumeData.experience?.length">
+      <h2 class="text-xl font-semibold mb-2 text-gray-800 border-b border-gray-300">Professional Experience</h2>
+      <div *ngFor="let exp of resumeData.experience" class="mb-4">
+        <div class="flex justify-between mb-1">
+          <h3 class="font-semibold text-gray-800">{{ exp.position }}</h3>
+          <span class="text-gray-600">{{ exp.duration }}</span>
+        </div>
+        <p class="text-gray-700 mb-2">{{ exp.company }}</p>
+        <ul class="list-disc list-inside text-gray-700">
+          <li *ngFor="let point of exp.points">{{ point }}</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="mb-6" *ngIf="resumeData.education?.length">
+      <h2 class="text-xl font-semibold mb-2 text-gray-800 border-b border-gray-300">Education</h2>
+      <div *ngFor="let edu of resumeData.education" class="mb-2">
+        <div class="flex justify-between">
+          <h3 class="font-semibold text-gray-800">{{ edu.degree }}</h3>
+          <span class="text-gray-600">{{ edu.year }}</span>
+        </div>
+        <p class="text-gray-700">{{ edu.institution }}</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- No Data State -->
+  <div *ngIf="!isLoading && !resumeData" class="text-center p-8 text-gray-600">
+    No resume data available. Please complete the interview process.
+  </div>
+</div>
+
 

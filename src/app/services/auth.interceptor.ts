@@ -18,8 +18,8 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Skip interceptor for social auth callbacks
-    if (request.url.includes('/auth/callback')) {
+    // Skip interceptor for preflight requests and social auth callbacks
+    if (request.method === 'OPTIONS' || request.url.includes('/auth/callback')) {
       return next.handle(request);
     }
 
@@ -43,7 +43,8 @@ export class AuthInterceptor implements HttpInterceptor {
     return request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
-      }
+      },
+      withCredentials: true
     });
   }
 

@@ -4,7 +4,7 @@
     height:600px;
     overflow: hidden;
     border: 1px solid #eee;
-    padding: 25px;
+    // padding: 25px;
     box-sizing: border-box;
     transform: scale(0.9);
     // transform-origin: top;
@@ -128,7 +128,7 @@
 
   .resume-container {
     /* Standard US letter size proportions */
-    aspect-ratio: 8.5 / 11;
+    aspect-ratio: 8.5 / 9;
     
     /* Maximum possible size within component-3 */
     width: 100%;
