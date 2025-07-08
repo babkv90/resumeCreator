@@ -23,35 +23,7 @@
   <!-- Main Chat Interface -->
   <ng-container *ngIf="!(authService.currentUser$ | async)">
     <!-- Left Sidebar - Conversation History -->
-    <div class="lg:w-1/4 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 
-                transition-all duration-300 ease-in-out
-                fixed lg:static inset-y-0 left-0 transform 
-                lg:translate-x-0 lg:flex lg:flex-col
-                -translate-x-full"
-         [class.translate-x-0]="showSidebar">
-      <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Conversations</h2>
-        <button (click)="toggleSidebar()" class="lg:hidden p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
-          <fa-icon [icon]="faTimes" class="text-gray-500 dark:text-gray-400"></fa-icon>
-        </button>
-      </div>
-      <div class="flex-1 overflow-y-auto">
-        <div class="px-4 py-2 space-y-2">
-          <!-- Conversation List -->
-          <button *ngFor="let conv of conversations" 
-                  (click)="selectConversation(conv)"
-                  class="w-full p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors
-                         flex items-center space-x-3"
-                  [class.bg-indigo-50]="selectedConversation?.id === conv.id">
-            <fa-icon [icon]="faComment" class="text-gray-400"></fa-icon>
-            <div class="flex-1 text-left">
-              <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{conv.title}}</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">{{conv.lastMessage}}</p>
-            </div>
-          </button>
-        </div>
-      </div>
-    </div>
+
 
     <!-- Main Chat Area -->
     <div class="flex-1 flex flex-col h-screen overflow-hidden">
